@@ -126,7 +126,7 @@
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
       <el-table-column label="分组" align="center" prop="groupCode" >
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_config_group" :value="scope.row.groupCode"/>
+             <dict-tag :options="dict.type.sys_config_group" :value="scope.row.groupCode"/>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -165,16 +165,16 @@
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="参数分组" prop="groupCode">
-          <el-select v-model="form.groupCode" placeholder="参数分组" clearable>
-            <el-option
-              v-for="dict in dict.type.sys_config_group"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
-          </el-select>
-        </el-form-item>
+           <el-form-item label="参数分组" prop="groupCode">
+            <el-select v-model="form.groupCode" placeholder="参数分组" clearable>
+                <el-option
+                v-for="dict in dict.type.sys_config_group"
+                :key="dict.value"
+               :label="dict.label"
+               :value="dict.value"
+               />
+           </el-select>
+         </el-form-item>
         <el-form-item label="参数名称" prop="configName">
           <el-input v-model="form.configName" placeholder="请输入参数名称" />
         </el-form-item>
@@ -256,7 +256,7 @@ export default {
           { required: true, message: "参数键值不能为空", trigger: "blur" }
         ],
         groupCode: [
-          { required: true, message: "参数分组不能为空", trigger: "blur" }
+           { required: true, message: "参数分组不能为空", trigger: "blur" }
         ]
       }
     };
@@ -350,11 +350,11 @@ export default {
     handleDelete(row) {
       const configIds = row.configId || this.ids;
       this.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function() {
-        return delConfig(configIds);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+          return delConfig(configIds);
+        }).then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {

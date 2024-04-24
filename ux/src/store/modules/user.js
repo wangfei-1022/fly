@@ -37,8 +37,8 @@ const user = {
       const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid).then(res => {
-          setToken(res.token)
-          commit('SET_TOKEN', res.token)
+          setToken(res.data.token)
+          commit('SET_TOKEN', res.data.token)
           resolve()
         }).catch(error => {
           reject(error)
@@ -50,20 +50,14 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
-          const user = res.user
-          let avatar = user.avatar;
-          if (user.avatar.trim().toLowerCase().substring(0, 4) != "http") {
-            avatar = (user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
-          }
+          const user = res.data.user
 
-          if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', res.roles)
-            commit('SET_PERMISSIONS', res.permissions)
+          if (res.data.roles && res.data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', res.data.roles)
+            commit('SET_PERMISSIONS', res.data.permissions)
           } else {
             commit('SET_ROLES', ['ROLE_DEFAULT'])
           }
-          commit('SET_NAME', user.userName)
-          commit('SET_AVATAR', avatar)
           resolve(res)
         }).catch(error => {
           reject(error)

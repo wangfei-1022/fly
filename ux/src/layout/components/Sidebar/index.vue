@@ -7,12 +7,13 @@
                 :collapse="isCollapse"
                 :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
                 :text-color="settings.sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
-                :unique-opened="true"
+                :unique-opened="false"
                 :active-text-color="settings.theme"
                 :collapse-transition="false"
                 mode="vertical"
             >
-                <sidebar-item
+
+              <sidebar-item
                     v-for="(route, index) in sidebarRouters"
                     :key="route.path  + index"
                     :item="route"
