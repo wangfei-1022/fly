@@ -5,11 +5,10 @@
     <parent>
         <groupId>com.wf.fly</groupId>
         <artifactId>fly</artifactId>
-        <version>${revision}</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <groupId>com.wf.fly</groupId>
     <artifactId>fly-imaotai</artifactId>
-    <version>{revision}</version>
 
     <dependencies>
         <dependency>

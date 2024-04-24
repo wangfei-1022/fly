@@ -207,6 +207,7 @@
 
 <script>
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config";
+import { getUserListApi } from "@/api/system/user";
 
 export default {
   name: "Config",
@@ -268,7 +269,7 @@ export default {
     /** 查询参数列表 */
     getList() {
       this.loading = true;
-      listConfig(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+      getUserListApi(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.configList = response.rows;
           this.total = response.total;
           this.loading = false;

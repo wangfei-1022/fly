@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/system/user")
 public class SysUserController {
 
     @Autowired
@@ -21,6 +21,13 @@ public class SysUserController {
     @GetMapping("/getUser")
     public R<String> getUser(){
         return R.success("Get唱歌不犯法");
+    }
+
+    @GetMapping("/list")
+    public R<List<User>> list(){
+        User user = new User();
+        List<User> userList =  sysUserService.list(user);
+        return R.success(userList);
     }
 
     @GetMapping("/getRouters")

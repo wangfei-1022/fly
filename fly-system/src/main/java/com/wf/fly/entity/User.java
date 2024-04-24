@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class User implements Serializable{
+public class User extends BaseEntity implements Serializable {
     private Long id;
     private String name;
     private String password;

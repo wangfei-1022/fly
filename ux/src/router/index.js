@@ -96,7 +96,7 @@ export const dynamicRoutes = [
         path: 'xiaomi/:userId(\\d+)',
         component: () => import('@/views/xiaomi/config/index'),
         name: 'AuthRole',
-        meta: { title: '分配角色2', activeMenu: '/system/user' }
+        meta: { title: '小米预约', activeMenu: '/system/user' }
       }
     ]
   },
@@ -112,6 +112,12 @@ export const dynamicRoutes = [
         meta: { title: '用户列表', activeMenu: '/system/user' }
       },
       {
+        path: 'imaotai/pro',
+        component: () => import('@/views/imaotai/user/index'),
+        name: 'AuthRole',
+        meta: { title: '预约项目', activeMenu: '/system/user' }
+      },
+      {
         path: 'imaotai/:userId(\\d+)',
         component: () => import('@/views/imaotai/user/index'),
         name: 'AuthRole',
@@ -122,6 +128,25 @@ export const dynamicRoutes = [
         component: () => import('@/views/imaotai/user/index'),
         name: 'AuthRole',
         meta: { title: '其他配置', activeMenu: '/system/user' }
+      }
+    ]
+  },
+  {
+    path: '/system/log',
+    component: Layout,
+    meta: { title: '日志管理', icon: 'fullscreen', affix: true },
+    children: [
+      {
+        path: 'imaotai/user',
+        component: () => import('@/views/imaotai/user/index'),
+        name: 'AuthRole',
+        meta: { title: '登录日志', activeMenu: '/system/user' }
+      },
+      {
+        path: 'imaotai/pro',
+        component: () => import('@/views/imaotai/user/index'),
+        name: 'AuthRole',
+        meta: { title: '操作日志', activeMenu: '/system/user' }
       }
     ]
   },

@@ -6,6 +6,8 @@ import com.wf.fly.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SysUserServiceImpl implements SysUserService {
 
@@ -21,5 +23,11 @@ public class SysUserServiceImpl implements SysUserService {
     public int login(User user) {
         userMapper.login(user);
         return 0;
+    }
+
+    @Override
+    public List<User> list(User user) {
+        List<User> userList = userMapper.getList(user);
+        return userList;
     }
 }

@@ -5,13 +5,10 @@
     <parent>
         <groupId>com.wf.fly</groupId>
         <artifactId>fly</artifactId>
-        <version>${revision}</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.wf.fly</groupId>
     <artifactId>fly-system</artifactId>
-    <version>{revision}</version>
-
 
     <dependencies>
         <dependency>
@@ -71,6 +68,10 @@
             <artifactId>alibabacloud-dysmsapi20170525</artifactId>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>com.wf.fly</groupId>
+            <artifactId>fly-common</artifactId>
+        </dependency>
 
+    </dependencies>
 </project>
