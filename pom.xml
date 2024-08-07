@@ -10,7 +10,7 @@
 
     <groupId>com.wf.fly</groupId>
     <artifactId>fly</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>fly</name>
     <description>fly</description>
@@ -45,7 +45,8 @@
     </profiles>
 
     <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
+        <fly.version>1.0.0</fly.version>
+        <java-jwt.version>3.4.0</java-jwt.version>
         <java.version>1.8</java.version>
     </properties>
 
@@ -129,27 +130,64 @@
 
             <!-- 通用工具-->
             <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20201115</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.32</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.8.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>2.10</version>
+            </dependency>
+
+            <!-- 通用工具-->
+            <dependency>
                 <groupId>com.wf.fly</groupId>
                 <artifactId>fly-common</artifactId>
-                <version>${revision}</version>
+                <version>${fly.version}</version>
             </dependency>
             <!-- iMaoTai模块-->
             <dependency>
                 <groupId>com.wf.fly</groupId>
                 <artifactId>fly-imaotai</artifactId>
-                <version>${revision}</version>
+                <version>${fly.version}</version>
             </dependency>
             <!-- XiaoMi模块-->
             <dependency>
                 <groupId>com.wf.fly</groupId>
                 <artifactId>fly-xiaomi</artifactId>
-                <version>${revision}</version>
+                <version>${fly.version}</version>
             </dependency>
             <!--后台管理-->
             <dependency>
                 <groupId>com.wf.fly</groupId>
                 <artifactId>fly-system</artifactId>
-                <version>${revision}</version>
+                <version>${fly.version}</version>
             </dependency>
 
         </dependencies>
