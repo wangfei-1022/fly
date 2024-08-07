@@ -30,4 +30,9 @@ public class SysUserServiceImpl implements SysUserService {
         List<User> userList = userMapper.getList(user);
         return userList;
     }
+
+    @Override
+    public int logout() {
+        return 0;
+    }
 }

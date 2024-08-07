@@ -10,4 +10,6 @@ public interface SysUserService {
     int login(User user);
 
     List<User> list(User user);
+
+    int logout();
 }

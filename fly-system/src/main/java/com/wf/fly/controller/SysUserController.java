@@ -55,4 +55,10 @@ public class SysUserController {
         return R.success("新建成功");
     }
 
+    @PostMapping("/logout")
+    public R<String> logout(){
+        sysUserService.logout();
+        return R.success("退出成功");
+    }
+
 }
