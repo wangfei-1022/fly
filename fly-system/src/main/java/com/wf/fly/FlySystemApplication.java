@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan(basePackages = "com.wf.fly.mapper")
-@EnableAutoConfiguration
 public class FlySystemApplication {
 
     public static void main(String[] args) {
