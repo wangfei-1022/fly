@@ -181,6 +181,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                    <fork>true</fork>
                     <skip>true</skip>
                 </configuration>
             </plugin>
