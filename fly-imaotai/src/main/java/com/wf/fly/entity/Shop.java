@@ -28,16 +28,18 @@ public class Shop implements Serializable{
     private String tags;
     private Date createTime;
 
-    public Shop(String iShopId, JSONObject jsonObject) {
-        this.shopId = iShopId;
-        this.provinceName = jsonObject.getString("provinceName");
-        this.cityName = jsonObject.getString("cityName");
-        this.districtName = jsonObject.getString("districtName");
-        this.fullAddress = jsonObject.getString("fullAddress");
-        this.lat = jsonObject.getString("lat");
-        this.lng = jsonObject.getString("lng");
-        this.name = jsonObject.getString("name");
-        this.tenantName = jsonObject.getString("tenantName");
-        this.createTime = new Date();
+    public Shop(String shopId, JSONObject jsonObject) {
+        if(jsonObject != null) {
+            this.shopId = shopId;
+            this.provinceName = jsonObject.getString("provinceName");
+            this.cityName = jsonObject.getString("cityName");
+            this.districtName = jsonObject.getString("districtName");
+            this.fullAddress = jsonObject.getString("fullAddress");
+            this.lat = jsonObject.getString("lat");
+            this.lng = jsonObject.getString("lng");
+            this.name = jsonObject.getString("name");
+            this.tenantName = jsonObject.getString("tenantName");
+            this.createTime = new Date();
+        }
     }
 }

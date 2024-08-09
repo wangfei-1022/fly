@@ -1,12 +1,14 @@
 package com.wf.fly.mapper;
 
 import com.wf.fly.entity.Shop;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.Date;
 import java.util.List;
 
+@Mapper
 public interface ShopMapper {
     @Select("SELECT * FROM shop")
     public List<Shop> list(Shop shop);
