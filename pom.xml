@@ -20,6 +20,7 @@
         <module>fly-system</module>
         <module>fly-imaotai</module>
         <module>fly-xiaomi</module>
+        <module>fly-gateway</module>
     </modules>
 
     <profiles>
@@ -169,6 +170,12 @@
             <dependency>
                 <groupId>com.wf.fly</groupId>
                 <artifactId>fly-system</artifactId>
+                <version>${fly.version}</version>
+            </dependency>
+            <!--网关-->
+            <dependency>
+                <groupId>com.wf.fly</groupId>
+                <artifactId>fly-gateway</artifactId>
                 <version>${fly.version}</version>
             </dependency>
 

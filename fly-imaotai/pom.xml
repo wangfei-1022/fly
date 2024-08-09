@@ -52,6 +52,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.wf.fly</groupId>
+            <artifactId>fly-common</artifactId>
+        </dependency>
 
     </dependencies>
 

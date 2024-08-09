@@ -9,7 +9,7 @@ export default {
   name: 'RuoYiGit',
   data() {
     return {
-      url: 'https://github.com/WFLJQ/fly'
+      url: 'https://github.com/wangfei-1022/fly'
     }
   },
   methods: {

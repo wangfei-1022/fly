@@ -101,33 +101,27 @@ export const dynamicRoutes = [
     ]
   },
   {
-    path: '/system/imaotai',
+    path: '/imaotai',
     component: Layout,
     meta: { title: 'I茅台', icon: 'question', affix: true },
     children: [
       {
-        path: 'imaotai/user',
+        path: 'user/list',
         component: () => import('@/views/imaotai/user/index'),
         name: 'AuthRole',
         meta: { title: '用户列表', activeMenu: '/system/user' }
       },
       {
-        path: 'imaotai/pro',
-        component: () => import('@/views/imaotai/user/index'),
-        name: 'AuthRole',
+        path: 'appointment/list',
+        component: () => import('@/views/imaotai/shop/index'),
+        name: 'IMaoTaiAppointmentProjectList',
         meta: { title: '预约项目', activeMenu: '/system/user' }
       },
       {
-        path: 'imaotai/:userId(\\d+)',
-        component: () => import('@/views/imaotai/user/index'),
-        name: 'AuthRole',
+        path: 'shop/list',
+        component: () => import('@/views/imaotai/shop/index'),
+        name: 'IMaoTaiShopList',
         meta: { title: '门店列表', activeMenu: '/system/user' }
-      },
-      {
-        path: 'imaotai/other',
-        component: () => import('@/views/imaotai/user/index'),
-        name: 'AuthRole',
-        meta: { title: '其他配置', activeMenu: '/system/user' }
       }
     ]
   },
