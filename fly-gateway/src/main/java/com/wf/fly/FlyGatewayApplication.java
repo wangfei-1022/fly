@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FlyIGatewayApplication {
+public class FlyGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FlyIGatewayApplication.class, args);
+        SpringApplication.run(FlyGatewayApplication.class, args);
     }
 }
