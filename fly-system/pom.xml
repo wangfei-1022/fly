@@ -8,6 +8,7 @@
         <version>1.0.0</version>
     </parent>
 
+    <groupId>com.wf.system</groupId>
     <artifactId>fly-system</artifactId>
 
     <dependencies>
