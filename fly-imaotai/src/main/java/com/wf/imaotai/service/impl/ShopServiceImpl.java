@@ -31,8 +31,6 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     public RestTemplate restTemplate;
 
-    @Autowired
-    public ItemMapper itemMapper;
     @Override
     public List<Shop> list(Shop shop) {
         PageHelper.startPage(1, 10);
@@ -70,29 +68,5 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
-    @Override
-    public String getCurrentSessionId() {
-        String mtSessionId = "";
-        long dayTime = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.of("+8")).toEpochMilli();
-        String res = restTemplate.getForObject("https://static.moutai519.com.cn/mt-backend/xhr/front/mall/index/session/get/" + dayTime, String.class);
-        //替换 current_session_id 673 ['data']['sessionId']
-        JSONObject jsonObject = JSONObject.parseObject(res);
 
-        if (jsonObject.getString("code").equals("2000")) {
-            JSONObject data = jsonObject.getJSONObject("data");
-            mtSessionId = data.getString("sessionId");
-            itemMapper.truncateItem();
-            //item插入数据库
-            JSONArray itemList = data.getJSONArray("itemList");
-            for (Object obj : itemList) {
-                JSONObject item = (JSONObject) obj;
-                Item shopItem = new Item(item);
-                itemMapper.addItem(shopItem);
-            }
-
-        }
-
-        return mtSessionId;
-
-    }
 }

@@ -11,13 +11,13 @@ import java.util.List;
 
 @Mapper
 public interface ShopMapper {
-//    @Select("SELECT * FROM shop")
+    @Select("SELECT * FROM imaotai_shop")
     public List<Shop> getList(Shop shop);
 
-    @Insert("INSERT INTO shop(id, shop_id, address, full_address, lat, lng, district, district_name, city, city_name, province, province_name, open_start_time, open_end_time, tenant_name, name, layaway, tags, create_time) " +
+    @Insert("INSERT INTO imaotai_shop(id, shop_id, address, full_address, lat, lng, district, district_name, city, city_name, province, province_name, open_start_time, open_end_time, tenant_name, name, layaway, tags, create_time) " +
             "VALUES(#{id}, #{shopId}, #{address},#{fullAddress}, #{lat}, #{lng},#{district}, #{districtName}, #{city}, #{cityName},  #{province}, #{provinceName}, #{openStartTime}, #{openEndTime}, #{tenantName}, #{name}, #{layaway}, #{tags}, #{createTime})")
     public Long addShop(Shop shop);
 
-    @Update("truncate shop")
+    @Update("truncate imaotai_shop")
     public Long clearAll();
 }

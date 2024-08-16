@@ -1,6 +1,6 @@
 package com.wf.imaotai;
 
-import com.wf.imaotai.service.ShopService;
+import com.wf.imaotai.service.ItemService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,10 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ImaotaiTestApplication {
 
     @Autowired
-    public ShopService shopService;
+    public ItemService itemService;
     @Test
     public void test(){
-       String mtSessionId = shopService.getCurrentSessionId();
+       String mtSessionId = itemService.getCurrentSessionId();
        System.out.println(mtSessionId);
     }
 }
