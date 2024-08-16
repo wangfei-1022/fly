@@ -1,9 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="手机号" prop="iShopId">
-        <el-input v-model="queryParams.iShopId" placeholder="请输入商品ID" clearable @keyup.enter.native="handleQuery"/>
+      <el-form-item label="商品ID" prop="iShopId">
+        <el-input v-model="queryParams.iShopId" placeholder="请输入商品ID" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -11,15 +12,23 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-refresh" size="mini" @click="handleRefresh">刷新i茅台商品</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="shopList" border width="100%">
-      <el-table-column label="用户ID" align="center" prop="id" min-width="100"/>
-      <el-table-column label="用户名" align="center" prop="name" min-width="100"/>
-      <el-table-column label="手机号" align="center" prop="mobile" min-width="100"/>
-      <el-table-column label="邮箱" align="center" prop="email" min-width="100"/>
-      <el-table-column label="创建时间" align="center" prop="createTime" min-width="230"/>
+    <el-table v-loading="loading" :data="shopList" border>
+      <el-table-column label="商品Id" align="center" min-width="120" prop="itemId" />
+      <el-table-column label="商品Code" align="center" min-width="120" prop="itemCode" />
+      <el-table-column label="标题" align="center" min-width="220" prop="title" />
+      <el-table-column label="图片" align="center" min-width="220" prop="picture" >
+        <template slot-scope="scope">
+          <img :src="scope.row.picture" style="width: 60px;"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="内容" align="center" min-width="220" prop="content" />
+      <el-table-column label="创建时间" align="center" min-width="230" prop="createTime" />
     </el-table>
 
     <pagination :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList"/>
@@ -27,7 +36,7 @@
 </template>
 
 <script>
-import { getUserListApi } from "@/api/imaotai/user";
+import { getItemListApi, refreshItemApi } from "@/api/imaotai/item";
 
 export default {
   name: "Shop",
@@ -41,14 +50,6 @@ export default {
         pageNum: 1,
         pageSize: 10,
         iShopId: null,
-        provinceName: null,
-        cityName: null,
-        districtName: null,
-        fullAddress: null,
-        lat: null,
-        lng: null,
-        name: null,
-        tenantName: null,
       },
     };
   },
@@ -58,13 +59,12 @@ export default {
   methods: {
     getList() {
       this.loading = true;
-      getUserListApi(this.queryParams).then((response) => {
+      getItemListApi(this.queryParams).then((response) => {
         this.shopList = response.data.list;
         this.total = response.data.total;
         this.loading = false;
       });
     },
-    // 表单重置
     reset() {
       this.form = {
         shopId: null,
@@ -78,7 +78,13 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
-    }
-  }
+    },
+    handleRefresh() {
+      refreshItemApi().then(() => {
+        this.getList();
+        this.$modal.msgSuccess("刷新成功");
+      });
+    },
+  },
 };
 </script>

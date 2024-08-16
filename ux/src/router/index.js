@@ -112,10 +112,10 @@ export const dynamicRoutes = [
         meta: { title: '用户列表', activeMenu: '/system/user' }
       },
       {
-        path: 'appointment/list',
-        component: () => import('@/views/imaotai/shop/index'),
+        path: 'item/list',
+        component: () => import('@/views/imaotai/item/index'),
         name: 'IMaoTaiAppointmentProjectList',
-        meta: { title: '预约项目', activeMenu: '/system/user' }
+        meta: { title: '预约商品', activeMenu: '/system/user' }
       },
       {
         path: 'shop/list',
