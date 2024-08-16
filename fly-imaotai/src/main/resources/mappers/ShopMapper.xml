@@ -10,8 +10,8 @@
     </resultMap>
 
     <!-- 查询所有用户 -->
-    <select id="getList1" resultMap="shopResultMap">
-        SELECT id, name
+    <select id="getList" resultType="com.wf.imaotai.entity.Shop">
+        SELECT *
         FROM shop
     </select>
 

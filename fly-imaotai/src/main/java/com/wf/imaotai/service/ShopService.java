@@ -8,4 +8,6 @@ public interface ShopService {
     List<Shop> list(Shop shop);
 
     void refreshShop();
+
+    String getCurrentSessionId();
 }

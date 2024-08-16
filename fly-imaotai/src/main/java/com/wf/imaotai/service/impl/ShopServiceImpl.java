@@ -1,9 +1,13 @@
 package com.wf.imaotai.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.wf.imaotai.entity.Item;
 import com.wf.imaotai.entity.Shop;
+import com.wf.imaotai.mapper.ItemMapper;
 import com.wf.imaotai.mapper.ShopMapper;
 import com.wf.imaotai.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,10 +30,14 @@ public class ShopServiceImpl implements ShopService {
 
     @Autowired
     public RestTemplate restTemplate;
+
+    @Autowired
+    public ItemMapper itemMapper;
     @Override
     public List<Shop> list(Shop shop) {
-        PageInfo<Shop> pageInfo = PageHelper.startPage(1, 10).doSelectPageInfo(() -> shopMapper.getList(shop));
-        return pageInfo.getList();
+        PageHelper.startPage(1, 10);
+        List<Shop> xx1 = shopMapper.getList(shop);
+        return xx1;
     }
 
     //    @Async
@@ -58,5 +68,31 @@ public class ShopServiceImpl implements ShopService {
             list.add(shop);
             shopMapper.addShop(shop);
         }
+    }
+
+    @Override
+    public String getCurrentSessionId() {
+        String mtSessionId = "";
+        long dayTime = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        String res = restTemplate.getForObject("https://static.moutai519.com.cn/mt-backend/xhr/front/mall/index/session/get/" + dayTime, String.class);
+        //替换 current_session_id 673 ['data']['sessionId']
+        JSONObject jsonObject = JSONObject.parseObject(res);
+
+        if (jsonObject.getString("code").equals("2000")) {
+            JSONObject data = jsonObject.getJSONObject("data");
+            mtSessionId = data.getString("sessionId");
+            itemMapper.truncateItem();
+            //item插入数据库
+            JSONArray itemList = data.getJSONArray("itemList");
+            for (Object obj : itemList) {
+                JSONObject item = (JSONObject) obj;
+                Item shopItem = new Item(item);
+                itemMapper.addItem(shopItem);
+            }
+
+        }
+
+        return mtSessionId;
+
     }
 }
