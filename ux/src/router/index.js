@@ -65,19 +65,13 @@ export const dynamicRoutes = [
         path: 'user/list',
         component: () => import('@/views/system/user/index'),
         name: 'AuthRole',
-        meta: { title: '用户管理', activeMenu: '/system/user' }
+        meta: { title: '用户管理' }
       },
       {
-        path: 'role/user',
-        component: () => import('@/views/system/role/index'),
+        path: 'config/list',
+        component: () => import('@/views/system/user/index'),
         name: 'AuthRole',
-        meta: { title: '角色管理', activeMenu: '/system/user' }
-      },
-      {
-        path: 'role/:userId(\\d+)',
-        component: () => import('@/views/system/config/index'),
-        name: 'AuthRole',
-        meta: { title: '手机维护', activeMenu: '/system/user' }
+        meta: { title: '角色管理' }
       }
     ]
   },
@@ -88,15 +82,15 @@ export const dynamicRoutes = [
     children: [
       {
         path: 'xiaomi/user',
-        component: () => import('@/views/xiaomi/user/index'),
+        component: () => import('@/views/imaotai/user/index'),
         name: 'AuthRole',
-        meta: { title: '用户列表', activeMenu: '/system/user' }
+        meta: { title: '用户列表' }
       },
       {
         path: 'xiaomi/:userId(\\d+)',
-        component: () => import('@/views/xiaomi/config/index'),
+        component: () => import('@/views/imaotai/item/index'),
         name: 'AuthRole',
-        meta: { title: '小米预约', activeMenu: '/system/user' }
+        meta: { title: '小米预约' }
       }
     ]
   },

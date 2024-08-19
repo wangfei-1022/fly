@@ -5,13 +5,11 @@
         <router-view v-if="!$route.meta.link" :key="key" />
       </keep-alive>
     </transition>
-    <iframe-toggle />
 <!--    <div>{{ ttt }}</div>-->
   </section>
 </template>
 
 <script>
-import iframeToggle from "./IframeToggle/index";
 import watermark from "watermark-dom";
 
 export default {
@@ -21,7 +19,6 @@ export default {
       ttt: "",
     };
   },
-  components: { iframeToggle },
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews;
