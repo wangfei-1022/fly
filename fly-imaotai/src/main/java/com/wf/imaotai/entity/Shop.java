@@ -29,6 +29,9 @@ public class Shop implements Serializable{
     private String tags;
     private Date createTime;
 
+    //
+    private Double distance;
+
     public Shop(String shopId, JSONObject jsonObject) {
         if(jsonObject != null) {
             this.shopId = shopId;

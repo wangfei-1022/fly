@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/imaotai/item")
+@RequestMapping("/imt/item")
 public class ItemController {
     @Autowired
     public ItemService itemService;

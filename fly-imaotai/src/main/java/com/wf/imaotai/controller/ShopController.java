@@ -1,6 +1,5 @@
 package com.wf.imaotai.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
 import com.wf.imaotai.entity.Shop;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/imaotai/shop")
+@RequestMapping("/imt/shop")
 public class ShopController {
 
     @Autowired
@@ -24,7 +23,7 @@ public class ShopController {
      */
     @GetMapping("/list")
     public R list(Shop shop) {
-        List<Shop> shops = shopService.list(shop);
+        List<Shop> shops = shopService.getShoplist();
         PageInfo<Shop> shopPageInfo = new PageInfo<>(shops);
         return R.success(shopPageInfo);
     }

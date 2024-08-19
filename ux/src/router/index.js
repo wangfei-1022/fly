@@ -109,19 +109,25 @@ export const dynamicRoutes = [
         path: 'user/list',
         component: () => import('@/views/imaotai/user/index'),
         name: 'AuthRole',
-        meta: { title: '用户列表', activeMenu: '/system/user' }
+        meta: { title: '用户列表' }
       },
       {
         path: 'item/list',
         component: () => import('@/views/imaotai/item/index'),
         name: 'IMaoTaiAppointmentProjectList',
-        meta: { title: '预约商品', activeMenu: '/system/user' }
+        meta: { title: '预约商品' }
       },
       {
         path: 'shop/list',
         component: () => import('@/views/imaotai/shop/index'),
         name: 'IMaoTaiShopList',
-        meta: { title: '门店列表', activeMenu: '/system/user' }
+        meta: { title: '门店列表' }
+      },
+      {
+        path: 'log/list',
+        component: () => import('@/views/imaotai/log/index'),
+        name: 'IMaoTaiLogList',
+        meta: { title: '日志' }
       }
     ]
   },

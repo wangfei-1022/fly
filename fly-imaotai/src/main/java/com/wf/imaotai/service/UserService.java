@@ -6,8 +6,15 @@ import java.util.List;
 
 public interface UserService {
     List<User> list(User user);
+    User getUserByMobile(String mobile);
 
-    int addUser(User user);
+    boolean sendCode(String mobile, String deviceId);
 
-    int login(User user);
+    boolean login(String mobile, String code, String deviceId);
+
+
+
+    void reservation(User user);
+
+    String getMTVersion();
 }

@@ -3,10 +3,11 @@ package com.wf.imaotai.entity;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class Item {
+public class Item implements Serializable {
     private Long id;
     private String itemId;
     private String itemCode;

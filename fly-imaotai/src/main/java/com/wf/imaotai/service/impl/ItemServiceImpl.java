@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.wf.imaotai.entity.Item;
-import com.wf.imaotai.entity.Shop;
 import com.wf.imaotai.mapper.ItemMapper;
 import com.wf.imaotai.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/imaotai/user")
+@RequestMapping("/imt/user")
 public class UserController {
 
     @Autowired
@@ -23,20 +23,27 @@ public class UserController {
         PageInfo<User> itemPageInfo = new PageInfo<>(items);
         return R.success(itemPageInfo);
     }
-    @GetMapping("/getUser")
-    public R<String> getUser(){
-        return R.success("登录成功");
+    @GetMapping("/getUserByMobile")
+    public R<User> getUserByMobile(@RequestParam String mobile){
+        User user = userService.getUserByMobile(mobile);
+        return R.success(user);
     }
 
     @PostMapping("/login")
     public R<String> login(@RequestBody User user){
-        userService.login(user);
+        userService.login(user.getMobile(), user.getCode(), user.getDeviceId());
         return R.success("登录成功");
     }
 
-    @PostMapping("/add")
-    public R<String> addUser(@RequestBody User user){
-        userService.addUser(user);
+    @PostMapping("/sendCode")
+    public R<String> sendCode(@RequestBody User user){
+        userService.sendCode(user.getMobile(), user.getDeviceId());
+        return R.success("新建成功");
+    }
+
+    @PostMapping("/sendCode")
+    public R<String> reservation(@RequestBody User user){
+        userService.reservation(user);
         return R.success("新建成功");
     }
 
