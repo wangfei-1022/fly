@@ -206,6 +206,7 @@ public class UserServiceImpl implements UserService {
 //        logger.info(body.toJSONString());
         return body;
     }
+
     @Override
     public void reservation(User user) {
         if (StringUtils.isEmpty(user.getItemCode())) {

@@ -12,8 +12,6 @@ public interface UserService {
 
     boolean login(String mobile, String code, String deviceId);
 
-
-
     void reservation(User user);
 
     String getMTVersion();

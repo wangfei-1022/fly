@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public R<String> login(@RequestBody User user){
-        userService.login(user.getMobile(), user.getCode(), user.getDeviceId());
+    public R<String> login(@RequestParam String mobile, @RequestParam String code, @RequestParam String deviceId){
+        userService.login(mobile, code, deviceId);
         return R.success("登录成功");
     }
 
@@ -41,10 +41,10 @@ public class UserController {
         return R.success("新建成功");
     }
 
-    @PostMapping("/sendCode")
+    @PostMapping("/reservation")
     public R<String> reservation(@RequestBody User user){
         userService.reservation(user);
-        return R.success("新建成功");
+        return R.success("预约成功");
     }
 
 }

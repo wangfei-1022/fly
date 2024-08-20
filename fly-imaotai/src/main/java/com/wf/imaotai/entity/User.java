@@ -36,6 +36,7 @@ public class User implements Serializable{
     //
     private String lat;
     private String lng;
+    //
     private String code;
 
     public User() {
