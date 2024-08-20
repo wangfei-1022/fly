@@ -2,6 +2,7 @@ package com.wf.imaotai.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
+import com.wf.imaotai.domain.AppointmentType;
 import com.wf.imaotai.entity.Shop;
 import com.wf.imaotai.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,9 @@ public class ShopController {
         return R.success("刷新成功");
     }
 
+    @GetMapping("appointment/type")
+    public R listUserType() {
+        return R.success(AppointmentType.values());
+    }
 
 }

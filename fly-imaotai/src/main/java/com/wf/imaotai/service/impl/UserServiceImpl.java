@@ -163,6 +163,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public int update(User user) {
+        return userMapper.updateUser(user);
+    }
+
     public static String AesEncrypt(String params) {
         AES aes = new AES(Mode.CBC, Padding.PKCS5Padding, AES_KEY.getBytes(), AES_IV.getBytes());
         return aes.encryptBase64(params);

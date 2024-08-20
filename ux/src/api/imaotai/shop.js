@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询i茅台商品列表
+// 查询门店
 export function listShop(query) {
   return request({
     url: '/imt/shop/list',
@@ -9,7 +9,7 @@ export function listShop(query) {
   })
 }
 
-// 删除i茅台商品
+// 刷新门店
 export function refreshShop() {
   return request({
     url: '/imt/shop/refresh' ,

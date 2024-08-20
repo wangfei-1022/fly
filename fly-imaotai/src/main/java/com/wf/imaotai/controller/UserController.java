@@ -35,6 +35,12 @@ public class UserController {
         return R.success("登录成功");
     }
 
+    @PostMapping("/update")
+    public R<String> update(@RequestBody User user){
+        userService.update(user);
+        return R.success("修改成功");
+    }
+
     @PostMapping("/sendCode")
     public R<String> sendCode(@RequestBody User user){
         userService.sendCode(user.getMobile(), user.getDeviceId());

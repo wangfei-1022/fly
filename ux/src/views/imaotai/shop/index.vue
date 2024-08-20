@@ -1,36 +1,32 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="商品ID" prop="iShopId">
-        <el-input v-model="queryParams.iShopId" placeholder="请输入商品ID" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="省份" prop="provinceName">
-        <el-input v-model="queryParams.provinceName" placeholder="请输入省份" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="城市" prop="cityName">
-        <el-input v-model="queryParams.cityName" placeholder="请输入城市" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="地区" prop="districtName">
-        <el-input v-model="queryParams.districtName" placeholder="请输入地区" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="公司名称" prop="tenantName">
-        <el-input v-model="queryParams.tenantName" placeholder="请输入公司名称" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="search-wrap">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form-item label="省份" prop="provinceName">
+          <el-input v-model="queryParams.provinceName" placeholder="请输入省份" clearable @keyup.enter.native="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="城市" prop="cityName">
+          <el-input v-model="queryParams.cityName" placeholder="请输入城市" clearable @keyup.enter.native="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="地区" prop="districtName">
+          <el-input v-model="queryParams.districtName" placeholder="请输入地区" clearable @keyup.enter.native="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="公司名称" prop="tenantName">
+          <el-input v-model="queryParams.tenantName" placeholder="请输入公司名称" clearable @keyup.enter.native="handleQuery"/>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-refresh" size="mini" @click="handleRefresh">刷新门店</el-button>
-      </el-col>
+    <div class="mb8">
+      <el-button type="primary" icon="el-icon-refresh" size="mini" @click="handleRefresh">刷新门店</el-button>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+    </div>
 
     <el-table v-loading="loading" :data="shopList" border width="100%">
-      <el-table-column label="商品ID" align="center" prop="ishopId" min-width="100"/>
       <el-table-column label="省份" align="center" prop="provinceName" min-width="100"/>
       <el-table-column label="城市" align="center" prop="cityName" min-width="100"/>
       <el-table-column label="地区" align="center" prop="districtName" min-width="100"/>
@@ -39,7 +35,11 @@
       <el-table-column label="经度" align="center" prop="lng" min-width="100"/>
       <el-table-column label="名称" align="center" prop="name" min-width="200" show-overflow-tooltip/>
       <el-table-column label="公司名称" align="center" prop="tenantName" min-width="230" show-overflow-tooltip/>
-      <el-table-column label="创建时间" align="center" prop="createTime" min-width="230"/>
+      <el-table-column label="创建时间" align="center" min-width="150" prop="createTime" >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList"/>
@@ -118,3 +118,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.search-wrap {
+  -webkit-box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
+  box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
+  padding: 12px 12px 0 12px;
+  background: #fff;
+  margin-bottom: 12px;
+}
+</style>
+

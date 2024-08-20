@@ -12,21 +12,13 @@
       </el-form>
     </div>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAddIUser">添加账号</el-button>
-        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">直接新增</el-button>
-      </el-col>
-
-      <el-col :span="1.5">
-        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除</el-button>
-      </el-col>
-
+    <div class="mb10">
+      <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAddIUser">添加账号</el-button>
+      <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">直接新增</el-button>
+      <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">修改</el-button>
+      <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除</el-button>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+    </div>
 
     <el-table v-loading="loading" :data="userList" border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
@@ -112,7 +104,7 @@
           <el-col :span="12">
             <el-form-item label="类型" prop="shopType">
               <el-select v-model="form.shopType" placeholder="请选择">
-                <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in typeOptions" :key="item.code" :label="item.name" :value="item.code"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -192,44 +184,33 @@ import {
   getUserByMobileApi,
   delUser,
   addUser,
-  updateUser,
+  updateUserApi,
   sendCodeApi,
   userLoginApi,
   userReservationApi,
   travelReward,
 } from "@/api/imaotai/user";
 import { getItemListApi } from "@/api/imaotai/item";
+import { getAppointmentTypeApi } from "@/api/imaotai/base";
 
 export default {
   name: "User",
   data() {
     return {
-      // 遮罩层
       loading: true,
-      // 选中数组
       ids: [],
-      // 非单个禁用
       single: true,
-      // 非多个禁用
       multiple: true,
-      // 显示搜索条件
       showSearch: true,
-      // 总条数
       total: 0,
-      // I茅台用户表格数据
       userList: [],
-      // 日期范围
       dateRange: [],
-      // 弹出层标题
       title: "",
-      // 是否显示弹出层
       open: false,
       openUser: false,
       refreshToken: false,
-      // 发送短信按钮倒计时
       state: false,
       stateNum: 60,
-      // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -247,26 +228,14 @@ export default {
         jsonResult: null,
         expireTime: null,
       },
-      // 表单参数
       form: {},
-      // 表单校验
       rules: {
         mobile: [
           {required: true, message: "手机号不能为空", trigger: "blur"},
         ],
       },
-      //0:新增，1:修改
       toAdd: 0,
-      typeOptions: [
-        {
-          value: 1,
-          label: "预约本市出货量最大的门店",
-        },
-        {
-          value: 2,
-          label: "预约你的位置(经纬度)附近门店",
-        },
-      ],
+      typeOptions: [],
       // I茅台预约商品列表格数据
       itemList: [],
       //选择的数据
@@ -275,10 +244,12 @@ export default {
   },
   created() {
     this.getList();
-    getItemListApi().then((response) => {
-      this.itemList = response.data;
+    getItemListApi().then(res => {
+      this.itemList = res.data.list;
     });
-    console.log(this.guid())
+    getAppointmentTypeApi().then(res => {
+      this.typeOptions = res.data;
+    })
   },
   methods: {
     //item下拉框选择
@@ -298,7 +269,6 @@ export default {
         }
       );
     },
-    /** 查询I茅台用户列表 */
     getList() {
       this.loading = true;
       getUserListApi(this.queryParams).then(
@@ -321,7 +291,6 @@ export default {
       this.form = {
 
       };
-      this.resetForm("form");
     },
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -329,7 +298,6 @@ export default {
     },
     resetQuery() {
       this.dateRange = [];
-      this.resetForm("queryForm");
       this.handleQuery();
     },
     handleSelectionChange(selection) {
@@ -360,18 +328,17 @@ export default {
         this.open = true;
         this.title = "修改I茅台用户";
         this.itemSelect = [];
-        if (
-          this.form.itemCode.indexOf("@") == -1 &&
-          this.form.itemCode !== ""
-        ) {
-          this.itemSelect.push(this.form.itemCode);
-        } else {
-          let arr = this.form.itemCode.split("@");
-          arr.forEach((e) => {
-            if (e !== "") {
-              this.itemSelect.push(e);
-            }
-          });
+        if(this.form.itemCode) {
+          if (this.form.itemCode !== "" && this.form.itemCode.indexOf("@") == -1) {
+            this.itemSelect.push(this.form.itemCode);
+          } else {
+            let arr = this.form.itemCode.split("@");
+            arr.forEach((e) => {
+              if (e !== "") {
+                this.itemSelect.push(e);
+              }
+            });
+          }
         }
       });
     },
@@ -393,7 +360,7 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.toAdd != 0) {
-            updateUser(this.form).then((response) => {
+            updateUserApi(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
@@ -475,23 +442,12 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss" scoped>
 .search-wrap {
   -webkit-box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
   box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
   padding: 12px 12px 0 12px;
   background: #fff;
   margin-bottom: 12px;
-}
-
-.demo-table-expand label {
-  width: 120px;
-  color: #99a9bf;
-}
-
-.demo-table-expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 50%;
 }
 </style>

@@ -2,6 +2,7 @@ package com.wf.system.service.impl;
 
 import com.wf.system.entity.User;
 import com.wf.system.mapper.UserMapper;
+import com.wf.system.model.dto.LoginDTO;
 import com.wf.system.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,9 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public int login(User user) {
-        userMapper.login(user);
-        return 0;
+    public User getOne(LoginDTO loginDTO) {
+        User user = userMapper.getOne(loginDTO);
+        return user;
     }
 
     @Override

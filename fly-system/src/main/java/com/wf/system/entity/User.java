@@ -14,4 +14,8 @@ public class User extends BaseEntity implements Serializable {
     private String email;
     private List<String > roles;
 
+    public User(){
+
+    }
+
 }

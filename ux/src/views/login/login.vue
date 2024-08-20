@@ -23,12 +23,12 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
+      <el-form-item prop="code">
         <el-input
-          v-model="loginForm.code"
+          v-model="loginForm.captcha"
           auto-complete="off"
           placeholder="验证码"
-          style="width: 63%"
+          style="width: 69%"
           @keyup.enter.native="handleLogin"
         >
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { getCodeImg } from "@/api/login";
+import { getCaptchaApi } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 
@@ -75,7 +75,7 @@ export default {
         username: "",
         password: "",
         rememberMe: false,
-        code: "",
+        captcha: "",
         uuid: ""
       },
       loginRules: {
@@ -85,11 +85,9 @@ export default {
         password: [
           { required: true, trigger: "blur", message: "请输入您的密码" }
         ],
-        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+        captcha: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
-      // 验证码开关
-      captchaEnabled: false,
       // 注册开关
       register: false,
       redirect: undefined
@@ -104,17 +102,14 @@ export default {
     }
   },
   created() {
-    // this.getCode();
+    this.getCode();
     this.getCookie();
   },
   methods: {
     getCode() {
-      getCodeImg().then(res => {
-        this.captchaEnabled = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-        if (this.captchaEnabled) {
-          this.codeUrl = "data:image/gif;base64," + res.img;
-          this.loginForm.uuid = res.uuid;
-        }
+      getCaptchaApi().then(res => {
+        this.codeUrl = "data:image/gif;base64," + res.data;
+        this.loginForm.uuid = res.uuid;
       });
     },
     getCookie() {
@@ -140,6 +135,7 @@ export default {
             Cookies.remove("password");
             Cookies.remove('rememberMe');
           }
+          console.log(this.loginForm)
           this.$store.dispatch("Login", this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
           }).catch(() => {
@@ -193,7 +189,7 @@ export default {
   color: #bfbfbf;
 }
 .login-code {
-  width: 33%;
+  width: 30%;
   height: 38px;
   float: right;
   img {
@@ -215,5 +211,7 @@ export default {
 }
 .login-code-img {
   height: 38px;
+  border: 1px solid #eee;
+  border-radius: 5px;
 }
 </style>

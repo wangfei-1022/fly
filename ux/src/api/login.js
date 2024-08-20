@@ -1,13 +1,7 @@
 import request from '@/utils/request'
 
 // 登录方法
-export function login(username, password, code, uuid) {
-  const data = {
-    username,
-    password,
-    code,
-    uuid
-  }
+export function login(data) {
   return request({
     url: '/system/user/login',
     headers: {
@@ -47,9 +41,9 @@ export function logout() {
 }
 
 // 获取验证码
-export function getCodeImg() {
+export function getCaptchaApi() {
   return request({
-    url: '/system/user/captchaImage',
+    url: '/system/user/getCaptcha',
     headers: {
       isToken: false
     },

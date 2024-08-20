@@ -1,34 +1,38 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="商品ID" prop="iShopId">
-        <el-input v-model="queryParams.iShopId" placeholder="请输入商品ID" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
+    <div class="search-wrap">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form-item label="商品ID" prop="iShopId">
+          <el-input v-model="queryParams.iShopId" placeholder="请输入商品ID" clearable @keyup.enter.native="handleQuery" />
+        </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-refresh" size="mini" @click="handleRefresh">刷新i茅台商品</el-button>
-      </el-col>
+    <div class="mb8">
+      <el-button type="primary" icon="el-icon-refresh" size="mini" @click="handleRefresh">刷新i茅台商品</el-button>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+    </div>
 
     <el-table v-loading="loading" :data="shopList" border>
       <el-table-column label="商品Id" align="center" min-width="120" prop="itemId" />
       <el-table-column label="商品Code" align="center" min-width="120" prop="itemCode" />
       <el-table-column label="标题" align="center" min-width="220" prop="title" />
-      <el-table-column label="图片" align="center" min-width="220" prop="picture" >
+      <el-table-column label="图片" align="center" min-width="120" prop="picture" >
         <template slot-scope="scope">
           <img :src="scope.row.picture" style="width: 60px;"/>
         </template>
       </el-table-column>
-      <el-table-column label="内容" align="center" min-width="220" prop="content" />
-      <el-table-column label="创建时间" align="center" min-width="230" prop="createTime" />
+      <el-table-column label="内容" align="center" min-width="250" prop="content" />
+      <el-table-column label="创建时间" align="center" min-width="150" prop="createTime" >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList"/>
@@ -88,3 +92,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.search-wrap {
+  -webkit-box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
+  box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
+  padding: 12px 12px 0 12px;
+  background: #fff;
+  margin-bottom: 12px;
+}
+</style>

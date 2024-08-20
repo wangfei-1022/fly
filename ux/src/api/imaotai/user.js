@@ -18,6 +18,15 @@ export function userLoginApi(data) {
   })
 }
 
+export function updateUserApi(data) {
+
+  return request({
+    url: '/imt/user/update',
+    method: 'post',
+    data
+  })
+}
+
 // 根据手机号查询
 export function getUserByMobileApi(params) {
   return request({

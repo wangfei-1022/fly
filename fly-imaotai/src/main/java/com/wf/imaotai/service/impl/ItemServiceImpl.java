@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.wf.imaotai.entity.Item;
 import com.wf.imaotai.mapper.ItemMapper;
+import com.wf.imaotai.model.dto.SelectionDTO;
+import com.wf.imaotai.model.dto.SelectionI;
 import com.wf.imaotai.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -51,5 +56,11 @@ public class ItemServiceImpl implements ItemService {
             }
         }
         return mtSessionId;
+    }
+
+    @Override
+    public List<SelectionDTO> convertSelection(SelectionI[] enums) {
+        return Arrays.stream(enums).map(enumValue -> new SelectionDTO(enumValue.getCode(), enumValue.getName()))
+                .collect(Collectors.toList());
     }
 }

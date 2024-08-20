@@ -87,8 +87,8 @@ export const dynamicRoutes = [
         meta: { title: '用户列表' }
       },
       {
-        path: 'xiaomi/:userId(\\d+)',
-        component: () => import('@/views/imaotai/item/index'),
+        path: 'xiaomi/log',
+        component: () => import('@/views/imaotai/log/index'),
         name: 'AuthRole',
         meta: { title: '小米预约' }
       }
