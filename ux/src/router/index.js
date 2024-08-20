@@ -48,7 +48,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/dashboard/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'list', affix: true }
       }
     ]
   }
@@ -59,7 +59,7 @@ export const dynamicRoutes = [
   {
     path: '/system/user',
     component: Layout,
-    meta: { title: '基础配置', icon: 'search', affix: true },
+    meta: { title: '基础配置', icon: 'system', affix: true },
     children: [
       {
         path: 'user/list',
@@ -78,7 +78,7 @@ export const dynamicRoutes = [
   {
     path: '/system/xiaomi',
     component: Layout,
-    meta: { title: '小米', icon: 'github', affix: true },
+    meta: { title: '小米管理', icon: 'github', affix: true },
     children: [
       {
         path: 'xiaomi/user',
@@ -97,7 +97,7 @@ export const dynamicRoutes = [
   {
     path: '/imaotai',
     component: Layout,
-    meta: { title: 'I茅台', icon: 'question', affix: true },
+    meta: { title: 'I茅台管理', icon: 'wechat', affix: true },
     children: [
       {
         path: 'user/list',
@@ -121,14 +121,14 @@ export const dynamicRoutes = [
         path: 'log/list',
         component: () => import('@/views/imaotai/log/index'),
         name: 'IMaoTaiLogList',
-        meta: { title: '日志' }
+        meta: { title: '日志列表' }
       }
     ]
   },
   {
     path: '/system/log',
     component: Layout,
-    meta: { title: '日志管理', icon: 'fullscreen', affix: true },
+    meta: { title: '日志管理', icon: 'star', affix: true },
     children: [
       {
         path: 'imaotai/user',

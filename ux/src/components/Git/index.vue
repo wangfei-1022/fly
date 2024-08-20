@@ -1,15 +1,15 @@
 <template>
   <div>
-    <svg-icon icon-class="question" @click="goto" />
+    <svg-icon icon-class="github" @click="goto" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'RuoYiDoc',
+  name: 'Git',
   data() {
     return {
-      url: 'https://github.com/WFLJQ/fly/wiki/'
+      url: 'https://github.com/wangfei-1022/fly'
     }
   },
   methods: {

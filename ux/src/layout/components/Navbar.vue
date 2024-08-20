@@ -8,11 +8,11 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
-          <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
+          <git id="wangfei-git" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <el-tooltip content="文档地址" effect="dark" placement="bottom">
-          <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
+          <doc id="wangfei-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -46,8 +46,8 @@ import Breadcrumb from '@/components/Breadcrumb'
 import TopNav from '@/components/TopNav'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
+import Git from '@/components/Git'
+import Doc from '@/components/Doc'
 
 export default {
   components: {
@@ -55,8 +55,8 @@ export default {
     TopNav,
     Hamburger,
     Screenfull,
-    RuoYiGit,
-    RuoYiDoc
+    Git,
+    Doc
   },
   computed: {
     ...mapGetters([

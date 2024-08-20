@@ -1,36 +1,16 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="手机号" prop="mobile">
-        <el-input v-model="queryParams.mobile" placeholder="请输入I茅台手机号" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="用户id" prop="userId">
-        <el-input v-model="queryParams.userId" placeholder="请输入I茅台用户id" clearable @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="省份" prop="provinceName">
-        <el-input v-model="queryParams.provinceName" placeholder="请输入省份" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="城市" prop="cityName">
-        <el-input v-model="queryParams.cityName" placeholder="请输入城市" clearable @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="到期时间">
-        <el-date-picker v-model="dateRange"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="search-wrap">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form-item label="手机号" prop="mobile">
+          <el-input v-model="queryParams.mobile" placeholder="请输入I茅台手机号" clearable @keyup.enter.native="handleQuery"/>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -63,7 +43,7 @@
 
       <el-table-column label="到期时间" align="center" prop="expireTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.expireTime, "{y}-{m}-{d}") }}</span>
+          <span>{{ parseTime(scope.row.expireTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="280">
@@ -496,8 +476,12 @@ export default {
 };
 </script>
 <style>
-.demo-table-expand {
-  font-size: 0;
+.search-wrap {
+  -webkit-box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
+  box-shadow: 0 0 10px 2px rgba(0,0,0,.05);
+  padding: 12px 12px 0 12px;
+  background: #fff;
+  margin-bottom: 12px;
 }
 
 .demo-table-expand label {
