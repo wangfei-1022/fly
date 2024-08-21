@@ -207,9 +207,7 @@ export default {
     /** 查询参数列表 */
     getList() {
       this.loading = true;
-      debugger
-      getUserListApi(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-        debugger
+      getUserListApi(this.queryParams).then(response => {
           this.configList = response.data;
           this.total = response.total;
           this.loading = false;

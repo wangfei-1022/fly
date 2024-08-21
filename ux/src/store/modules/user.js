@@ -35,7 +35,7 @@ const user = {
         login(userInfo).then(res => {
           res.data = res.data || {}
           setToken(res.data.token)
-          commit('SET_TOKEN', res.data.token || '123')
+          commit('SET_TOKEN', res.data.token)
           resolve()
         }).catch(error => {
           reject(error)
