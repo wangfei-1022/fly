@@ -86,7 +86,7 @@ public class SysUserController {
         }
         String encryptToMD5 = MD5Util.encryptToMD5(loginDTO.getPassword());
 
-
+        loginDTO.setPassword(encryptToMD5);
         User user = sysUserService.getOne(loginDTO);
 
         if(user == null) {

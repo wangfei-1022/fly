@@ -27,7 +27,7 @@ public class MD5Util {
     }
 
     public static void main(String[] args) {
-        String originalString = "Hello World";
+        String originalString = "123456";
         String encryptedString = encryptToMD5(originalString);
         System.out.println("Original: " + originalString);
         System.out.println("Encrypted: " + encryptedString);
