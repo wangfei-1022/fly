@@ -173,6 +173,17 @@ export default {
     width: 32%;
     padding-top: 6%;
     height: 100%;
+    background-color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -185,7 +196,7 @@ export default {
 .login-form {
   border-radius: 6px;
   background: #ffffff;
-  width: 400px;
+  width: 70%;
   padding: 25px 25px 5px 25px;
   .el-input {
     height: 38px;
