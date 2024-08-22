@@ -17,7 +17,7 @@ public interface UserMapper {
 
 
     @Select("SELECT * FROM imaotai_user WHERE mobile = #{mobile}")
-    public User selectByMobile(String mobile);
+    public User selectByMobile(Long mobile);
 
     @Select("SELECT * FROM imaotai_user WHERE id = #{id}")
     public Long login(User user);

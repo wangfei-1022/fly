@@ -166,7 +166,7 @@ export default {
   .login-left{
     height: 100%;
     width: 68%;
-    background: linear-gradient(to right, #fff 0%, #d5e2f5 100%);
+    background-image: linear-gradient(140deg, #EADEDB 0%, #d5e2f5 45%, #ebe2e9 75%);
     background-size: auto 100%;
   }
   .login-right{

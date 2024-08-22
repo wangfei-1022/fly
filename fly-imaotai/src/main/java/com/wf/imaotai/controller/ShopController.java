@@ -24,7 +24,7 @@ public class ShopController {
      */
     @GetMapping("/list")
     public R list(Shop shop) {
-        List<Shop> shops = shopService.getShoplist();
+        List<Shop> shops = shopService.getShoplist(shop);
         PageInfo<Shop> shopPageInfo = new PageInfo<>(shops);
         return R.success(shopPageInfo);
     }

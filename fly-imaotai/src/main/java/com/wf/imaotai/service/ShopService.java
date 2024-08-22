@@ -6,7 +6,7 @@ import com.wf.imaotai.entity.Shop;
 import java.util.List;
 
 public interface ShopService {
-    List<Shop> getShoplist();
+    List<Shop> getShoplist(Shop shop);
 
     void refreshShop();
 

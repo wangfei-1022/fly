@@ -345,7 +345,7 @@ export default {
     //预约
     reservationFn(row) {
       const mobile = row.mobile || this.ids;
-      userReservationApi(mobile).then((response) => {
+      userReservationApi({mobile: mobile}).then((response) => {
         this.$modal.msgSuccess("请求成功，结果看日志");
       });
     },

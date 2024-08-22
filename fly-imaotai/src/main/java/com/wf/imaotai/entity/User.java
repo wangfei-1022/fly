@@ -1,6 +1,7 @@
 package com.wf.imaotai.entity;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,9 +10,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 public class User implements Serializable{
     private Long userId;
-    private String mobile;
+    private Long mobile;
     private String name;
     private String token;
     private String cookie;
@@ -42,7 +44,7 @@ public class User implements Serializable{
     public User() {
 
     }
-    public User(String mobile, JSONObject jsonObject) {
+    public User(Long mobile, JSONObject jsonObject) {
         JSONObject data = jsonObject.getJSONObject("data");
         this.userId = data.getLong("userId");
         this.mobile = mobile;
@@ -60,7 +62,7 @@ public class User implements Serializable{
         this.expireTime = thirtyDaysLater;
     }
 
-    public User(String mobile, String deviceId, JSONObject jsonObject) {
+    public User(Long mobile, String deviceId, JSONObject jsonObject) {
         JSONObject data = jsonObject.getJSONObject("data");
         this.userId = data.getLong("userId");
         this.mobile = mobile;

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
 import com.wf.imaotai.entity.Item;
 import com.wf.imaotai.entity.User;
+import com.wf.imaotai.service.IMTService;
 import com.wf.imaotai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private IMTService imtService;
+
     @GetMapping("/list")
     public R getList(User user){
         List<User> items = userService.list(user);
@@ -24,14 +28,14 @@ public class UserController {
         return R.success(itemPageInfo);
     }
     @GetMapping("/getUserByMobile")
-    public R<User> getUserByMobile(@RequestParam String mobile){
+    public R<User> getUserByMobile(@RequestParam Long mobile){
         User user = userService.getUserByMobile(mobile);
         return R.success(user);
     }
 
     @PostMapping("/login")
-    public R<String> login(@RequestParam String mobile, @RequestParam String code, @RequestParam String deviceId){
-        userService.login(mobile, code, deviceId);
+    public R<String> login(@RequestParam Long mobile, @RequestParam String code, @RequestParam String deviceId){
+        imtService.login(mobile, code, deviceId);
         return R.success("登录成功");
     }
 
@@ -43,13 +47,13 @@ public class UserController {
 
     @PostMapping("/sendCode")
     public R<String> sendCode(@RequestBody User user){
-        userService.sendCode(user.getMobile(), user.getDeviceId());
+        imtService.sendCode(user.getMobile(), user.getDeviceId());
         return R.success("新建成功");
     }
 
     @PostMapping("/reservation")
     public R<String> reservation(@RequestBody User user){
-        userService.reservation(user);
+        imtService.reservation(user.getMobile());
         return R.success("预约成功");
     }
 

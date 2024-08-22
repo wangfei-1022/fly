@@ -10,9 +10,13 @@
     </resultMap>
 
     <!-- 查询所有用户 -->
-    <select id="getList1" resultType="com.wf.imaotai.entity.Shop">
+    <select id="getList" resultType="com.wf.imaotai.entity.Shop">
         SELECT *
         FROM imaotai_shop
+        WHERE 1 = 1
+        <if test="tenantName != null and tenantName != ''">
+          and tenant_name like concat('%', #{tenantName}, '%')
+        </if>
     </select>
 
 </mapper>
