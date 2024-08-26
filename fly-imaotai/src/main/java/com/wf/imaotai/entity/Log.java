@@ -15,7 +15,17 @@ public class Log implements Serializable {
 
     private Long id;
 
+    private Long userId;
+    private String ip;
+    private String url;
     private String content;
+    private String method;
+    private String requestMethod;
+
+
+    private String appName;
+
+    private String logName;
 
     private Long mobile;
 

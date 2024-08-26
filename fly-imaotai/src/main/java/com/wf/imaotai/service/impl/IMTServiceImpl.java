@@ -10,7 +10,9 @@ import com.wf.imaotai.service.IMTService;
 import com.wf.imaotai.service.ItemService;
 import com.wf.imaotai.service.ShopService;
 import com.wf.imaotai.util.AESUtil;
+import com.wf.imaotai.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Headers;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -143,7 +146,11 @@ public class IMTServiceImpl implements IMTService {
 
         data.put("actParam", AESUtil.AesEncrypt(JSON.toJSONString(data)));
 
-        HttpHeaders httpHeaders = new HttpHeaders();
+
+        Headers.Builder httpHeaders = new Headers.Builder();
+
+
+//        HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("MT-Lat", user.getLat());
         httpHeaders.add("MT-Lng", user.getLng());
         httpHeaders.add("MT-Token", user.getToken());
@@ -153,9 +160,10 @@ public class IMTServiceImpl implements IMTService {
         httpHeaders.add("User-Agent", "iOS;16.3;Apple;?unrecognized?");
         httpHeaders.add("Content-Type", "application/json");
         httpHeaders.add("userId", user.getUserId().toString());
-        HttpEntity<Map> entity = new HttpEntity<>(data, httpHeaders);
+//        HttpEntity<Map<String,Object>> entity = new HttpEntity<>(data, httpHeaders);
+        String res = HttpUtil.post("https://app.moutai519.com.cn/xhr/front/mall/reservation/add", data, httpHeaders.build());
 
-        String res = restTemplate.postForObject("https://app.moutai519.com.cn/xhr/front/mall/reservation/add", entity, String.class);
+//        String res = restTemplate.postForObject("https://app.moutai519.com.cn/xhr/front/mall/reservation/add", entity, String.class);
         JSONObject body = JSONObject.parseObject(res);
         //{"code":2000,"data":{"successDesc":"申购完成，请于7月6日18:00查看预约申购结果","reservationList":[{"reservationId":17053404357,"sessionId":678,"shopId":"233331084001","reservationTime":1688608601720,"itemId":"10214","count":1}],"reservationDetail":{"desc":"申购成功后将以短信形式通知您，请您在申购成功次日18:00前确认支付方式，并在7天内完成提货。","lotteryTime":1688637600000,"cacheValidTime":1688637600000}}}
         if (body.getInteger("code") != 2000) {
@@ -190,6 +198,7 @@ public class IMTServiceImpl implements IMTService {
                 Thread.sleep(sleepTime * 1000);
             } catch (Exception e) {
                 logContent += String.format("执行报错--[预约项目]：%s\n[结果返回]：%s\n\n", itemId, e.getMessage());
+                throw new ServiceException(e.getMessage());
             }
         }
 
