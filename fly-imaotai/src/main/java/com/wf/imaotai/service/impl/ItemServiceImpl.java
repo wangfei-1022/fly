@@ -1,12 +1,18 @@
 package com.wf.imaotai.service.impl;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
+import com.wf.common.core.RedisCache;
+import com.wf.imaotai.constant.IMTCache;
 import com.wf.imaotai.entity.Item;
 import com.wf.imaotai.mapper.ItemMapper;
 import com.wf.imaotai.model.dto.SelectionDTO;
 import com.wf.imaotai.model.dto.SelectionI;
 import com.wf.imaotai.service.ItemService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,10 +21,14 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
+
+    @Autowired
+    public RedisCache redisCache;
 
     @Autowired
     public ItemMapper itemMapper;
@@ -40,26 +50,32 @@ public class ItemServiceImpl implements ItemService {
      * */
     @Override
     public String getCurrentSessionId() {
-        String mtSessionId = "";
+        String mtSessionId = Convert.toStr(redisCache.getCacheObject(IMTCache.MT_SESSION_ID));
+
         long dayTime = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.of("+8")).toEpochMilli();
-        String res = restTemplate.getForObject("https://static.moutai519.com.cn/mt-backend/xhr/front/mall/index/session/get/" + dayTime, String.class);
+        if (StringUtils.isNotEmpty(mtSessionId)) {
+            return mtSessionId;
+        }
+
+        String res = HttpUtil.get("https://static.moutai519.com.cn/mt-backend/xhr/front/mall/index/session/get/" + dayTime);
         //替换 current_session_id 673 ['data']['sessionId']
         JSONObject jsonObject = JSONObject.parseObject(res);
 
         if (jsonObject.getString("code").equals("2000")) {
             JSONObject data = jsonObject.getJSONObject("data");
-            System.out.println(data);
-            System.out.println("https://static.moutai519.com.cn/mt-backend/xhr/front/mall/index/session/get/" + dayTime);
             mtSessionId = data.getString("sessionId");
-//            itemMapper.truncateItem();
+            redisCache.setCacheObject(IMTCache.MT_SESSION_ID, mtSessionId, 2, TimeUnit.HOURS);
+
+            itemMapper.truncateItem();
             //item插入数据库
-//            JSONArray itemList = data.getJSONArray("itemList");
-//            for (Object obj : itemList) {
-//                JSONObject item = (JSONObject) obj;
-//                Item shopItem = new Item("", item);
-//                itemMapper.addItem(shopItem);
-//            }
+            JSONArray itemList = data.getJSONArray("itemList");
+            for (Object obj : itemList) {
+                JSONObject item = (JSONObject) obj;
+                Item iItem = new Item("", item);
+                itemMapper.addItem(iItem);
+            }
         }
+
         return mtSessionId;
     }
 
