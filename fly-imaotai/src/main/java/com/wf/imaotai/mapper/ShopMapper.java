@@ -1,6 +1,5 @@
 package com.wf.imaotai.mapper;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wf.imaotai.entity.Shop;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

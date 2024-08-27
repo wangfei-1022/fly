@@ -1,4 +1,4 @@
-package com.wf.imaotai.domain;
+package com.wf.imaotai.constant;
 
 import com.wf.imaotai.model.dto.SelectionI;
 import lombok.AllArgsConstructor;

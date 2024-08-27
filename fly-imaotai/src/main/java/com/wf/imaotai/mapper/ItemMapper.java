@@ -1,7 +1,6 @@
 package com.wf.imaotai.mapper;
 
 import com.wf.imaotai.entity.Item;
-import com.wf.imaotai.entity.Shop;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

@@ -1,6 +1,6 @@
 package com.wf.imaotai.service;
 
-import com.wf.imaotai.domain.ItemInfo;
+import com.wf.imaotai.model.dto.ItemInfo;
 import com.wf.imaotai.entity.Shop;
 
 import java.util.List;

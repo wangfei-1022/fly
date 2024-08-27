@@ -2,7 +2,6 @@ package com.wf.imaotai.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
-import com.wf.imaotai.entity.Item;
 import com.wf.imaotai.entity.User;
 import com.wf.imaotai.service.IMTService;
 import com.wf.imaotai.service.UserService;

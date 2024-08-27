@@ -2,7 +2,7 @@ package com.wf.imaotai.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
-import com.wf.imaotai.domain.AppointmentType;
+import com.wf.imaotai.constant.AppointmentType;
 import com.wf.imaotai.entity.Shop;
 import com.wf.imaotai.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;

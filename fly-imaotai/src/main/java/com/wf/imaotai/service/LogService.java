@@ -1,7 +1,6 @@
 package com.wf.imaotai.service;
 
 import com.wf.imaotai.entity.Log;
-import com.wf.imaotai.entity.Shop;
 
 import java.util.List;
 

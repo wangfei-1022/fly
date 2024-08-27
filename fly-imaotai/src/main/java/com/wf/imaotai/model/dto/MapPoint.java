@@ -1,4 +1,4 @@
-package com.wf.imaotai.domain;
+package com.wf.imaotai.model.dto;
 
 import lombok.Data;
 

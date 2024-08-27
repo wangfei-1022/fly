@@ -2,8 +2,7 @@ package com.wf.imaotai.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
-import com.wf.imaotai.domain.OrderType;
-import com.wf.imaotai.domain.AppointmentType;
+import com.wf.imaotai.constant.OrderType;
 import com.wf.imaotai.entity.Item;
 import com.wf.imaotai.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;

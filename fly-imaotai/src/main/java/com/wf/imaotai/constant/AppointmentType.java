@@ -1,4 +1,4 @@
-package com.wf.imaotai.domain;
+package com.wf.imaotai.constant;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
