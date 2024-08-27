@@ -271,7 +271,8 @@ public class IMTServiceImpl implements IMTService {
     }
 
     @Override
-    public void travelReward(User user) {
+    public void travelReward(Long mobile) {
+        User user = userMapper.selectByMobile(mobile);
         String logContent = "";
         try {
             String s = travelRewardUser(user);

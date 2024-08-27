@@ -56,4 +56,10 @@ public class UserController {
         return R.success("预约成功");
     }
 
+    @PostMapping("/travelReward")
+    public R<String> travelReward(@RequestBody User user){
+        imtService.travelReward(user.getMobile());
+        return R.success("旅行成功");
+    }
+
 }

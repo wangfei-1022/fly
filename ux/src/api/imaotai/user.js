@@ -53,3 +53,13 @@ export function userReservationApi(data) {
     data
   })
 }
+
+// 预约
+export function travelRewardApi(data) {
+  return request({
+    url: '/imt/user/travelReward',
+    method: 'post',
+    data
+  })
+}
+

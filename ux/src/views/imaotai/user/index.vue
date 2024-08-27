@@ -188,7 +188,7 @@ import {
   sendCodeApi,
   userLoginApi,
   userReservationApi,
-  travelReward,
+  travelRewardApi,
 } from "@/api/imaotai/user";
 import { getItemListApi } from "@/api/imaotai/item";
 import { getAppointmentTypeApi } from "@/api/imaotai/base";
@@ -352,7 +352,7 @@ export default {
     //小茅运旅行活动
     travelReward(row) {
       const mobile = row.mobile || this.ids;
-      travelReward(mobile).then((response) => {
+      travelRewardApi({mobile: mobile}).then((response) => {
         this.$modal.msgSuccess("请求成功，结果看日志");
       });
     },

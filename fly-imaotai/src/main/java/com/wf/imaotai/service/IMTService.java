@@ -17,7 +17,7 @@ public interface IMTService {
     //获取申购耐力值
     String getEnergyAward(User iUser);
 
-    void travelReward(User iUser);
+    void travelReward(Long mobile);
 
     @Async
     void reservationBatch();
