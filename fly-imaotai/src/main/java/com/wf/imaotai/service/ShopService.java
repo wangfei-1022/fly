@@ -13,6 +13,4 @@ public interface ShopService {
     String getShopId(int shopType, String itemId, String province, String city, String lat, String lng);
 
     List<ItemInfo> getShopsByProvince(String province, String itemId);
-
-    int reservationBatch();
 }

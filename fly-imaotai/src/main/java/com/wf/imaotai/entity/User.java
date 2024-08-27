@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class User implements Serializable{
+public class User implements Serializable {
 
     private Long userId;
 

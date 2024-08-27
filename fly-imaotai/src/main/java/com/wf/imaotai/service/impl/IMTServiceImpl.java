@@ -1,14 +1,17 @@
 package com.wf.imaotai.service.impl;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
+import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wf.common.exception.ServiceException;
 import com.wf.imaotai.entity.User;
 import com.wf.imaotai.mapper.UserMapper;
-import com.wf.imaotai.service.IMTService;
-import com.wf.imaotai.service.ItemService;
-import com.wf.imaotai.service.ShopService;
+import com.wf.imaotai.service.*;
 import com.wf.imaotai.util.AESUtil;
 import com.wf.imaotai.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +20,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +36,12 @@ public class IMTServiceImpl implements IMTService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private LogService logService;
 
     @Autowired
     public RestTemplate restTemplate;
@@ -201,16 +211,377 @@ public class IMTServiceImpl implements IMTService {
             }
         }
 
-//        try {
-//            //预约后领取耐力值
-//            String energyAward = getEnergyAward(iUser);
-//            logContent += "[申购耐力值]:" + energyAward;
-//        } catch (Exception e) {
-//            logContent += "执行报错--[申购耐力值]:" + e.getMessage();
-//        }
+        logService.record(user, logContent);
+        // 预约后延迟领取耐力值
+        getEnergyAwardDelay(user);
+    }
+
+    public void getEnergyAwardDelay(User iUser) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String logContent = "";
+                //sleep 10秒
+                try {
+                    Thread.sleep(10000);
+                    //预约后领取耐力值
+                    String energyAward = getEnergyAward(iUser);
+                    logContent += "[申购耐力值]:" + energyAward;
+                } catch (Exception e) {
+                    logContent += "执行报错--[申购耐力值]:" + e.getMessage();
+                }
+                logService.record(iUser, logContent);
+            }
+        };
+        new Thread(runnable).start();
+
+    }
+
+    //获取申购耐力值
+    @Override
+    public String getEnergyAward(User iUser) {
+        String url = "https://h5.moutai519.com.cn/game/isolationPage/getUserEnergyAward";
+        HttpRequest request = cn.hutool.http.HttpUtil.createRequest(Method.POST, url);
+
+        request.header("MT-Device-ID", iUser.getDeviceId())
+                .header("MT-APP-Version", getMTVersion())
+                .header("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .header("MT-Lat", iUser.getLat())
+                .header("MT-Lng", iUser.getLng())
+                .cookie("MT-Token-Wap=" + iUser.getCookie() + ";MT-Device-ID-Wap=" + iUser.getDeviceId() + ";");
+
+        String body = request.execute().body();
+
+        com.alibaba.fastjson2.JSONObject jsonObject = com.alibaba.fastjson2.JSONObject.parseObject(body);
+        if (jsonObject.getInteger("code") != 200) {
+            String message = jsonObject.getString("message");
+            throw new ServiceException(message);
+        }
+
+        return body;
+    }
+
+    @Override
+    public void travelReward(User user) {
+        String logContent = "";
+        try {
+            String s = travelRewardUser(user);
+            logContent += "[获得旅行奖励]:" + s;
+        } catch (Exception e) {
+            logContent += "执行报错--[获得旅行奖励]:" + e.getMessage();
+        }
         //日志记录
-//        IMTLogFactory.reservation(iUser, logContent);
-        //预约后延迟领取耐力值
-//        getEnergyAwardDelay(iUser);
+        logService.record(user, logContent);
+    }
+
+    // 领取小茅运
+    public void receiveReward(User iUser) {
+        String url = "https://h5.moutai519.com.cn/game/xmTravel/receiveReward";
+        HttpRequest request = cn.hutool.http.HttpUtil.createRequest(Method.POST, url);
+
+        request.header("MT-Device-ID", iUser.getDeviceId())
+                .header("MT-APP-Version", getMTVersion())
+                .header("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .header("MT-Lat", iUser.getLat())
+                .header("MT-Lng", iUser.getLng())
+                .cookie("MT-Token-Wap=" + iUser.getCookie() + ";MT-Device-ID-Wap=" + iUser.getDeviceId() + ";");
+
+        HttpResponse execute = request.execute();
+        com.alibaba.fastjson2.JSONObject body = com.alibaba.fastjson2.JSONObject.parseObject(execute.body());
+
+        if (body.getInteger("code") != 2000) {
+            String message = "领取小茅运失败";
+            throw new ServiceException(message);
+        }
+    }
+
+    public void shareReward(User iUser) {
+        log.info("「领取每日首次分享获取耐力」：" + iUser.getMobile());
+        String url = "https://h5.moutai519.com.cn/game/xmTravel/shareReward";
+        HttpRequest request = cn.hutool.http.HttpUtil.createRequest(Method.POST, url);
+
+        request.header("MT-Device-ID", iUser.getDeviceId())
+                .header("MT-APP-Version", getMTVersion())
+                .header("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .header("MT-Lat", iUser.getLat())
+                .header("MT-Lng", iUser.getLng())
+                .cookie("MT-Token-Wap=" + iUser.getCookie() + ";MT-Device-ID-Wap=" + iUser.getDeviceId() + ";");
+
+        HttpResponse execute = request.execute();
+        com.alibaba.fastjson2.JSONObject body = com.alibaba.fastjson2.JSONObject.parseObject(execute.body());
+
+        if (body.getInteger("code") != 2000) {
+            String message = "领取每日首次分享获取耐力失败";
+            throw new ServiceException(message);
+        }
+    }
+
+    /**
+     * 获得旅行奖励
+     *
+     * @param iUser
+     * @return
+     */
+    public String travelRewardUser(User iUser) {
+        //9-20点才能领取旅行奖励
+        int hour = DateUtil.hour(new Date(), true);
+        if (!(9 <= hour && hour < 20)) {
+            String message = "活动未开始，开始时间9点-20点";
+            throw new ServiceException(message);
+        }
+        Map<String, Integer> pageData = getUserIsolationPageData(iUser);
+        Integer status = pageData.get("status");
+        if (status == 3) {
+            Integer currentPeriodCanConvertXmyNum = pageData.get("currentPeriodCanConvertXmyNum");
+            Double travelRewardXmy = getXmTravelReward(iUser);
+            // 获取小茅运
+            receiveReward(iUser);
+            //首次分享获取耐力
+            shareReward(iUser);
+            //本次旅行奖励领取后, 当月实际剩余旅行奖励
+            if (travelRewardXmy > currentPeriodCanConvertXmyNum) {
+                String message = "当月无可领取奖励";
+                throw new ServiceException(message);
+            }
+        }
+
+        Integer remainChance = pageData.get("remainChance");
+        if (remainChance < 1) {
+            String message = "当日旅行次数已耗尽";
+            throw new ServiceException(message);
+        } else {
+            //小茅运旅行活动
+            return startTravel(iUser);
+        }
+    }
+
+    //小茅运旅行活动
+    public String startTravel(User iUser) {
+        String url = "https://h5.moutai519.com.cn/game/xmTravel/startTravel";
+        HttpRequest request = cn.hutool.http.HttpUtil.createRequest(Method.POST, url);
+
+        request.header("MT-Device-ID", iUser.getDeviceId())
+                .header("MT-APP-Version", getMTVersion())
+                .header("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .cookie("MT-Token-Wap=" + iUser.getCookie() + ";MT-Device-ID-Wap=" + iUser.getDeviceId() + ";");
+        String body = request.execute().body();
+        com.alibaba.fastjson2.JSONObject jsonObject = com.alibaba.fastjson2.JSONObject.parseObject(body);
+        if (jsonObject.getInteger("code") != 2000) {
+            String message = "开始旅行失败：" + jsonObject.getString("message");
+            throw new ServiceException(message);
+        }
+        com.alibaba.fastjson2.JSONObject data = jsonObject.getJSONObject("data");
+        //最后返回 {"startTravelTs":1690798861076}
+        return jsonObject.toString();
+    }
+
+
+    //查询 可获取小茅运
+    public Double getXmTravelReward(User iUser) {
+        //查询旅行奖励:
+        String url = "https://h5.moutai519.com.cn/game/xmTravel/getXmTravelReward";
+        HttpRequest request = cn.hutool.http.HttpUtil.createRequest(Method.GET, url);
+
+        request.header("MT-Device-ID", iUser.getDeviceId())
+                .header("MT-APP-Version", getMTVersion())
+                .header("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .cookie("MT-Token-Wap=" + iUser.getCookie() + ";MT-Device-ID-Wap=" + iUser.getDeviceId() + ";");
+        String body = request.execute().body();
+        com.alibaba.fastjson2.JSONObject jsonObject = com.alibaba.fastjson2.JSONObject.parseObject(body);
+        if (jsonObject.getInteger("code") != 2000) {
+            String message = jsonObject.getString("message");
+            throw new ServiceException(message);
+        }
+        com.alibaba.fastjson2.JSONObject data = jsonObject.getJSONObject("data");
+        Double travelRewardXmy = data.getDouble("travelRewardXmy");
+        //例如 1.95
+        return travelRewardXmy;
+
+    }
+
+    //获取用户页面数据
+    public Map<String, Integer> getUserIsolationPageData(User iUser) {
+        //查询小茅运信息
+        String url = "https://h5.moutai519.com.cn/game/isolationPage/getUserIsolationPageData";
+        HttpRequest request = cn.hutool.http.HttpUtil.createRequest(Method.GET, url);
+
+        request.header("MT-Device-ID", iUser.getDeviceId())
+                .header("MT-APP-Version", getMTVersion())
+                .header("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .cookie("MT-Token-Wap=" + iUser.getCookie() + ";MT-Device-ID-Wap=" + iUser.getDeviceId() + ";");
+        String body = request.form("__timestamp", DateUtil.currentSeconds()).execute().body();
+
+        com.alibaba.fastjson2.JSONObject jsonObject = com.alibaba.fastjson2.JSONObject.parseObject(body);
+        if (jsonObject.getInteger("code") != 2000) {
+            String message = jsonObject.getString("message");
+            throw new ServiceException(message);
+        }
+        com.alibaba.fastjson2.JSONObject data = jsonObject.getJSONObject("data");
+        //xmy: 小茅运值
+        String xmy = data.getString("xmy");
+        //energy: 耐力值
+        int energy = data.getIntValue("energy");
+        com.alibaba.fastjson2.JSONObject xmTravel = data.getJSONObject("xmTravel");
+        com.alibaba.fastjson2.JSONObject energyReward = data.getJSONObject("energyReward");
+        //status: 1. 未开始 2. 进行中 3. 已完成
+        Integer status = xmTravel.getInteger("status");
+        // travelEndTime: 旅行结束时间
+        Long travelEndTime = xmTravel.getLong("travelEndTime");
+        //remainChance 今日剩余旅行次数
+        int remainChance = xmTravel.getIntValue("remainChance");
+
+        //可领取申购耐力值奖励
+        Integer energyValue = energyReward.getInteger("value");
+
+        if (energyValue > 0) {
+            //获取申购耐力值
+            getEnergyAward(iUser);
+            energy += energyValue;
+        }
+
+        // 本月剩余旅行奖励
+        int exchangeRateInfo = getExchangeRateInfo(iUser);
+        if (exchangeRateInfo <= 0) {
+            String message = "当月无可领取奖励";
+            throw new ServiceException(message);
+        }
+
+        Long endTime = travelEndTime * 1000;
+        // 未开始
+        if (status == 1) {
+            if (energy < 100) {
+                String message = String.format("耐力不足100, 当前耐力值:%s", energy);
+                throw new ServiceException(message);
+            }
+        }
+        // 进行中
+        if (status == 2) {
+            Date date = new Date(endTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = sdf.format(date);
+            String message = String.format("旅行暂未结束,本次旅行结束时间:%s ", formattedDate);
+            throw new ServiceException(message);
+        }
+        Map<String, Integer> map = new HashMap<>();
+
+        map.put("remainChance", remainChance);
+        map.put("status", status);
+        map.put("currentPeriodCanConvertXmyNum", getExchangeRateInfo(iUser));
+        return map;
+    }
+
+    // 获取本月剩余奖励耐力值
+    public int getExchangeRateInfo(User iUser) {
+        String url = "https://h5.moutai519.com.cn/game/synthesize/exchangeRateInfo";
+        HttpRequest request = cn.hutool.http.HttpUtil.createRequest(Method.GET, url);
+
+        request.header("MT-Device-ID", iUser.getDeviceId())
+                .header("MT-APP-Version", getMTVersion())
+                .header("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .cookie("MT-Token-Wap=" + iUser.getCookie() + ";MT-Device-ID-Wap=" + iUser.getDeviceId() + ";");
+
+        String body = request.form("__timestamp", DateUtil.currentSeconds()).execute().body();
+        com.alibaba.fastjson2.JSONObject jsonObject = com.alibaba.fastjson2.JSONObject.parseObject(body);
+        if (jsonObject.getInteger("code") != 2000) {
+            String message = jsonObject.getString("message");
+            throw new ServiceException(message);
+        }
+        //获取本月剩余奖励耐力值
+        return jsonObject.getJSONObject("data").getIntValue("currentPeriodCanConvertXmyNum");
+    }
+
+    @Async
+    @Override
+    public void reservationBatch() {
+        List<User> iUsers = userService.selectReservationUser();
+        for (User iUser : iUsers) {
+            log.info("「开始预约用户」" + iUser.getMobile());
+            //预约
+            reservation(iUser.getMobile());
+            //延时3秒
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    /*
+    * 用作定时任务的批量获取旅行奖励
+    * */
+    @Async
+    @Override
+    public void travelRewardBatch() {
+        try {
+            List<User> iUsers = userService.selectReservationUser();
+
+            for (User user : iUsers) {
+                log.info("「开始获得旅行奖励」" + user.getMobile());
+                travelRewardUser(user);
+                //延时3秒
+                TimeUnit.SECONDS.sleep(3);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshMTVersion() {
+//        redisCache.deleteObject(IMTCacheConstants.MT_VERSION);
+        getMTVersion();
+    }
+
+    /*
+    * 用作定时任务的刷新需要的参数
+    * */
+    @Override
+    public void refreshAll() {
+        refreshMTVersion();
+        shopService.refreshShop();
+        itemService.refreshItem();
+    }
+
+    /*
+    * 用作定时任务-18点之后的结果查询
+    * */
+    @Override
+    public void appointmentResults() {
+        log.info("申购结果查询开始=========================");
+        List<User> iUsers = userService.selectReservationUser();
+        for (User user : iUsers) {
+            try {
+                String url = "https://app.moutai519.com.cn/xhr/front/mall/reservation/list/pageOne/query";
+                String body = cn.hutool.http.HttpUtil.createRequest(Method.GET, url)
+                        .header("MT-Device-ID", user.getDeviceId())
+                        .header("MT-APP-Version", getMTVersion())
+                        .header("MT-Token", user.getToken())
+                        .header("User-Agent", "iOS;16.3;Apple;?unrecognized?").execute().body();
+                com.alibaba.fastjson2.JSONObject jsonObject = com.alibaba.fastjson2.JSONObject.parseObject(body);
+                log.info("查询申购结果回调: user->{},response->{}", user.getMobile(), body);
+                if (jsonObject.getInteger("code") != 2000) {
+                    String message = jsonObject.getString("message");
+                    throw new ServiceException(message);
+                }
+                com.alibaba.fastjson2.JSONArray itemVOs = jsonObject.getJSONObject("data").getJSONArray("reservationItemVOS");
+                if (Objects.isNull(itemVOs) || itemVOs.isEmpty()) {
+                    log.info("申购记录为空: user->{}", user.getMobile());
+                    continue;
+                }
+                for (Object itemVO : itemVOs) {
+                    com.alibaba.fastjson2.JSONObject item = com.alibaba.fastjson2.JSON.parseObject(itemVO.toString());
+                    // 预约时间在24小时内的
+                    if (item.getInteger("status") == 2 && DateUtil.between(item.getDate("reservationTime"), new Date(), DateUnit.HOUR) < 24) {
+                        String logContent = DateUtil.formatDate(item.getDate("reservationTime")) + " 申购" + item.getString("itemName") + "成功";
+                        logService.record(user, logContent);
+                    }
+                }
+            } catch (Exception e) {
+                log.error("查询申购结果失败:失败原因->{}", e.getMessage(), e);
+            }
+        }
+        log.info("申购结果查询结束=========================");
     }
 }

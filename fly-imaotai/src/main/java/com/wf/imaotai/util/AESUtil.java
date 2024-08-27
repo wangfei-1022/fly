@@ -35,14 +35,13 @@ public class AESUtil {
 
     public static String AesEncrypt(String params) {
         AES aes = new AES(Mode.CBC, Padding.PKCS5Padding, AES_KEY.getBytes(), AES_IV.getBytes());
-        try {
-            aes.encryptBase64(params);
-        }catch (Exception exception) {
-            System.out.println(exception);
-        }
         return aes.encryptBase64(params);
     }
 
+    public static String AesDecrypt(String params) {
+        AES aes = new AES(Mode.CBC, Padding.PKCS5Padding, AES_KEY.getBytes(), AES_IV.getBytes());
+        return aes.decryptStr(params);
+    }
 
     public static String decodeBase64String() {
         String cookie = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdCIsImV4cCI6MTcyNjY0MzEyMSwidXNlcklkIjoxMTE2OTc2NzA0LCJkZXZpY2VJZCI6ImU5NjAxOGVlLTM5ZmEtNDY2NS05MTdjLWUyYWJlNjhkNGIzNyIsImlhdCI6MTcyNDA1MTEyMX0.V4taJIRjQQWkRM0-OP-TamNLrH4GaMya2P0frM2NTYA";

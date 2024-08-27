@@ -64,6 +64,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public void refreshItem() {
+
+    }
+
+    @Override
     public List<SelectionDTO> convertSelection(SelectionI[] enums) {
         return Arrays.stream(enums).map(enumValue -> new SelectionDTO(enumValue.getCode(), enumValue.getName()))
                 .collect(Collectors.toList());

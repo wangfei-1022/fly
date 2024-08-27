@@ -11,7 +11,6 @@ import com.wf.imaotai.entity.Shop;
 import com.wf.common.exception.ServiceException;
 import com.wf.imaotai.mapper.ShopMapper;
 import com.wf.imaotai.service.ItemService;
-import com.wf.imaotai.service.LogService;
 import com.wf.imaotai.service.ShopService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,6 @@ public class ShopServiceImpl implements ShopService {
 
     @Autowired
     private ItemService itemService;
-
-    @Autowired
-    private LogService logService;
 
     @Autowired
     public RestTemplate restTemplate;
@@ -73,14 +69,11 @@ public class ShopServiceImpl implements ShopService {
             res = JSONObject.parseObject(urlRes);
         } catch (JSONException jsonException) {
             String message = "查询所在省市的投放产品和数量error: " + url;
-            logService.logError(message);
             throw new ServiceException(message);
         }
 
-//        JSONObject res = JSONObject.parseObject(HttpUtil.get(url));
         if (!res.containsKey("code") || !res.getString("code").equals("2000")) {
             String message = "查询所在省市的投放产品和数量error: " + url;
-            logService.logError(message);
             throw new ServiceException(message);
         }
         //组合信息
@@ -100,10 +93,7 @@ public class ShopServiceImpl implements ShopService {
                     //添加
                     imtItemInfoList.add(iItem);
                 }
-
             }
-
-
         }
         return imtItemInfoList;
     }
@@ -121,11 +111,6 @@ public class ShopServiceImpl implements ShopService {
 //            redisCache.expire(key, 60, TimeUnit.MINUTES);
             return imtItemInfoList;
 //        }
-    }
-
-    @Override
-    public int reservationBatch() {
-        return 0;
     }
 
     public String getMaxInventoryShopId(List<ItemInfo> list1, List<Shop> list2, String city) {
@@ -233,6 +218,4 @@ public class ShopServiceImpl implements ShopService {
             shopMapper.addShop(shop);
         }
     }
-
-
 }

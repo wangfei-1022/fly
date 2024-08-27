@@ -29,6 +29,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /*
+    * 查询设置了预约的用户列表
+    * */
+    @Override
+    public List<User> selectReservationUser() {
+        return null;
+    }
+
 
     @Override
     public int update(User user) {

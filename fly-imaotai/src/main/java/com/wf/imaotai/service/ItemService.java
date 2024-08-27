@@ -12,7 +12,7 @@ public interface ItemService {
 
     String getCurrentSessionId();
 
+    void refreshItem();
 
     List<SelectionDTO> convertSelection(SelectionI[] enums);
-
 }

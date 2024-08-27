@@ -2,6 +2,7 @@ package com.wf.imaotai.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.wf.imaotai.entity.Log;
+import com.wf.imaotai.entity.User;
 import com.wf.imaotai.mapper.LogMapper;
 import com.wf.imaotai.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,7 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public int log(Log log) {
-        return 0;
-    }
-
-    @Override
-    public int logError(String message) {
-        Log log = new Log();
-        log(log);
+    public int record(User user, String content) {
         return 0;
     }
 }
