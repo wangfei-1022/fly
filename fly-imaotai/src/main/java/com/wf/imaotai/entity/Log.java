@@ -16,12 +16,16 @@ public class Log implements Serializable {
     private Long id;
 
     private Long userId;
-    private String ip;
-    private String url;
-    private String content;
-    private String method;
-    private String requestMethod;
 
+    private String ip;
+
+    private String url;
+
+    private String content;
+
+    private String method;
+
+    private String requestMethod;
 
     private String appName;
 
@@ -33,15 +37,4 @@ public class Log implements Serializable {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date happenTime;
-
-
-    @TableField(exist = false)
-    private Map<String, Object> params;
-
-    public Map<String, Object> getParams() {
-        if (params == null) {
-            params = new HashMap<>();
-        }
-        return params;
-    }
 }

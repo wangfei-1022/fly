@@ -8,12 +8,19 @@ import java.util.Date;
 
 @Data
 public class Item implements Serializable {
+
     private Long id;
+
     private String itemId;
+
     private String itemCode;
+
     private String title;
+
     private String content;
+
     private String picture;
+
     private Date createTime;
 
     public Item(){

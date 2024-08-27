@@ -9,27 +9,45 @@ import java.util.Date;
 @Data
 @TableName("'shop'")
 public class Shop implements Serializable{
+
     private int id;
+
     private String shopId;
+
     private String address;
+
     private String fullAddress;
+
     private String lat;
+
     private String lng;
+
     private int district;
+
     private String districtName;
+
     private int city;
+
     private String cityName;
+
     private int province;
+
     private String provinceName;
+
     private Date openStartTime;
+
     private Date openEndTime;
+
     private String tenantName;
+
     private String name;
+
     private String layaway;
+
     private String tags;
+
     private Date createTime;
 
-    //
     private Double distance;
 
     public Shop(String shopId, JSONObject jsonObject) {

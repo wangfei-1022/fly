@@ -12,27 +12,43 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class User implements Serializable{
+
     private Long userId;
+
     private Long mobile;
+
     private String name;
+
     private String token;
+
     private String cookie;
+
     private String deviceId;
+
     private String shopId;
+
     private String itemCode;
+
     private String provinceName;
+
     private String cityName;
+
     private String address;
+
     private String jsonResult;
+
     private String remark;
+
     private Date randomMinute;
+
     private Date delFlag;
+
     private Date expireTime;
+
     private Date updateTime;
+
     private Date createTime;
-    /**
-     * 类型(1：预约本市出货量最大的门店，2：预约你的位置附近门店)
-     */
+
     private int shopType;
 
     //
