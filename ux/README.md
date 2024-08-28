@@ -1,5 +1,3 @@
-此项目用的`若依`项目
-
 ## 开发
 
 ```bash
@@ -18,8 +16,6 @@ npm install --registry=https://registry.npmmirror.com
 # 启动服务
 npm run dev
 ```
-
-浏览器访问 http://localhost:1024
 
 ## 发布
 

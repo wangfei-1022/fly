@@ -21,13 +21,13 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </div>
 
-    <el-table ref="tables" v-loading="loading" :data="list" border @selection-change="handleSelectionChange" @sort-change="handleSortChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户" align="center" prop="mobile" width="200" />
-      <el-table-column label="日志内容" align="center" prop="logContent" show-overflow-tooltip/>
-      <el-table-column label="日志日期" align="center" prop="operTime" sortable="custom" width="180">
+    <el-table v-loading="loading" :data="list" border @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" />
+      <el-table-column label="用户" prop="mobile" width="200" />
+      <el-table-column label="日志内容" prop="content" show-overflow-tooltip/>
+      <el-table-column label="日志日期" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.operTime) }}</span>
+          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -37,11 +37,10 @@
 </template>
 
 <script>
-import { getLogListApi, deleteLogApi, cleanLogApi } from "@/api/imaotai/log";
+import { getLogListApi, deleteLogApi, cleanLogApi } from "@/api/imt/log";
 
 export default {
-  name: "Operlog",
-  dicts: ["sys_oper_type", "sys_common_status"],
+  name: "IMTLogList",
   data() {
     return {
       loading: true,
@@ -64,9 +63,9 @@ export default {
     getList() {
       this.loading = true;
       getLogListApi(this.queryParams).then(
-        (response) => {
-          this.list = response.rows;
-          this.total = response.total;
+        (res) => {
+          this.list = res.data.list;
+          this.total = res.data.total;
           this.loading = false;
         }
       );
@@ -81,11 +80,6 @@ export default {
     },
     handleSelectionChange(selection) {
       this.ids = selection.map((item) => item.logId);
-    },
-    handleSortChange(column, prop, order) {
-      this.queryParams.orderByColumn = column.prop;
-      this.queryParams.isAsc = column.order;
-      this.getList();
     },
     handleDelete(row) {
       const logIds = row.logId || this.ids;

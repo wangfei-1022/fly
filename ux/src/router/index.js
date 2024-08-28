@@ -64,14 +64,45 @@ export const dynamicRoutes = [
       {
         path: 'user/list',
         component: () => import('@/views/system/user/index'),
-        name: 'AuthRole',
+        name: 'SystemUserList',
         meta: { title: '用户管理' }
       },
       {
         path: 'config/list',
         component: () => import('@/views/system/user/index'),
-        name: 'AuthRole',
+        name: 'SystemRoleList',
         meta: { title: '角色管理' }
+      }
+    ]
+  },
+  {
+    path: '/imt',
+    component: Layout,
+    meta: { title: 'I茅台管理', icon: 'wechat', affix: true },
+    children: [
+      {
+        path: 'user/list',
+        component: () => import('@/views/imt/user/index'),
+        name: 'IMTUserList',
+        meta: { title: '用户列表' }
+      },
+      {
+        path: 'item/list',
+        component: () => import('@/views/imt/item/index'),
+        name: 'IMTItemList',
+        meta: { title: '预约商品' }
+      },
+      {
+        path: 'shop/list',
+        component: () => import('@/views/imt/shop/index'),
+        name: 'IMTShopList',
+        meta: { title: '门店列表' }
+      },
+      {
+        path: 'log/list',
+        component: () => import('@/views/imt/log/index'),
+        name: 'IMTLogList',
+        meta: { title: '日志列表' }
       }
     ]
   },
@@ -82,46 +113,15 @@ export const dynamicRoutes = [
     children: [
       {
         path: 'xiaomi/user',
-        component: () => import('@/views/imaotai/user/index'),
-        name: 'AuthRole',
+        component: () => import('@/views/imt/user/index'),
+        name: 'XiaoMiUserList',
         meta: { title: '用户列表' }
       },
       {
         path: 'xiaomi/log',
-        component: () => import('@/views/imaotai/log/index'),
-        name: 'AuthRole',
+        component: () => import('@/views/imt/log/index'),
+        name: 'XiaoMiLogList',
         meta: { title: '小米预约' }
-      }
-    ]
-  },
-  {
-    path: '/imaotai',
-    component: Layout,
-    meta: { title: 'I茅台管理', icon: 'wechat', affix: true },
-    children: [
-      {
-        path: 'user/list',
-        component: () => import('@/views/imaotai/user/index'),
-        name: 'AuthRole',
-        meta: { title: '用户列表' }
-      },
-      {
-        path: 'item/list',
-        component: () => import('@/views/imaotai/item/index'),
-        name: 'IMaoTaiAppointmentProjectList',
-        meta: { title: '预约商品' }
-      },
-      {
-        path: 'shop/list',
-        component: () => import('@/views/imaotai/shop/index'),
-        name: 'IMaoTaiShopList',
-        meta: { title: '门店列表' }
-      },
-      {
-        path: 'log/list',
-        component: () => import('@/views/imaotai/log/index'),
-        name: 'IMaoTaiLogList',
-        meta: { title: '日志列表' }
       }
     ]
   },
@@ -131,16 +131,16 @@ export const dynamicRoutes = [
     meta: { title: '日志管理', icon: 'star', affix: true },
     children: [
       {
-        path: 'imaotai/user',
-        component: () => import('@/views/imaotai/user/index'),
-        name: 'AuthRole',
-        meta: { title: '登录日志', activeMenu: '/system/user' }
+        path: 'login/log',
+        component: () => import('@/views/imt/user/index'),
+        name: 'SystemLoginLogList',
+        meta: { title: '登录日志' }
       },
       {
-        path: 'imaotai/pro',
-        component: () => import('@/views/imaotai/user/index'),
-        name: 'AuthRole',
-        meta: { title: '操作日志', activeMenu: '/system/user' }
+        path: 'operation/pro',
+        component: () => import('@/views/imt/user/index'),
+        name: 'SystemLogList',
+        meta: { title: '操作日志' }
       }
     ]
   },

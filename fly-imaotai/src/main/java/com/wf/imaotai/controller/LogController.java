@@ -1,7 +1,9 @@
 package com.wf.imaotai.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
 import com.wf.imaotai.entity.Log;
+import com.wf.imaotai.entity.User;
 import com.wf.imaotai.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ public class LogController {
     @GetMapping("list")
     public R list() {
         List<Log> logs = logService.list();
-        return R.success(logs);
+        PageInfo<Log> itemPageInfo = new PageInfo<>(logs);
+        return R.success(itemPageInfo);
     }
 }

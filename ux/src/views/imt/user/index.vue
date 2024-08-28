@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="search-wrap">
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryForm" size="mini" :inline="true" v-show="showSearch" label-width="68px">
         <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="queryParams.mobile" placeholder="请输入I茅台手机号" clearable @keyup.enter.native="handleQuery"/>
+          <el-input v-model="queryParams.mobile" placeholder="请输入手机号" clearable @keyup.enter.native="handleQuery"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -21,24 +21,23 @@
     </div>
 
     <el-table v-loading="loading" :data="userList" border @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="手机号" align="center" prop="mobile" min-width="120"/>
-      <el-table-column label="备注" align="center" prop="remark"/>
-      <el-table-column label="预约项目code" align="center" prop="itemCode" min-width="120"/>
-      <el-table-column label="省份" align="center" prop="provinceName"/>
-      <el-table-column label="类型" align="center" prop="shopType" show-overflow-tooltip>
+      <el-table-column type="selection" width="55"/>
+      <el-table-column label="手机号" prop="mobile" min-width="120"/>
+      <el-table-column label="备注" prop="remark"/>
+      <el-table-column label="预约项目code" prop="itemCode" min-width="120"/>
+      <el-table-column label="省份" prop="provinceName"/>
+      <el-table-column label="类型" prop="shopType" show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{scope.row.shopType == 1 ? "预约出货量最大门店" : "预约附近门店"}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="预约执行分钟" align="center" prop="minute" min-width="100"/>
-
-      <el-table-column label="到期时间" align="center" prop="expireTime" width="180">
+      <el-table-column label="预约执行分钟" prop="minute" min-width="100"/>
+      <el-table-column label="到期时间" prop="expireTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.expireTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="280">
+      <el-table-column label="操作" class-name="small-padding fixed-width" min-width="280">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-thumb" @click="reservationFn(scope.row)">预约</el-button>
           <el-button size="mini" type="text" icon="el-icon-thumb" @click="travelReward(scope.row)">旅行</el-button>
@@ -160,10 +159,17 @@
     <el-dialog :title="title" :visible.sync="refreshToken" width="500px">
       <el-form ref="form" :model="form" size="mini" label-width="90px">
         <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="form.mobile" readonly placeholder="请输入I茅台用户手机号"/>
-          <div style="margin-top: 10px">
-            <el-button type="primary" @click="sendCode(form.mobile, form.deviceId)" :disabled="state">发送验证码<span v-if="state">({{ stateNum }})</span></el-button>
-          </div>
+          <el-row>
+            <el-col :span="16">
+              <el-input v-model="form.mobile" placeholder="请输入I茅台用户手机号"/>
+            </el-col>
+            <el-col :span="8">
+              <el-button type="primary" plain @click="sendCodeFn(form.mobile)" :disabled="state" style="width: 100%;">
+                发送验证码
+                <span v-if="state">({{ stateNum }})</span>
+              </el-button>
+            </el-col>
+          </el-row>
         </el-form-item>
 
         <el-form-item label="验证码" prop="code">
@@ -189,9 +195,9 @@ import {
   userLoginApi,
   userReservationApi,
   travelRewardApi,
-} from "@/api/imaotai/user";
-import { getItemListApi } from "@/api/imaotai/item";
-import { getAppointmentTypeApi } from "@/api/imaotai/base";
+} from "@/api/imt/user";
+import { getItemListApi } from "@/api/imt/item";
+import { getAppointmentTypeApi } from "@/api/imt/base";
 
 export default {
   name: "User",

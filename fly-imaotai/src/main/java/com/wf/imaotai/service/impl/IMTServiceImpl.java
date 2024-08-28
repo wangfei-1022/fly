@@ -214,15 +214,15 @@ public class IMTServiceImpl implements IMTService {
                 Random random = new Random();
                 int sleepTime = random.nextInt(3) + 3;
                 Thread.sleep(sleepTime * 1000);
+                logService.record(user, logContent);
+                // 预约后延迟领取耐力值
+                getEnergyAwardDelay(user);
             } catch (Exception e) {
                 logContent += String.format("执行报错--[预约项目]：%s\n[结果返回]：%s\n\n", itemId, e.getMessage());
+                logService.record(user, logContent);
                 throw new ServiceException(e.getMessage());
             }
         }
-
-        logService.record(user, logContent);
-        // 预约后延迟领取耐力值
-        getEnergyAwardDelay(user);
     }
 
     public void getEnergyAwardDelay(User iUser) {
@@ -277,11 +277,12 @@ public class IMTServiceImpl implements IMTService {
         try {
             String s = travelRewardUser(user);
             logContent += "[获得旅行奖励]:" + s;
+            logService.record(user, logContent);
         } catch (Exception e) {
             logContent += "执行报错--[获得旅行奖励]:" + e.getMessage();
+            logService.record(user, logContent);
+            throw new ServiceException(e.getMessage());
         }
-        //日志记录
-        logService.record(user, logContent);
     }
 
     // 领取小茅运

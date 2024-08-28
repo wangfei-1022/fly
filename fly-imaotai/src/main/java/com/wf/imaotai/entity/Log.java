@@ -36,5 +36,5 @@ public class Log implements Serializable {
     private Integer status;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date happenTime;
+    private Date createTime;
 }

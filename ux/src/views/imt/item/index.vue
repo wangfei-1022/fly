@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getItemListApi, refreshItemApi } from "@/api/imaotai/item";
+import { getItemListApi, refreshItemApi } from "@/api/imt/item";
 
 export default {
   name: "Shop",

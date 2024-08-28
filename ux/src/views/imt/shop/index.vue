@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { listShop, refreshShop } from "@/api/imaotai/shop";
+import { listShop, refreshShop } from "@/api/imt/shop";
 
 export default {
   name: "Shop",

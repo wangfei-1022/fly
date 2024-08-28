@@ -10,8 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
-public class User implements Serializable {
+public class User {
 
     private Long userId;
 

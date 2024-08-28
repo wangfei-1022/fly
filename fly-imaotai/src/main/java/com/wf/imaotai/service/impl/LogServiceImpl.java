@@ -8,6 +8,7 @@ import com.wf.imaotai.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,6 +26,11 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public int record(User user, String content) {
-        return 0;
+        Log log = new Log();
+        log.setContent(content);
+        log.setCreateTime(new Date());
+        log.setMobile(user.getMobile());
+        log.setUserId(user.getUserId());
+        return logMapper.insetLog(log);
     }
 }
