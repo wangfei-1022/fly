@@ -3,6 +3,7 @@ package com.wf.imaotai.controller;
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
 import com.wf.imaotai.entity.User;
+import com.wf.imaotai.model.request.UserRequest;
 import com.wf.imaotai.service.IMTService;
 import com.wf.imaotai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class UserController {
     private IMTService imtService;
 
     @GetMapping("/list")
-    public R getList(User user){
-        List<User> items = userService.list(user);
+    public R getList(UserRequest userRequest) {
+        List<User> items = userService.list(userRequest);
         PageInfo<User> itemPageInfo = new PageInfo<>(items);
         return R.success(itemPageInfo);
     }

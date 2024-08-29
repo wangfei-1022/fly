@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.wf.imaotai.entity.Log;
 import com.wf.imaotai.entity.User;
 import com.wf.imaotai.mapper.LogMapper;
+import com.wf.imaotai.model.request.LogRequest;
 import com.wf.imaotai.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class LogServiceImpl implements LogService {
     public LogMapper logMapper;
 
     @Override
-    public List<Log> list() {
-        PageHelper.startPage(1, 10);
+    public List<Log> list(LogRequest logRequest) {
+        PageHelper.startPage(logRequest.initPage());
         List<Log> logs = logMapper.getList();
         return logs;
     }

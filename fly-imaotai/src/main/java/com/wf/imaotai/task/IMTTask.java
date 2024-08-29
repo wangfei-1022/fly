@@ -40,7 +40,7 @@ public class IMTTask {
     @Async
     @Scheduled(cron = "0 0/1 11 ? * *")
     public void travelRewardBatch() {
-        imtService.travelRewardBatch();
+//        imtService.travelRewardBatch();
 
     }
 

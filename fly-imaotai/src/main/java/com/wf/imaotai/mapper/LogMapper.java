@@ -10,7 +10,6 @@ import java.util.List;
 @Mapper
 public interface LogMapper {
 
-    @Select("SELECT * FROM imaotai_log")
     public List<Log> getList();
 
     @Insert("INSERT INTO imaotai_log(user_id, mobile, content, create_time) " +

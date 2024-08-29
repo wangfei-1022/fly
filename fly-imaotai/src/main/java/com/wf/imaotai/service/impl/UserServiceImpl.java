@@ -3,6 +3,7 @@ package com.wf.imaotai.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.wf.imaotai.entity.User;
 import com.wf.imaotai.mapper.UserMapper;
+import com.wf.imaotai.model.request.UserRequest;
 import com.wf.imaotai.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Override
-    public List<User> list(User user) {
-        PageHelper.startPage(1, 10);
+    public List<User> list(UserRequest userRequest) {
+        PageHelper.startPage(userRequest.initPage());
         List<User> xx1 = userMapper.getList();
         return xx1;
     }
