@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public class Log implements Serializable {
+public class Log {
 
     private Long id;
 
@@ -35,6 +35,5 @@ public class Log implements Serializable {
 
     private Integer status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
+    private Long createTime;
 }

@@ -4,12 +4,12 @@
 <mapper namespace="com.wf.imaotai.mapper.ShopMapper">
 
     <!-- 结果映射 -->
-    <resultMap id="shopResultMap" type="com.wf.imaotai.entity.Shop">
+    <resultMap id="BaseResultMap" type="com.wf.imaotai.entity.Shop">
         <id property="id" column="id" />
         <result property="name" column="name" />
     </resultMap>
 
-    <!-- 查询所有用户 -->
+    <!-- 查询所有门店 -->
     <select id="getList" resultType="com.wf.imaotai.entity.Shop">
         SELECT *
         FROM imaotai_shop
@@ -17,6 +17,20 @@
         <if test="tenantName != null and tenantName != ''">
           and tenant_name like concat('%', #{tenantName}, '%')
         </if>
+        <if test="provinceName != null and provinceName != ''">
+            and province_name like concat('%', #{provinceName}, '%')
+        </if>
+        <if test="cityName != null and cityName != ''">
+            and city_name like concat('%', #{cityName}, '%')
+        </if>
+        <if test="districtName != null and districtName != ''">
+            and district_name like concat('%', #{districtName}, '%')
+        </if>
     </select>
+
+    <insert id="insertShop" parameterType="com.wf.imaotai.entity.Shop">
+        INSERT INTO imaotai_shop(id, shop_id, address, full_address, lat, lng, district, district_name, city, city_name, province, province_name, open_start_time, open_end_time, tenant_name, name, layaway, tags, create_time)
+            VALUES(#{id}, #{shopId}, #{address},#{fullAddress}, #{lat}, #{lng},#{district}, #{districtName}, #{city}, #{cityName},  #{province}, #{provinceName}, #{openStartTime}, #{openEndTime}, #{tenantName}, #{name}, #{layaway}, #{tags}, #{createTime})
+    </insert>
 
 </mapper>

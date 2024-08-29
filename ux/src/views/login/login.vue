@@ -1,6 +1,21 @@
 <template>
   <div class="login">
-    <div class="login-left"></div>
+    <div class="login-left">
+      <div class="snow">
+        <h2>
+          《沁园春·雪》
+          <span class="author" >毛泽东·近现代</span>
+        </h2>
+        <p><span class="under">北国</span>风光，千里冰封，万里雪飘。</p>
+        <p>望长城内外，惟余<span class="under">莽莽</span>；大河上下，顿失滔滔。</p>
+        <p>山舞银蛇，原驰蜡象，欲与天公试比高。</p>
+        <p>须晴日，看红装素裹，分外妖娆。</p>
+        <p>江山如此多娇，引无数英雄竞折腰。</p>
+        <p>惜<span class="under">秦皇汉武</span>，略输文采；<span class="under">唐宗宋祖</span>，稍逊风骚。</p>
+        <p><span class="under">一代天骄</span>，<span class="under">成吉思汗</span>，只识弯弓射大雕。</p>
+        <p>俱往矣，数风流人物，还看今朝。</p>
+      </div>
+    </div>
     <div class="login-right">
      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
        <h3 class="title">WF</h3>
@@ -168,6 +183,9 @@ export default {
     width: 68%;
     background-image: linear-gradient(140deg, #EADEDB 0%, #d5e2f5 45%, #ebe2e9 75%);
     background-size: auto 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .login-right{
     width: 32%;
@@ -249,4 +267,26 @@ export default {
   border-radius: 2px;
   width: 100%;
 }
+.snow{
+  h2{
+    text-align: center;
+  }
+  p{
+    font-size: 15px;
+    color: #333333;
+    line-height: 25px;
+  }
+  .author{
+    text-decoration: underline;
+    color: rgb(38, 115, 219);
+    font-size: 14px;
+    float: right;
+    line-height: 40px;
+  }
+  .under{
+    border-bottom: 1px solid #2673db;
+    cursor: pointer;
+  }
+}
+
 </style>

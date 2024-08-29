@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping("/list")
     public R getList(UserRequest userRequest) {
-        List<User> items = userService.list(userRequest);
+        List<User> items = userService.getList(userRequest);
         PageInfo<User> itemPageInfo = new PageInfo<>(items);
         return R.success(itemPageInfo);
     }

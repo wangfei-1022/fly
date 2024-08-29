@@ -130,7 +130,7 @@ public class LogAspect {
 
             // 处理设置注解上的参数 app name那些
             getControllerMethodDescription(joinPoint, operLog, jsonResult);
-            operLog.setCreateTime(new Date());
+            operLog.setCreateTime(new Date().getTime());
 
         } catch (Exception exp) {
             // 记录本地异常日志

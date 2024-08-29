@@ -11,12 +11,10 @@ import java.util.List;
 @Mapper
 public interface ItemMapper {
 
-    @Select("SELECT * FROM imaotai_item")
     public List<Item> getList();
+
     @Update("truncate imaotai_item")
     public Long truncateItem();
 
-    @Insert("INSERT INTO imaotai_item(id, item_id, item_code, content, title, picture, create_time) " +
-            "VALUES(#{id}, #{itemId}, #{itemCode},#{content}, #{title}, #{picture}, #{createTime})")
-    public Long addItem(Item item);
+    public Long insertItem(Item item);
 }

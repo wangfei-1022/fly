@@ -21,7 +21,7 @@ public class LogServiceImpl implements LogService {
     @Override
     public List<Log> list(LogRequest logRequest) {
         PageHelper.startPage(logRequest.initPage());
-        List<Log> logs = logMapper.getList();
+        List<Log> logs = logMapper.getList(logRequest);
         return logs;
     }
 
@@ -29,7 +29,7 @@ public class LogServiceImpl implements LogService {
     public int record(User user, String content) {
         Log log = new Log();
         log.setContent(content);
-        log.setCreateTime(new Date());
+        log.setCreateTime(new Date().getTime());
         log.setMobile(user.getMobile());
         log.setUserId(user.getUserId());
         return logMapper.insetLog(log);

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
 import com.wf.imaotai.constant.AppointmentType;
 import com.wf.imaotai.entity.Shop;
+import com.wf.imaotai.model.request.ShopRequest;
 import com.wf.imaotai.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ public class ShopController {
      * 查询i茅台商品列表
      */
     @GetMapping("/list")
-    public R list(Shop shop) {
-        List<Shop> shops = shopService.getShoplist(shop);
+    public R list(ShopRequest shopRequest) {
+        List<Shop> shops = shopService.getShoplist(shopRequest);
         PageInfo<Shop> shopPageInfo = new PageInfo<>(shops);
         return R.success(shopPageInfo);
     }

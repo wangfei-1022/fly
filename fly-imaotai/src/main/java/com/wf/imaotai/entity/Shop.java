@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @TableName("'shop'")
-public class Shop implements Serializable {
+public class Shop {
 
     private int id;
 

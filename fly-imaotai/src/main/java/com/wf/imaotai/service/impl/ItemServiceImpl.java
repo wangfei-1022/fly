@@ -72,7 +72,7 @@ public class ItemServiceImpl implements ItemService {
             for (Object obj : itemList) {
                 JSONObject item = (JSONObject) obj;
                 Item iItem = new Item("", item);
-                itemMapper.addItem(iItem);
+                itemMapper.insertItem(iItem);
             }
         }
 

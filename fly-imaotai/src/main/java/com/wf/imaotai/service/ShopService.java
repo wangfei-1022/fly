@@ -2,11 +2,12 @@ package com.wf.imaotai.service;
 
 import com.wf.imaotai.model.dto.ItemInfo;
 import com.wf.imaotai.entity.Shop;
+import com.wf.imaotai.model.request.ShopRequest;
 
 import java.util.List;
 
 public interface ShopService {
-    List<Shop> getShoplist(Shop shop);
+    List<Shop> getShoplist(ShopRequest shopRequest);
 
     void refreshShop();
 

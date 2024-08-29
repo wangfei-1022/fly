@@ -10,6 +10,7 @@ import com.wf.imaotai.model.dto.MapPoint;
 import com.wf.imaotai.entity.Shop;
 import com.wf.common.exception.ServiceException;
 import com.wf.imaotai.mapper.ShopMapper;
+import com.wf.imaotai.model.request.ShopRequest;
 import com.wf.imaotai.service.ItemService;
 import com.wf.imaotai.service.ShopService;
 import org.apache.commons.lang3.StringUtils;
@@ -40,14 +41,14 @@ public class ShopServiceImpl implements ShopService {
     public RestTemplate restTemplate;
 
     public List<Shop> getShopListAll() {
-        List<Shop> xx1 = shopMapper.getListALl();
+        List<Shop> xx1 = shopMapper.getList(null);
         return xx1;
     }
 
     @Override
-    public List<Shop> getShoplist(Shop shop) {
-        PageHelper.startPage(1, 10);
-        List<Shop> xx1 = shopMapper.getList(shop);
+    public List<Shop> getShoplist(ShopRequest shopRequest) {
+        PageHelper.startPage(shopRequest.initPage());
+        List<Shop> xx1 = shopMapper.getList(shopRequest);
         return xx1;
     }
 
@@ -215,7 +216,7 @@ public class ShopServiceImpl implements ShopService {
             Shop shop = new Shop(shopId, shopObj);
             shop.setShopId(shopId);
             list.add(shop);
-            shopMapper.addShop(shop);
+            shopMapper.insertShop(shop);
         }
     }
 }

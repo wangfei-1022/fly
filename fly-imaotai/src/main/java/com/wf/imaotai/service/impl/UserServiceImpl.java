@@ -18,14 +18,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Override
-    public List<User> list(UserRequest userRequest) {
+    public List<User> getList(UserRequest userRequest) {
         PageHelper.startPage(userRequest.initPage());
-        List<User> xx1 = userMapper.getList();
+        List<User> xx1 = userMapper.getList(userRequest);
         return xx1;
     }
 
     @Override
-    public User getUserByMobile(Long mobile){
+    public User getUserByMobile(Long mobile) {
         User user = userMapper.selectByMobile(mobile);
         return user;
     }
@@ -35,8 +35,9 @@ public class UserServiceImpl implements UserService {
     * */
     @Override
     public List<User> selectReservationUser() {
+        UserRequest userRequest = new UserRequest();
         PageHelper.startPage(1, 10);
-        List<User> xx1 = userMapper.getList();
+        List<User> xx1 = userMapper.getList(userRequest);
         return xx1;
     }
 

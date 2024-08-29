@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wf.imaotai.mapper.UserMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.wf.imaotai.entity.User">
+        <id property="user_id" column="userId" />
+        <result property="content" column="content" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 查询所有用户 -->
+    <select id="getList" resultType="com.wf.imaotai.entity.User">
+        SELECT *
+        FROM imaotai_user
+        WHERE 1 = 1
+        <if test="mobile != null and mobile != ''">
+            and mobile > #{mobile}
+        </if>
+        ORDER BY imaotai_user.create_time DESC
+    </select>
+
+    <insert id="insertUser" parameterType="com.wf.imaotai.entity.User">
+        INSERT INTO imaotai_user(
+                                 user_id,
+                                 mobile,
+                                 name,
+                                 token,
+                                 cookie,
+                                 device_id,
+                                 shop_id,
+                                 item_code,
+                                 province_name,
+                                 city_name,
+                                 address,
+                                 expire_time,
+                                 random_minute,
+                                 del_flag,
+                                 create_time
+                                 )
+            VALUES(#{userId}, #{mobile}, #{name}, #{token}, #{cookie}, #{deviceId},#{shopId}, #{itemCode}, #{provinceName},#{cityName}, #{address}, #{expireTime},#{randomMinute}, #{delFlag}, #{createTime})
+    </insert>
+
+    <update id="updateUser" parameterType="com.wf.imaotai.entity.User">
+        UPDATE imaotai_user SET
+            user_id = #{userId},
+            name = #{name},
+            token = #{token},
+            cookie = #{cookie},
+            device_id = #{deviceId},
+            shop_id = #{shopId},
+            item_code = #{itemCode},
+            province_name = #{provinceName},
+            city_name = #{cityName},
+            address = #{address},
+            expire_time = #{expireTime},
+            random_minute = #{randomMinute},
+            del_flag = #{delFlag},
+            update_time = #{updateTime}
+            WHERE mobile = #{mobile}
+    </update>
+</mapper>

@@ -6,7 +6,7 @@
           <el-input v-model="queryParams.mobile" placeholder="请输入用户" clearable/>
         </el-form-item>
         <el-form-item label="操作时间">
-          <el-date-picker v-model="queryParams.createDateRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+          <el-date-picker v-model="queryParams.createDateRange" style="width: 340px" value-format="timestamp" type="datetimerange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>

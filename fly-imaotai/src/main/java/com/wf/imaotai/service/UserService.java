@@ -6,10 +6,11 @@ import com.wf.imaotai.model.request.UserRequest;
 import java.util.List;
 
 public interface UserService {
-    List<User> list(UserRequest userRequest);
+    List<User> getList(UserRequest userRequest);
     User getUserByMobile(Long mobile);
 
     List<User> selectReservationUser();
+
     int update(User user);
 
 

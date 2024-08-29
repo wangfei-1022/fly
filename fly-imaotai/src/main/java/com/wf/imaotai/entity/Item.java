@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class Item implements Serializable {
+public class Item {
 
     private Long id;
 
