@@ -26,9 +26,8 @@ public class Item {
     public Item(){
 
     };
-    public Item(String itemId, JSONObject item) {
+    public Item(JSONObject item) {
         if(item != null) {
-            this.itemId = itemId;
             this.itemCode = item.getString("itemCode");
             this.title =  item.getString("title");;
             this.content =  item.getString("content");;

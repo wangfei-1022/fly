@@ -50,7 +50,7 @@ public class IMTTask {
     @Async
     @Scheduled(cron = "0 0/1 9 ? * *")
     public void reservationBatchTask() {
-        imtService.reservationBatch();
+//        imtService.reservationBatch();
 
     }
 

@@ -35,11 +35,29 @@
                                  city_name,
                                  address,
                                  expire_time,
-                                 random_minute,
+                                 minute,
                                  del_flag,
+                                 appointment_type,
+                                 appointment_time_type,
                                  create_time
                                  )
-            VALUES(#{userId}, #{mobile}, #{name}, #{token}, #{cookie}, #{deviceId},#{shopId}, #{itemCode}, #{provinceName},#{cityName}, #{address}, #{expireTime},#{randomMinute}, #{delFlag}, #{createTime})
+            VALUES(#{userId},
+                   #{mobile},
+                   #{name},
+                   #{token},
+                   #{cookie},
+                   #{deviceId},
+                   #{shopId},
+                   #{itemCode},
+                   #{provinceName},#{cityName},
+                   #{address},
+                   #{expireTime},
+                   #{minute},
+                   #{delFlag},
+                   #{appointmentType},
+                   #{appointmentTimeType},
+                   #{createTime}
+                   )
     </insert>
 
     <update id="updateUser" parameterType="com.wf.imaotai.entity.User">
@@ -55,8 +73,10 @@
             city_name = #{cityName},
             address = #{address},
             expire_time = #{expireTime},
-            random_minute = #{randomMinute},
+            minute = #{minute},
             del_flag = #{delFlag},
+            appointment_type = #{appointmentType},
+            appointment_time_type = #{appointmentTimeType},
             update_time = #{updateTime}
             WHERE mobile = #{mobile}
     </update>

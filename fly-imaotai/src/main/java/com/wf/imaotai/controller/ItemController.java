@@ -31,10 +31,8 @@ public class ItemController {
     }
 
 
-
-
     @GetMapping("/refresh")
-    public R refresh(Item item) {
+    public R refresh() {
         itemService.getCurrentSessionId();
         return R.success("");
     }

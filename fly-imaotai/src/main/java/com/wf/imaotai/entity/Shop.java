@@ -7,10 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("'shop'")
 public class Shop {
-
-    private int id;
 
     private String shopId;
 
@@ -42,24 +39,30 @@ public class Shop {
 
     private String name;
 
-    private String layaway;
-
     private String tags;
 
     private Date createTime;
 
-    private Double distance;
 
-    public Shop(String shopId, JSONObject jsonObject) {
+
+    public Shop() {
+
+    }
+    public Shop(JSONObject jsonObject) {
         if(jsonObject != null) {
-            this.shopId = shopId;
+            this.shopId = jsonObject.getString("shopId");
+            this.address = jsonObject.getString("address");
+            this.province = jsonObject.getInteger("province");
             this.provinceName = jsonObject.getString("provinceName");
+            this.city = jsonObject.getInteger("city");
             this.cityName = jsonObject.getString("cityName");
+            this.district = jsonObject.getInteger("district");
             this.districtName = jsonObject.getString("districtName");
             this.fullAddress = jsonObject.getString("fullAddress");
             this.lat = jsonObject.getString("lat");
             this.lng = jsonObject.getString("lng");
             this.name = jsonObject.getString("name");
+            this.tags = jsonObject.getString("tags");
             this.tenantName = jsonObject.getString("tenantName");
             this.createTime = new Date();
         }

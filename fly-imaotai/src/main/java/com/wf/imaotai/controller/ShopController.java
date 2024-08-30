@@ -2,8 +2,10 @@ package com.wf.imaotai.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
+import com.wf.imaotai.constant.AppointmentTimeType;
 import com.wf.imaotai.constant.AppointmentType;
 import com.wf.imaotai.entity.Shop;
+import com.wf.imaotai.model.dto.ItemInfo;
 import com.wf.imaotai.model.request.ShopRequest;
 import com.wf.imaotai.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,16 @@ public class ShopController {
     }
 
 
+    @GetMapping("/delivery/search")
+    public R deliverySearch(ShopRequest shopRequest) {
+        if(shopRequest.getProvinceName() == null) {
+            return R.error("请先填写省份");
+        }
+        List<ItemInfo> shops = shopService.deliverySearch(shopRequest);
+        PageInfo<ItemInfo> shopPageInfo = new PageInfo<>(shops);
+        return R.success(shopPageInfo);
+    }
+
     /**
      * 刷新i茅台商品列表
      */
@@ -41,8 +53,12 @@ public class ShopController {
     }
 
     @GetMapping("appointment/type")
-    public R listUserType() {
+    public R appointmentType() {
         return R.success(AppointmentType.values());
     }
 
+    @GetMapping("appointment/time/type")
+    public R appointmentTimeType() {
+        return R.success(AppointmentTimeType.values());
+    }
 }

@@ -93,6 +93,12 @@ export const dynamicRoutes = [
         meta: { title: '预约商品' }
       },
       {
+        path: 'delivery/list',
+        component: () => import('@/views/imt/delivery/index'),
+        name: 'IMTDeliveryList',
+        meta: { title: '投放查询' }
+      },
+      {
         path: 'shop/list',
         component: () => import('@/views/imt/shop/index'),
         name: 'IMTShopList',

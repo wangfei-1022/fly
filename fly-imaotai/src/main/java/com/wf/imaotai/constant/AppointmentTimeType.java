@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum AppointmentType {
+public enum AppointmentTimeType {
 
-    MAX(1, "预约本市量最大门店"),
-    TARGET(2, "指定城市门店");
+    RANDOM(1, "随机时间"),
+    TARGET(2, "指定时间");
 
     private int code;
     private String name;

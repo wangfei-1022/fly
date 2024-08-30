@@ -25,7 +25,11 @@
       <el-table-column label="手机号" prop="mobile" min-width="120"/>
       <el-table-column label="备注" prop="remark"/>
       <el-table-column label="预约项目code" prop="itemCode" min-width="120"/>
-      <el-table-column label="省份" prop="provinceName"/>
+      <el-table-column label="省份" prop="provinceName">
+        <template slot-scope="scope">
+          <span>{{ scope.row.provinceName}}{{ scope.row.cityName}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="类型" prop="shopType" show-overflow-tooltip>
         <template slot-scope="scope">
           <span>{{scope.row.shopType == 1 ? "预约出货量最大门店" : "预约附近门店"}}</span>
@@ -49,86 +53,6 @@
     </el-table>
 
     <pagination :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList"/>
-
-    <!-- 添加或修改I茅台用户对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="100px">
-        <el-form-item v-if="toAdd != 1" label="手机号" prop="mobile">
-          <el-input v-model="form.mobile" placeholder="请输入I茅台用户手机号"/>
-        </el-form-item>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" placeholder="请输入备注"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="用户id" prop="userId">
-              <el-input v-model="form.userId" placeholder="请输入I茅台用户id"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item label="toekn" prop="token">
-          <el-input v-model="form.token" placeholder="请输入I茅台toekn"/>
-        </el-form-item>
-        <el-form-item label="cookie" prop="cookie">
-          <el-input v-model="form.cookie" placeholder="请输入I茅台cookie"/>
-        </el-form-item>
-        <el-form-item label="设备id" prop="deviceId">
-          <el-input v-model="form.deviceId" placeholder="请输入设备id"/>
-        </el-form-item>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="预约code" prop="itemCode">
-              <el-select v-model="itemSelect" multiple placeholder="请选择"  @change="changeItem">
-                <el-option v-for="item in itemList" :key="item.itemCode" :label="item.title" :value="item.itemCode"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="分钟" prop="minute">
-              <el-input v-model="form.minute" placeholder="预约执行的时间(单位分)，例如15分执行"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="随机时间预约" prop="randomMinute">
-              <el-select v-model="form.randomMinute" placeholder="随机时间预约">
-                <el-option v-for="item in itemList" :key="item.itemCode" :label="item.title" :value="item.itemCode"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="类型" prop="shopType">
-              <el-select v-model="form.shopType" placeholder="请选择">
-                <el-option v-for="item in typeOptions" :key="item.code" :label="item.name" :value="item.code"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="门店商品ID" prop="ishopId">
-              <el-input v-model="form.ishopId" placeholder="请输入门店商品ID"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="推送token" prop="pushPlusToken">
-              <el-input v-model="form.pushPlusToken" placeholder="请输入推送token"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item label="到期时间" prop="expireTime">
-          <el-date-picker v-model="form.expireTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"></el-date-picker>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" type="primary" @click="submitForm">确 定</el-button>
-        <el-button size="mini" @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
 
     <el-dialog title="添加\更新用户" :visible.sync="openUser" width="500px" append-to-body>
       <el-form ref="form" :model="form" size="mini" label-width="90px">
@@ -181,26 +105,28 @@
         <el-button size="mini" @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <edit-user-dialog ref="editUserDialogRef"></edit-user-dialog>
   </div>
 </template>
 
 <script>
 import {
   getUserListApi,
-  getUserByMobileApi,
   delUser,
-  addUser,
-  updateUserApi,
   sendCodeApi,
   userLoginApi,
   userReservationApi,
   travelRewardApi,
 } from "@/api/imt/user";
-import { getItemListApi } from "@/api/imt/item";
-import { getAppointmentTypeApi } from "@/api/imt/base";
+
+import EditUserDialog from  './EditUserDialog.vue'
 
 export default {
   name: "User",
+  components: {
+    EditUserDialog
+  },
   data() {
     return {
       loading: true,
@@ -234,37 +160,31 @@ export default {
         jsonResult: null,
         expireTime: null,
       },
-      form: {},
+
+      toAdd: 0,
+      appointmentTypeList: [], // 预约类型
+      appointmentTimeTypeList: [], // 预约时间类型
+      // I茅台预约商品列表格数据
+      itemList: [],
+      //选择的数据
+      itemSelect: [],
+
+      form: {
+        appointmentType: "",
+        appointmentTimeType: "",
+      },
       rules: {
         mobile: [
           {required: true, message: "手机号不能为空", trigger: "blur"},
         ],
       },
-      toAdd: 0,
-      typeOptions: [],
-      // I茅台预约商品列表格数据
-      itemList: [],
-      //选择的数据
-      itemSelect: [],
     };
   },
   created() {
     this.getList();
-    getItemListApi().then(res => {
-      this.itemList = res.data.list;
-    });
-    getAppointmentTypeApi().then(res => {
-      this.typeOptions = res.data;
-    })
+
   },
   methods: {
-    //item下拉框选择
-    changeItem(e) {
-      this.form.itemCode = "";
-      this.itemSelect.forEach((e) => {
-        this.form.itemCode += e + "@";
-      });
-    },
     guid() {
       return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
         /[xy]/g,
@@ -317,36 +237,13 @@ export default {
       this.title = "添加I茅台用户";
       this.toAdd = 0;
       this.itemSelect = [];
+      this.$refs.editUserDialogRef.show()
     },
     handleAddIUser() {
-      this.reset();
-      this.openUser = true;
+      this.$refs.editUserDialogRef.show()
     },
     handleUpdate(row) {
-      this.reset();
-      const mobile = row.mobile || this.ids[0];
-      let data = {
-        mobile: mobile
-      }
-      getUserByMobileApi(data).then((response) => {
-        this.toAdd = 1;
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改I茅台用户";
-        this.itemSelect = [];
-        if(this.form.itemCode) {
-          if (this.form.itemCode !== "" && this.form.itemCode.indexOf("@") == -1) {
-            this.itemSelect.push(this.form.itemCode);
-          } else {
-            let arr = this.form.itemCode.split("@");
-            arr.forEach((e) => {
-              if (e !== "") {
-                this.itemSelect.push(e);
-              }
-            });
-          }
-        }
-      });
+      this.$refs.editUserDialogRef.show(row)
     },
     //预约
     reservationFn(row) {
@@ -362,25 +259,7 @@ export default {
         this.$modal.msgSuccess("请求成功，结果看日志");
       });
     },
-    submitForm() {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.toAdd != 0) {
-            updateUserApi(this.form).then((response) => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            userLoginApi(this.form).then((response) => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
+
     sendCodeFn(mobile, deviceId) {
       if (deviceId == undefined || deviceId == "") {
         this.form.deviceId = this.guid();

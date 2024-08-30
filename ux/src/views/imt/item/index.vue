@@ -19,8 +19,7 @@
     </div>
 
     <el-table v-loading="loading" :data="shopList" border>
-      <el-table-column label="商品Id" align="center" min-width="120" prop="itemId" />
-      <el-table-column label="商品Code" align="center" min-width="120" prop="itemCode" />
+      <el-table-column label="商品Id" align="center" min-width="120" prop="itemCode" />
       <el-table-column label="标题" align="center" min-width="220" prop="title" />
       <el-table-column label="图片" align="center" min-width="120" prop="picture" >
         <template slot-scope="scope">

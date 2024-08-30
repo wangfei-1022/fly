@@ -7,3 +7,11 @@ export function getAppointmentTypeApi() {
     method: 'get'
   })
 }
+
+// 预约时间类型
+export function getAppointmentTimeTypeApi() {
+  return request({
+    url: '/imt/shop/appointment/time/type' ,
+    method: 'get'
+  })
+}

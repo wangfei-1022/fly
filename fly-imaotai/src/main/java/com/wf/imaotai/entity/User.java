@@ -38,7 +38,7 @@ public class User {
 
     private String remark;
 
-    private Date randomMinute;
+    private int minute;
 
     private Date delFlag;
 
@@ -48,13 +48,14 @@ public class User {
 
     private Date createTime;
 
-    private int shopType;
+    private int appointmentType;
 
-    //
+    private int appointmentTimeType;
+
+
     private String lat;
+
     private String lng;
-    //
-    private String code;
 
     public User() {
 

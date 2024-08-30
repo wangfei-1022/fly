@@ -16,6 +16,10 @@ public interface ShopMapper {
 
     public Long insertShop(Shop shop);
 
+    public Long insertShopBatch(List<Shop> list);
+
+    public Shop getShopById(String shopId);
+
     @Update("truncate imaotai_shop")
     public Long clearAll();
 }

@@ -1,5 +1,6 @@
 package com.wf.imaotai.service;
 
+import com.wf.imaotai.entity.User;
 import com.wf.imaotai.model.dto.ItemInfo;
 import com.wf.imaotai.entity.Shop;
 import com.wf.imaotai.model.request.ShopRequest;
@@ -11,7 +12,9 @@ public interface ShopService {
 
     void refreshShop();
 
-    String getShopId(int shopType, String itemId, String province, String city, String lat, String lng);
+    String getShopId(User user, String itemId);
 
     List<ItemInfo> getShopsByProvince(String province, String itemId);
+
+    List<ItemInfo> deliverySearch(ShopRequest shopRequest);
 }

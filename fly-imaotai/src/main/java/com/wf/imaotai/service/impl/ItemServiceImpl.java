@@ -53,12 +53,13 @@ public class ItemServiceImpl implements ItemService {
         String mtSessionId = Convert.toStr(redisCache.getCacheObject(IMTCache.MT_SESSION_ID));
 
         long dayTime = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.of("+8")).toEpochMilli();
-        if (StringUtils.isNotEmpty(mtSessionId)) {
-            return mtSessionId;
-        }
+//        if (StringUtils.isNotEmpty(mtSessionId)) {
+//            return mtSessionId;
+//        }
 
         String res = HttpUtil.get("https://static.moutai519.com.cn/mt-backend/xhr/front/mall/index/session/get/" + dayTime);
         //替换 current_session_id 673 ['data']['sessionId']
+        System.out.println("itemRes = " + res);
         JSONObject jsonObject = JSONObject.parseObject(res);
 
         if (jsonObject.getString("code").equals("2000")) {
@@ -71,7 +72,7 @@ public class ItemServiceImpl implements ItemService {
             JSONArray itemList = data.getJSONArray("itemList");
             for (Object obj : itemList) {
                 JSONObject item = (JSONObject) obj;
-                Item iItem = new Item("", item);
+                Item iItem = new Item(item);
                 itemMapper.insertItem(iItem);
             }
         }

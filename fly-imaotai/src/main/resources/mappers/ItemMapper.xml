@@ -16,8 +16,8 @@
     </select>
 
     <insert id="insertItem" parameterType="com.wf.imaotai.entity.Item">
-        INSERT INTO imaotai_item(id, item_id, item_code, content, title, picture, create_time)
-            VALUES(#{id}, #{itemId}, #{itemCode},#{content}, #{title}, #{picture}, #{createTime})
+        INSERT INTO imaotai_item(item_code, content, title, picture, create_time)
+            VALUES(#{itemCode},#{content}, #{title}, #{picture}, #{createTime})
     </insert>
 
 </mapper>

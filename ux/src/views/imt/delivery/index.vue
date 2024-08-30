@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="search-wrap">
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryFormRef" size="small" :inline="true" v-show="showSearch" label-width="68px">
         <el-form-item label="省份" prop="provinceName">
           <el-input v-model="queryParams.provinceName" placeholder="请输入省份" clearable @keyup.enter.native="handleQuery"/>
         </el-form-item>
@@ -21,27 +21,15 @@
       </el-form>
     </div>
 
-    <div class="mb8">
-      <el-button type="primary" icon="el-icon-refresh" size="mini" @click="handleRefresh">刷新门店</el-button>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </div>
-
     <el-table v-loading="loading" :data="shopList" border width="100%">
-      <el-table-column label="门店Id" prop="shopId" min-width="150"/>
       <el-table-column label="省份" prop="provinceName" min-width="100"/>
       <el-table-column label="城市" prop="cityName" min-width="100"/>
       <el-table-column label="地区" prop="districtName" min-width="100"/>
-      <el-table-column label="公司名称" prop="tenantName" min-width="230" show-overflow-tooltip/>
-      <el-table-column label="地址" prop="address" min-width="230" show-overflow-tooltip />
-      <el-table-column label="纬度" prop="lat" min-width="100"/>
-      <el-table-column label="经度" prop="lng" min-width="100"/>
-      <el-table-column label="名称" prop="name" min-width="200" show-overflow-tooltip/>
-      <el-table-column label="提货方式" prop="tags" min-width="100" show-overflow-tooltip/>
-      <el-table-column label="创建时间" min-width="160" prop="createTime" >
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column label="公司名称" prop="tenantName" min-width="150" show-overflow-tooltip/>
+      <el-table-column label="预约项目" prop="itemTitle" min-width="150" show-overflow-tooltip/>
+      <el-table-column label="投放数量" prop="inventory" min-width="100"/>
+      <el-table-column label="可申购数量" prop="count" min-width="100" />
+      <el-table-column label="完整地址" prop="fullAddress" min-width="200" show-overflow-tooltip/>
     </el-table>
 
     <pagination :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList"/>
@@ -49,74 +37,41 @@
 </template>
 
 <script>
-import { listShop, refreshShop } from "@/api/imt/shop";
+import { getDeliverySearchApi } from "@/api/imt/delivery";
 
 export default {
-  name: "Shop",
+  name: "IMTDeliveryList",
   data() {
     return {
-      loading: true,
+      loading: false,
       showSearch: true,
       total: 0,
       shopList: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        iShopId: null,
         provinceName: null,
         cityName: null,
         districtName: null,
-        fullAddress: null,
-        lat: null,
-        lng: null,
-        name: null,
-        tenantName: null,
+        tenantName: null
       },
     };
   },
-  created() {
-    this.getList();
-  },
   methods: {
     getList() {
-      this.loading = true;
-      listShop(this.queryParams).then((response) => {
+      getDeliverySearchApi(this.queryParams).then((response) => {
         this.shopList = response.data.list;
         this.total = response.data.total;
         this.loading = false;
       });
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        shopId: null,
-        iShopId: null,
-        provinceName: null,
-        cityName: null,
-        districtName: null,
-        fullAddress: null,
-        lat: null,
-        lng: null,
-        name: null,
-        tenantName: null,
-        createTime: null,
-      };
-      this.resetForm("form");
     },
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
     resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    handleRefresh() {
-      refreshShop().then(() => {
-        this.getList();
-        this.$modal.msgSuccess("刷新成功");
-      });
-    },
+      this.$refs.queryFormRef.resetFiled();
+    }
   },
 };
 </script>

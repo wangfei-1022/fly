@@ -28,9 +28,29 @@
         </if>
     </select>
 
+    <select id="getShopById" resultType="com.wf.imaotai.entity.Shop">
+        SELECT *
+        FROM imaotai_shop
+        WHERE shop_id = #{shopId}
+    </select>
+
     <insert id="insertShop" parameterType="com.wf.imaotai.entity.Shop">
-        INSERT INTO imaotai_shop(id, shop_id, address, full_address, lat, lng, district, district_name, city, city_name, province, province_name, open_start_time, open_end_time, tenant_name, name, layaway, tags, create_time)
-            VALUES(#{id}, #{shopId}, #{address},#{fullAddress}, #{lat}, #{lng},#{district}, #{districtName}, #{city}, #{cityName},  #{province}, #{provinceName}, #{openStartTime}, #{openEndTime}, #{tenantName}, #{name}, #{layaway}, #{tags}, #{createTime})
+        INSERT INTO imaotai_shop(shop_id, address, full_address, lat, lng, district, district_name, city, city_name, province, province_name, tenant_name, name, tags, create_time)
+            VALUES(#{shopId}, #{address},#{fullAddress}, #{lat}, #{lng},#{district}, #{districtName}, #{city}, #{cityName},  #{province}, #{provinceName},  #{tenantName}, #{name}, #{tags}, #{createTime})
+    </insert>
+
+
+    <insert id="insertShopBatch" parameterType="java.util.List">
+        INSERT INTO imaotai_shop(shop_id, address, full_address, lat, lng, district, district_name, city, city_name, province, province_name, tenant_name, name, tags, create_time)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.shopId},
+             #{item.address},
+             #{item.fullAddress}, #{item.lat}, #{item.lng}, #{item.district},
+             #{item.districtName}, #{item.city}, #{item.cityName},
+             #{item.province}, #{item.provinceName},
+             #{item.tenantName}, #{item.name}, #{item.tags}, #{item.createTime})
+        </foreach>
     </insert>
 
 </mapper>
