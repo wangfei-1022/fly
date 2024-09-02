@@ -21,7 +21,7 @@
         <el-input v-model="form.deviceId" placeholder="请输入设备id"/>
       </el-form-item>
       <el-form-item label="预约code" prop="itemCode">
-        <el-select v-model="itemSelect" multiple placeholder="请选择"  @change="changeItem">
+        <el-select v-model="form.itemCode" multiple placeholder="请选择" >
           <el-option v-for="item in itemList" :key="item.itemCode" :label="item.title" :value="item.itemCode"></el-option>
         </el-select>
       </el-form-item>
@@ -36,8 +36,8 @@
       <el-form-item label="市" prop="cityName">
         <el-input v-model="form.cityName" placeholder="请输入门店省市"/>
       </el-form-item>
-      <el-form-item label="门店商品ID" prop="ishopId" v-if="form.appointmentType === 2">
-        <el-input v-model="form.ishopId" placeholder="请输入门店商品ID"/>
+      <el-form-item label="门店商品ID" prop="shopId" v-if="form.appointmentType === 2">
+        <el-input v-model="form.shopId" placeholder="请输入门店商品ID"/>
       </el-form-item>
       <el-form-item label="随机时间预约" prop="appointmentTimeType">
         <el-select v-model="form.appointmentTimeType" placeholder="请选择">
@@ -89,11 +89,23 @@ export default {
       appointmentTimeTypeList: [],
       showLocalServicePaymentType: false,
       visible: false,
-      itemSelect: [],
       itemList: [],
       form: {
+        mobile: '',
+        remark: '',
+        userId: '',
+        token: '',
+        cookie: '',
+        deviceId: '',
+        itemCode: [],
         appointmentType: "",
         appointmentTimeType: "",
+        provinceName: "",
+        cityName: "",
+        shopId: "",
+        minute: "",
+        pushPlusToken: "",
+        expireTime: "",
       },
       rules: {
         mobile: [
@@ -125,39 +137,38 @@ export default {
         this.form = response.data;
         this.visible = true;
         this.title = "修改I茅台用户";
-        this.itemSelect = [];
-        if(this.form.itemCode) {
-          if (this.form.itemCode !== "" && this.form.itemCode.indexOf("@") == -1) {
-            this.itemSelect.push(this.form.itemCode);
-          } else {
-            let arr = this.form.itemCode.split("@");
-            arr.forEach((e) => {
-              if (e !== "") {
-                this.itemSelect.push(e);
-              }
-            });
-          }
+        this.form.itemCode = [];
+        if (response.data.itemCode !== "" && response.data.itemCode.indexOf("@") == -1) {
+          this.form.itemCode.push(response.data.itemCode);
+        } else {
+          let arr = response.data.itemCode.split("@");
+          arr.forEach((e) => {
+            if (e !== "") {
+              this.form.itemCode.push(e);
+            }
+          });
         }
-      });
-    },
-    //item下拉框选择
-    changeItem(e) {
-      this.form.itemCode = "";
-      this.itemSelect.forEach((e) => {
-        this.form.itemCode += e + "@";
       });
     },
     submitForm() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          let data = {
+            ...this.form
+          }
+          let itemCode = ""
+          this.form.itemCode.forEach((e) => {
+            itemCode += e + "@";
+          });
+          data.itemCode = itemCode
           if (this.toAdd != 0) {
-            updateUserApi(this.form).then((response) => {
+            updateUserApi(data).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            userLoginApi(this.form).then((response) => {
+            userLoginApi(data).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();

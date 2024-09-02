@@ -28,37 +28,37 @@ public class UserController {
         return R.success(itemPageInfo);
     }
     @GetMapping("/getUserByMobile")
-    public R<User> getUserByMobile(@RequestParam Long mobile){
+    public R<User> getUserByMobile(@RequestParam Long mobile) {
         User user = userService.getUserByMobile(mobile);
         return R.success(user);
     }
 
     @PostMapping("/login")
-    public R<String> login(@RequestParam Long mobile, @RequestParam String code, @RequestParam String deviceId){
+    public R<String> login(@RequestParam Long mobile, @RequestParam String code, @RequestParam String deviceId) {
         imtService.login(mobile, code, deviceId);
         return R.success("登录成功");
     }
 
     @PostMapping("/update")
-    public R<String> update(@RequestBody User user){
+    public R<String> update(@RequestBody User user) {
         userService.update(user);
         return R.success("修改成功");
     }
 
     @PostMapping("/sendCode")
-    public R<String> sendCode(@RequestBody User user){
+    public R<String> sendCode(@RequestBody User user) {
         imtService.sendCode(user.getMobile(), user.getDeviceId());
         return R.success("新建成功");
     }
 
     @PostMapping("/reservation")
-    public R<String> reservation(@RequestBody User user){
+    public R<String> reservation(@RequestBody User user) {
         imtService.reservation(user.getMobile());
         return R.success("预约成功");
     }
 
     @PostMapping("/travelReward")
-    public R<String> travelReward(@RequestBody User user){
+    public R<String> travelReward(@RequestBody User user) {
         imtService.travelReward(user.getMobile());
         return R.success("旅行成功");
     }
