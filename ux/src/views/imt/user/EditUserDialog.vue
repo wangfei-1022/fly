@@ -1,7 +1,7 @@
 <template>
   <!-- 添加或修改I茅台用户对话框 -->
-  <el-dialog :title="title" :visible.sync="visible" width="600px" append-to-body>
-    <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="100px">
+  <el-dialog :title="title" :visible.sync="visible" width="650px" append-to-body>
+    <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="110px">
       <el-form-item v-if="toAdd != 1" label="手机号" prop="mobile">
         <el-input v-model="form.mobile" placeholder="请输入I茅台用户手机号"/>
       </el-form-item>
@@ -31,13 +31,25 @@
         </el-select>
       </el-form-item>
       <el-form-item label="省" prop="provinceName">
-        <el-input v-model="form.provinceName" placeholder="请输入门店省市"/>
+        <el-select v-model="form.provinceName" placeholder="请选择省" filterable @change="getCityList">
+          <el-option v-for="item in provinceList" :key="item.provinceName" :label="item.provinceName" :value="item.provinceName"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="市" prop="cityName">
-        <el-input v-model="form.cityName" placeholder="请输入门店省市"/>
+        <el-select v-model="form.cityName" placeholder="请选择市" filterable  @change="getDistrictList">
+          <el-option v-for="item in cityList" :key="item.cityName" :label="item.cityName" :value="item.cityName"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="门店商品ID" prop="shopId" v-if="form.appointmentType === 2">
-        <el-input v-model="form.shopId" placeholder="请输入门店商品ID"/>
+      <el-form-item label="区" prop="districtName">
+        <el-select v-model="form.districtName" placeholder="请选择市" filterable  @change="getShopList">
+          <el-option label="不限" value=""></el-option>
+          <el-option v-for="item in districtList" :key="item.districtName" :label="item.districtName" :value="item.districtName"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="门店ID" prop="shopId" v-if="form.appointmentType === 2">
+        <el-select v-model="form.shopId" placeholder="请选择门店" filterable  @change="getShopList">
+          <el-option v-for="item in shopList" :key="item.shopId" :label="item.name" :value="item.shopId"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="随机时间预约" prop="appointmentTimeType">
         <el-select v-model="form.appointmentTimeType" placeholder="请选择">
@@ -46,9 +58,6 @@
       </el-form-item>
       <el-form-item label="分钟" prop="minute" v-if="form.appointmentTimeType === 2">
         <el-input v-model="form.minute" placeholder="预约执行的时间(单位分)，例如15分执行"/>
-      </el-form-item>
-      <el-form-item label="推送token" prop="pushPlusToken">
-        <el-input v-model="form.pushPlusToken" placeholder="请输入推送token"/>
       </el-form-item>
       <el-form-item label="到期时间" prop="expireTime">
         <el-date-picker v-model="form.expireTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" style="width: 180px;"></el-date-picker>
@@ -64,11 +73,13 @@
 <script>
 import { getAppointmentTypeApi, getAppointmentTimeTypeApi } from "@/api/imt/base";
 import { getItemListApi } from "@/api/imt/item";
+import { getProvinceListApi, getCityListApi, getDistrictListApi, getListShopAllApi } from "@/api/imt/shop";
 import {
   getUserByMobileApi,
   addUser,
   updateUserApi,
   userLoginApi } from "@/api/imt/user";
+
 export default {
   name: "ApplyPayableClearDialog",
   props: {
@@ -90,6 +101,10 @@ export default {
       showLocalServicePaymentType: false,
       visible: false,
       itemList: [],
+      provinceList: [],
+      cityList: [],
+      shopList: [],
+      districtList: [],
       form: {
         mobile: '',
         remark: '',
@@ -102,15 +117,27 @@ export default {
         appointmentTimeType: "",
         provinceName: "",
         cityName: "",
+        districtName: "",
         shopId: "",
         minute: "",
-        pushPlusToken: "",
         expireTime: "",
       },
       rules: {
-        mobile: [
-          {required: true, message: "手机号不能为空", trigger: "blur"},
-        ],
+        mobile: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        userId: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        remark: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        token: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        cookie: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        deviceId: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        itemCode: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        appointmentType: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        appointmentTimeType: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        provinceName: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        cityName: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        districtName: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        shopId: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        minute: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        expireTime: [{required: true, message: "手机号不能为空", trigger: "blur"}],
       },
     }
   },
@@ -124,31 +151,54 @@ export default {
     getAppointmentTimeTypeApi().then(res => {
       this.appointmentTimeTypeList = res.data;
     })
+    getProvinceListApi().then(res => {
+      this.provinceList = res.data
+    })
   },
   methods: {
+    getCityList() {
+      getCityListApi({provinceName: this.form.provinceName}).then(res => {
+        this.cityList = res.data
+      })
+    },
+    getDistrictList() {
+      this.getShopList()
+      getDistrictListApi({provinceName: this.form.provinceName, cityName: this.form.cityName}).then(res => {
+        this.districtList = res.data
+      })
+    },
+    getShopList() {
+      getListShopAllApi({provinceName: this.form.provinceName, cityName: this.form.cityName, districtName: this.form.districtName}).then(res => {
+        this.shopList = res.data.list
+      })
+    },
     // 业务类型 订单类型
     show(row) {
-      const mobile = row.mobile || this.ids[0];
-      let data = {
-        mobile: mobile
-      }
-      getUserByMobileApi(data).then((response) => {
-        this.toAdd = 1;
-        this.form = response.data;
+      if(!row) {
+        this.title = "新增I茅台用户";
         this.visible = true;
-        this.title = "修改I茅台用户";
-        this.form.itemCode = [];
-        if (response.data.itemCode !== "" && response.data.itemCode.indexOf("@") == -1) {
-          this.form.itemCode.push(response.data.itemCode);
-        } else {
-          let arr = response.data.itemCode.split("@");
-          arr.forEach((e) => {
-            if (e !== "") {
-              this.form.itemCode.push(e);
-            }
-          });
+      } else {
+        let data = {
+          mobile: row.mobile
         }
-      });
+        getUserByMobileApi(data).then((response) => {
+          this.toAdd = 1;
+          this.form = response.data;
+          this.visible = true;
+          this.title = "修改I茅台用户";
+          this.form.itemCode = [];
+          if (response.data.itemCode !== "" && response.data.itemCode.indexOf("@") == -1) {
+            this.form.itemCode.push(response.data.itemCode);
+          } else {
+            let arr = response.data.itemCode.split("@");
+            arr.forEach((e) => {
+              if (e !== "") {
+                this.form.itemCode.push(e);
+              }
+            });
+          }
+        });
+      }
     },
     submitForm() {
       this.$refs["form"].validate((valid) => {

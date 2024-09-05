@@ -28,6 +28,43 @@
         </if>
     </select>
 
+    <!-- 查询所有省 -->
+    <select id="provinceList" resultType="com.wf.imaotai.entity.Shop">
+        SELECT imaotai_shop.province_name
+        FROM imaotai_shop
+        WHERE 1 = 1
+        <if test="provinceName != null and provinceName != ''">
+            and province_name like concat('%', #{provinceName}, '%')
+        </if>
+        GROUP BY imaotai_shop.province_name
+    </select>
+
+    <!-- 查询市 -->
+    <select id="cityList" resultType="com.wf.imaotai.entity.Shop">
+        SELECT imaotai_shop.city_name
+        FROM imaotai_shop
+        WHERE 1 = 1
+        <if test="provinceName != null and provinceName != ''">
+            and province_name = #{provinceName}
+        </if>
+        GROUP BY imaotai_shop.city_name
+    </select>
+
+    <!-- 查询区 -->
+    <select id="districtList" resultType="com.wf.imaotai.entity.Shop">
+        SELECT imaotai_shop.district_name
+        FROM imaotai_shop
+        WHERE 1 = 1
+        <if test="provinceName != null and provinceName != ''">
+            and province_name = #{provinceName}
+        </if>
+        <if test="cityName != null and cityName != ''">
+            and city_name = #{cityName}
+        </if>
+        GROUP BY imaotai_shop.district_name
+    </select>
+
+
     <select id="getShopById" resultType="com.wf.imaotai.entity.Shop">
         SELECT *
         FROM imaotai_shop

@@ -14,6 +14,12 @@ public interface ShopMapper {
 
     public List<Shop> getList(ShopRequest request);
 
+    public List<Shop> districtList(ShopRequest request);
+
+    public List<Shop> cityList(ShopRequest request);
+
+    public List<Shop> provinceList(ShopRequest request);
+
     public Long insertShop(Shop shop);
 
     public Long insertShopBatch(List<Shop> list);

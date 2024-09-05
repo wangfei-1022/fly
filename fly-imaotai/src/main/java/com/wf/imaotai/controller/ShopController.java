@@ -32,6 +32,16 @@ public class ShopController {
         return R.success(shopPageInfo);
     }
 
+    /**
+     * 查询i茅台商品列表
+     */
+    @GetMapping("/list/no/page")
+    public R listAll(ShopRequest shopRequest) {
+        List<Shop> shops = shopService.getShopListNoPage(shopRequest);
+        PageInfo<Shop> shopPageInfo = new PageInfo<>(shops);
+        return R.success(shopPageInfo);
+    }
+
 
     @GetMapping("/delivery/search")
     public R deliverySearch(ShopRequest shopRequest) {
@@ -50,6 +60,42 @@ public class ShopController {
     public R refreshShop() {
         shopService.refreshShop();
         return R.success("刷新成功");
+    }
+
+    /**
+     * 省
+     */
+    @GetMapping(value = "/province", name = "获取省")
+    public R provinceList(ShopRequest shopRequest) {
+        List<Shop> shops = shopService.provinceList(shopRequest);
+        return R.success(shops);
+    }
+
+    /**
+     * 市
+     */
+    @GetMapping(value = "/province/city", name = "获取市")
+    public R cityList(ShopRequest shopRequest) {
+        if(shopRequest.getProvinceName() == null) {
+            return R.error("请先填写省份");
+        }
+        List<Shop> shops = shopService.cityList(shopRequest);
+        return R.success(shops);
+    }
+
+    /**
+     * 市
+     */
+    @GetMapping(value = "/province/city/district", name = "获取区")
+    public R districtList(ShopRequest shopRequest) {
+        if(shopRequest.getProvinceName() == null) {
+            return R.error("请先填写省份");
+        }
+        if(shopRequest.getCityName() == null) {
+            return R.error("请先填写市");
+        }
+        List<Shop> shops = shopService.districtList(shopRequest);
+        return R.success(shops);
     }
 
     @GetMapping("appointment/type")

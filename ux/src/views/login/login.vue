@@ -74,7 +74,10 @@
     </div>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2023 wangfei.com All Rights Reserved.</span>
+      <span>
+        Copyright ©  2014-2024 All Rights Reserved. WF.
+        <a href="https://beian.miit.gov.cn/" target="_blank" class="icp">皖ICP备2024060242号</a>
+      </span>
     </div>
   </div>
 </template>

@@ -31,10 +31,6 @@ public class Shop {
 
     private String provinceName;
 
-    private Date openStartTime;
-
-    private Date openEndTime;
-
     private String tenantName;
 
     private String name;

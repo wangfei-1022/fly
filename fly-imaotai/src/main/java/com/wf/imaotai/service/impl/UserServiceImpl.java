@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getList(UserRequest userRequest) {
         PageHelper.startPage(userRequest.initPage());
-        List<User> xx1 = userMapper.getList(userRequest);
-        return xx1;
+        List<User> userList = userMapper.getList(userRequest);
+        return userList;
     }
 
     @Override
@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     public List<User> selectReservationUser() {
         UserRequest userRequest = new UserRequest();
         PageHelper.startPage(1, 10);
-        List<User> xx1 = userMapper.getList(userRequest);
-        return xx1;
+        List<User> userList = userMapper.getList(userRequest);
+        return userList;
     }
 
 

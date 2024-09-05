@@ -8,7 +8,15 @@ import com.wf.imaotai.model.request.ShopRequest;
 import java.util.List;
 
 public interface ShopService {
+
+    List<Shop> getShopListNoPage(ShopRequest shopRequest);
     List<Shop> getShoplist(ShopRequest shopRequest);
+
+    List<Shop> provinceList(ShopRequest shopRequest);
+
+    List<Shop> cityList(ShopRequest shopRequest);
+
+    List<Shop> districtList(ShopRequest shopRequest);
 
     void refreshShop();
 

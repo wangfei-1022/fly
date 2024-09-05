@@ -44,18 +44,36 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     public RestTemplate restTemplate;
 
-    public List<Shop> getShopListAll(ShopRequest shopRequest) {
-        List<Shop> xx1 = shopMapper.getList(shopRequest);
-        return xx1;
+    @Override
+    public List<Shop> getShopListNoPage(ShopRequest shopRequest) {
+        List<Shop> shopList = shopMapper.getList(shopRequest);
+        return shopList;
     }
 
     @Override
     public List<Shop> getShoplist(ShopRequest shopRequest) {
         PageHelper.startPage(shopRequest.initPage());
-        List<Shop> xx1 = shopMapper.getList(shopRequest);
+        List<Shop> shopList = shopMapper.getList(shopRequest);
+        return shopList;
+    }
+
+    @Override
+    public List<Shop> provinceList(ShopRequest shopRequest) {
+        List<Shop> xx1 = shopMapper.provinceList(shopRequest);
         return xx1;
     }
 
+    @Override
+    public List<Shop> cityList(ShopRequest shopRequest) {
+        List<Shop> cityList = shopMapper.cityList(shopRequest);
+        return cityList;
+    }
+
+    @Override
+    public List<Shop> districtList(ShopRequest shopRequest) {
+        List<Shop> districtList = shopMapper.districtList(shopRequest);
+        return districtList;
+    }
 
     /*
     * 根据省市获取到门店地址
@@ -121,7 +139,7 @@ public class ShopServiceImpl implements ShopService {
             ShopRequest shopRequest = new ShopRequest();
             shopRequest.setProvinceName(province);
             //获取门店列表
-            List<Shop> iShops = getShopListAll(shopRequest);
+            List<Shop> iShops = getShopListNoPage(shopRequest);
             //获取今日的门店信息列表
             imtItemInfoList.forEach(v -> {
                  Shop shop = iShops.stream().filter(i -> i.getShopId() == v.getShopId()).findFirst().get();
