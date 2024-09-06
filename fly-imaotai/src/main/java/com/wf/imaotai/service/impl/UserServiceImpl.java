@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByMobile(Long mobile) {
+    public User getUserByMobile(String mobile) {
         User user = userMapper.selectByMobile(mobile);
         return user;
     }

@@ -77,7 +77,7 @@ public class IMTServiceImpl implements IMTService {
     }
 
     @Override
-    public boolean sendCode(Long mobile, String deviceId) {
+    public boolean sendCode(String mobile, String deviceId) {
         Map<String, Object> data = new HashMap<>();
         data.put("mobile", mobile);
         final long curTime = System.currentTimeMillis();
@@ -105,7 +105,7 @@ public class IMTServiceImpl implements IMTService {
     }
 
     @Override
-    public boolean login(Long mobile, String code, String deviceId) {
+    public boolean login(String mobile, String code, String deviceId) {
         Map<String, String> data = new HashMap<>();
         data.put("mobile", mobile.toString());
         data.put("vCode", code);
@@ -123,8 +123,8 @@ public class IMTServiceImpl implements IMTService {
         httpHeaders.add("Content-Type", "application/json");
         HttpEntity<Map> entity = new HttpEntity<>(data, httpHeaders);
 
-//        String res = restTemplate.postForObject("https://app.moutai519.com.cn/xhr/front/user/register/login", entity, String.class);
-        String res = "{\"code\":2000,\"data\":{\"birthday\":\"1991-10-22\",\"idType\":0,\"verifyStatus\":1,\"cookie\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdCIsImV4cCI6MTcyNjY0MzEyMSwidXNlcklkIjoxMTE2OTc2NzA0LCJkZXZpY2VJZCI6ImU5NjAxOGVlLTM5ZmEtNDY2NS05MTdjLWUyYWJlNjhkNGIzNyIsImlhdCI6MTcyNDA1MTEyMX0.V4taJIRjQQWkRM0-OP-TamNLrH4GaMya2P0frM2NTYA\",\"userTag\":0,\"idCode\":\"341022199110221110\",\"mobile\":\"166****1022\",\"userName\":\"汪*\",\"userId\":1116976704,\"did\":\"did:mt:1:0x35b112ea7a9a11efb53d395d507c69e56fc8fc79122e52c172225b4c2c8183ba\",\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdCIsImV4cCI6MTcyNjY0MzEyMSwidXNlcklkIjoxMTE2OTc2NzA0LCJkZXZpY2VJZCI6ImU5NjAxOGVlLTM5ZmEtNDY2NS05MTdjLWUyYWJlNjhkNGIzNyIsImlhdCI6MTcyNDA1MTEyMX0.MDUdgI4qbawWfob4I3_BXtivVAv_80DG2dyEAiwWjz8\"}}";
+        String res = restTemplate.postForObject("https://app.moutai519.com.cn/xhr/front/user/register/login", entity, String.class);
+//        String res = "{\"code\":2000,\"data\":{\"birthday\":\"1991-10-22\",\"idType\":0,\"verifyStatus\":1,\"cookie\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdCIsImV4cCI6MTcyNjY0MzEyMSwidXNlcklkIjoxMTE2OTc2NzA0LCJkZXZpY2VJZCI6ImU5NjAxOGVlLTM5ZmEtNDY2NS05MTdjLWUyYWJlNjhkNGIzNyIsImlhdCI6MTcyNDA1MTEyMX0.V4taJIRjQQWkRM0-OP-TamNLrH4GaMya2P0frM2NTYA\",\"userTag\":0,\"idCode\":\"341022199110221110\",\"mobile\":\"166****1022\",\"userName\":\"汪*\",\"userId\":1116976704,\"did\":\"did:mt:1:0x35b112ea7a9a11efb53d395d507c69e56fc8fc79122e52c172225b4c2c8183ba\",\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdCIsImV4cCI6MTcyNjY0MzEyMSwidXNlcklkIjoxMTE2OTc2NzA0LCJkZXZpY2VJZCI6ImU5NjAxOGVlLTM5ZmEtNDY2NS05MTdjLWUyYWJlNjhkNGIzNyIsImlhdCI6MTcyNDA1MTEyMX0.MDUdgI4qbawWfob4I3_BXtivVAv_80DG2dyEAiwWjz8\"}}\n";
         User user = userMapper.selectByMobile(mobile);
         JSONObject body = JSONObject.parseObject(res);
 
@@ -133,11 +133,11 @@ public class IMTServiceImpl implements IMTService {
             if (user != null) {
                 deviceId = user.getDeviceId();
             }
-            user = new User(mobile, deviceId, body);
+            User user1 = new User(mobile, deviceId, body);
             if (user == null) {
-                userMapper.insertUser(user);
+                userMapper.insertUser(user1);
             } else {
-                userMapper.updateUser(user);
+                userMapper.updateUser(user1);
             }
             return true;
         } else {
@@ -159,7 +159,7 @@ public class IMTServiceImpl implements IMTService {
         data.put("itemInfoList", itemArray);
 
         data.put("sessionId", itemService.getCurrentSessionId());
-        data.put("userId", user.getUserId().toString());
+        data.put("userId", user.getId().toString());
         data.put("shopId", shopId);
 
         data.put("actParam", AESUtil.AesEncrypt(JSON.toJSONString(data)));
@@ -177,7 +177,7 @@ public class IMTServiceImpl implements IMTService {
         httpHeaders.add("MT-APP-Version", getMTVersion());
         httpHeaders.add("User-Agent", "iOS;16.3;Apple;?unrecognized?");
         httpHeaders.add("Content-Type", "application/json");
-        httpHeaders.add("userId", user.getUserId().toString());
+        httpHeaders.add("userId", user.getId().toString());
 //        HttpEntity<Map<String,Object>> entity = new HttpEntity<>(data, httpHeaders);
         String res = HttpUtil.post("https://app.moutai519.com.cn/xhr/front/mall/reservation/add", data, httpHeaders.build());
 
@@ -193,7 +193,7 @@ public class IMTServiceImpl implements IMTService {
     }
 
     @Override
-    public void reservation(Long mobile) {
+    public void reservation(String mobile) {
         User user = userMapper.selectByMobile(mobile);
         if (StringUtils.isEmpty(user.getItemCode())) {
             return;
@@ -270,7 +270,7 @@ public class IMTServiceImpl implements IMTService {
     }
 
     @Override
-    public void travelReward(Long mobile) {
+    public void travelReward(String mobile) {
         User user = userMapper.selectByMobile(mobile);
         String logContent = "";
         try {

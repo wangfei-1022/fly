@@ -7,17 +7,17 @@ public interface IMTService {
 
     String getMTVersion();
 
-    void reservation(Long mobile);
+    void reservation(String mobile);
 
 
-    boolean sendCode(Long mobile, String deviceId);
+    boolean sendCode(String mobile, String deviceId);
 
-    boolean login(Long mobile, String code, String deviceId);
+    boolean login(String mobile, String code, String deviceId);
 
     //获取申购耐力值
     String getEnergyAward(User iUser);
 
-    void travelReward(Long mobile);
+    void travelReward(String mobile);
 
     @Async
     void reservationBatch();

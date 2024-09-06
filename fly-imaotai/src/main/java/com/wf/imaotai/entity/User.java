@@ -12,9 +12,9 @@ import java.util.Date;
 @Data
 public class User {
 
-    private Long userId;
+    private Long id;
 
-    private Long mobile;
+    private String mobile;
 
     private String name;
 
@@ -60,9 +60,9 @@ public class User {
     public User() {
 
     }
-    public User(Long mobile, JSONObject jsonObject) {
+    public User(String mobile, JSONObject jsonObject) {
         JSONObject data = jsonObject.getJSONObject("data");
-        this.userId = data.getLong("userId");
+        this.id = data.getLong("userId");
         this.mobile = mobile;
         this.token = data.getString("token");
         this.cookie = data.getString("cookie");
@@ -78,9 +78,9 @@ public class User {
         this.expireTime = thirtyDaysLater;
     }
 
-    public User(Long mobile, String deviceId, JSONObject jsonObject) {
+    public User(String mobile, String deviceId, JSONObject jsonObject) {
         JSONObject data = jsonObject.getJSONObject("data");
-        this.userId = data.getLong("userId");
+        this.id = data.getLong("userId");
         this.mobile = mobile;
         this.token = data.getString("token");
         this.cookie = data.getString("cookie");

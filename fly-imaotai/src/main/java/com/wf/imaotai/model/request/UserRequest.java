@@ -7,5 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserRequest extends BasePageRequest {
-    private Long mobile;
+    private String mobile;
+    private String code;
+    private String deviceId;
 }

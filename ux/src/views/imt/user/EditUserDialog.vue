@@ -8,8 +8,8 @@
       <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" placeholder="请输入备注"/>
       </el-form-item>
-      <el-form-item label="用户id" prop="userId">
-        <el-input v-model="form.userId" placeholder="请输入I茅台用户id"/>
+      <el-form-item label="用户id" prop="id">
+        <el-input v-model="form.id" placeholder="请输入I茅台用户id"/>
       </el-form-item>
       <el-form-item label="toekn" prop="token" class="full-line">
         <el-input v-model="form.token" placeholder="请输入I茅台toekn"/>
@@ -108,7 +108,7 @@ export default {
       form: {
         mobile: '',
         remark: '',
-        userId: '',
+        id: '',
         token: '',
         cookie: '',
         deviceId: '',
@@ -124,7 +124,7 @@ export default {
       },
       rules: {
         mobile: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        userId: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        id: [{required: true, message: "手机号不能为空", trigger: "blur"}],
         remark: [{required: true, message: "手机号不能为空", trigger: "blur"}],
         token: [{required: true, message: "手机号不能为空", trigger: "blur"}],
         cookie: [{required: true, message: "手机号不能为空", trigger: "blur"}],
@@ -174,6 +174,8 @@ export default {
     },
     // 业务类型 订单类型
     show(row) {
+      debugger
+      console.log(12222)
       if(!row) {
         this.title = "新增I茅台用户";
         this.visible = true;
@@ -186,17 +188,18 @@ export default {
           this.form = response.data;
           this.visible = true;
           this.title = "修改I茅台用户";
-          this.form.itemCode = [];
+          let itemCode = [];
           if (response.data.itemCode !== "" && response.data.itemCode.indexOf("@") == -1) {
-            this.form.itemCode.push(response.data.itemCode);
+           itemCode.push(response.data.itemCode);
           } else {
             let arr = response.data.itemCode.split("@");
             arr.forEach((e) => {
               if (e !== "") {
-                this.form.itemCode.push(e);
+                itemCode.push(e);
               }
             });
           }
+          this.form.itemCode = [];
         });
       }
     },

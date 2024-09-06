@@ -31,7 +31,7 @@ public class Log {
 
     private String logName;
 
-    private Long mobile;
+    private String mobile;
 
     private Integer status;
 

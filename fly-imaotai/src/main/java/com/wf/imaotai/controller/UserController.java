@@ -28,14 +28,14 @@ public class UserController {
         return R.success(itemPageInfo);
     }
     @GetMapping("/getUserByMobile")
-    public R<User> getUserByMobile(@RequestParam Long mobile) {
+    public R<User> getUserByMobile(@RequestParam String mobile) {
         User user = userService.getUserByMobile(mobile);
         return R.success(user);
     }
 
     @PostMapping("/login")
-    public R<String> login(@RequestParam Long mobile, @RequestParam String code, @RequestParam String deviceId) {
-        imtService.login(mobile, code, deviceId);
+    public R<String> login(@RequestBody UserRequest userRequest) {
+        imtService.login(userRequest.getMobile(), userRequest.getCode(), userRequest.getDeviceId());
         return R.success("登录成功");
     }
 

@@ -240,9 +240,12 @@ export default {
       this.$refs.editUserDialogRef.show()
     },
     handleAddIUser() {
-      this.$refs.editUserDialogRef.show()
+      this.reset();
+      this.openUser = true
     },
     handleUpdate(row) {
+      debugger
+      console.log(122)
       this.$refs.editUserDialogRef.show(row)
     },
     //预约

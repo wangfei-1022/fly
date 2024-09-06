@@ -31,7 +31,7 @@ public class LogServiceImpl implements LogService {
         log.setContent(content);
         log.setCreateTime(new Date().getTime());
         log.setMobile(user.getMobile());
-        log.setUserId(user.getUserId());
+        log.setUserId(user.getId());
         return logMapper.insetLog(log);
     }
 }

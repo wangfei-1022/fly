@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
     List<User> getList(UserRequest userRequest);
-    User getUserByMobile(Long mobile);
+    User getUserByMobile(String mobile);
 
     List<User> selectReservationUser();
 

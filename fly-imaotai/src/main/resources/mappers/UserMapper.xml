@@ -5,7 +5,7 @@
 
     <!-- 结果映射 -->
     <resultMap id="BaseResultMap" type="com.wf.imaotai.entity.User">
-        <id property="user_id" column="userId" />
+        <id property="id" column="id" />
         <result property="content" column="content" />
         <result column="create_time" property="createTime" />
     </resultMap>
@@ -23,7 +23,7 @@
 
     <insert id="insertUser" parameterType="com.wf.imaotai.entity.User">
         INSERT INTO imaotai_user(
-                                 user_id,
+                id,
                                  mobile,
                                  name,
                                  token,
@@ -41,7 +41,7 @@
                                  appointment_time_type,
                                  create_time
                                  )
-            VALUES(#{userId},
+            VALUES(#{id},
                    #{mobile},
                    #{name},
                    #{token},
@@ -62,7 +62,7 @@
 
     <update id="updateUser" parameterType="com.wf.imaotai.entity.User">
         UPDATE imaotai_user SET
-            user_id = #{userId},
+            id = #{id},
             name = #{name},
             token = #{token},
             cookie = #{cookie},

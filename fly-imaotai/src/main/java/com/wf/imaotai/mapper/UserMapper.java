@@ -15,7 +15,7 @@ public interface UserMapper {
     public List<User> getList(UserRequest userRequest);
 
     @Select("SELECT * FROM imaotai_user WHERE mobile = #{mobile}")
-    public User selectByMobile(Long mobile);
+    public User selectByMobile(String mobile);
 
     public int insertUser(User user);
 
