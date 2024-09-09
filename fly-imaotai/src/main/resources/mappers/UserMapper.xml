@@ -53,7 +53,7 @@
                    #{itemCode},
                    #{provinceName},
                    #{cityName},
-                   #{district_name},
+                   #{districtName},
                    #{lat},
                    #{lng},
                    #{expireTime},
