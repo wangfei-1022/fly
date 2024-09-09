@@ -10,4 +10,5 @@ public class UserRequest extends BasePageRequest {
     private String mobile;
     private String code;
     private String deviceId;
+    private int minute;
 }

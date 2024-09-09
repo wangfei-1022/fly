@@ -30,7 +30,7 @@ public class IMTTask {
     @Async
     @Scheduled(cron = "0 10 1 ? * * ")
     public void updateUserMinuteBatch() {
-//        iUserService.updateUserMinuteBatch();
+        userService.updateUserMinuteBatch();
     }
 
 
@@ -50,8 +50,7 @@ public class IMTTask {
     @Async
     @Scheduled(cron = "0 0/1 9 ? * *")
     public void reservationBatchTask() {
-//        imtService.reservationBatch();
-
+        imtService.reservationBatch();
     }
 
 

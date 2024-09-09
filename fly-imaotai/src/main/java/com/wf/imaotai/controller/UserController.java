@@ -3,6 +3,7 @@ package com.wf.imaotai.controller;
 import com.github.pagehelper.PageInfo;
 import com.wf.common.common.R;
 import com.wf.imaotai.entity.User;
+import com.wf.imaotai.mapper.UserMapper;
 import com.wf.imaotai.model.request.UserRequest;
 import com.wf.imaotai.service.IMTService;
 import com.wf.imaotai.service.UserService;
@@ -20,6 +21,9 @@ public class UserController {
 
     @Autowired
     private IMTService imtService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @GetMapping("/list")
     public R getList(UserRequest userRequest) {
@@ -58,8 +62,9 @@ public class UserController {
     }
 
     @PostMapping("/reservation")
-    public R<String> reservation(@RequestBody User user) {
-        imtService.reservation(user.getMobile());
+    public R<String> reservation(@RequestBody UserRequest userRequest) {
+        User user = userMapper.selectByMobile(userRequest.getMobile());
+        imtService.reservation(user);
         return R.success("预约成功");
     }
 

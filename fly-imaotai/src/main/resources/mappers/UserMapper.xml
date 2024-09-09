@@ -18,6 +18,9 @@
         <if test="mobile != null and mobile != ''">
             and mobile > #{mobile}
         </if>
+        <if test="minute != null and minute != ''">
+            and minute = #{minute}
+        </if>
         ORDER BY imaotai_user.create_time DESC
     </select>
 

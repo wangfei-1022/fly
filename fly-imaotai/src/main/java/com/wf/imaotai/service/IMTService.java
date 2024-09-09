@@ -7,7 +7,7 @@ public interface IMTService {
 
     String getMTVersion();
 
-    void reservation(String mobile);
+    void reservation(User user);
 
 
     boolean sendCode(String mobile, String deviceId);

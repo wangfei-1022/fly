@@ -32,7 +32,7 @@
       </el-table-column>
       <el-table-column label="类型" prop="shopType" show-overflow-tooltip>
         <template slot-scope="scope">
-          <span>{{scope.row.shopType == 1 ? "预约出货量最大门店" : "预约附近门店"}}</span>
+          <span>{{scope.row.shopType == 1 ? "预约本市量最大门店" : "预约指定城市门店"}}</span>
         </template>
       </el-table-column>
       <el-table-column label="预约执行分钟" prop="minute" min-width="100"/>

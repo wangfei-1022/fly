@@ -10,7 +10,7 @@ import lombok.Getter;
 public enum AppointmentType {
 
     MAX(1, "预约本市量最大门店"),
-    TARGET(2, "指定城市门店");
+    TARGET(2, "预约指定城市门店");
 
     private int code;
     private String name;

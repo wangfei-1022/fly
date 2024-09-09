@@ -20,4 +20,16 @@ public interface UserMapper {
 
     @Delete("DELETE FROM imaotai_user WHERE mobile = #{mobile}")
     public int deleteUser(User user);
+
+    @Select("SELECT COUNT(*) FROM imaotai_user")
+    public Long selectCount();
+
+    @Update("UPDATE imaotai_user SET `minute` = (SELECT FLOOR(RAND() * 50 + 1)) WHERE minute = \"0\"")
+    void updateUserMinuteBatch();
+
+    @Update("SET @row_number = 0;\n" +
+            "UPDATE imaotai_user\n" +
+            "SET `minute` = (@row_number := @row_number + 1) % 50 + 1\n" +
+            "ORDER BY RAND();")
+    void updateUserMinuteEven();
 }

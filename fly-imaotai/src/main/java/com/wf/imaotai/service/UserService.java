@@ -11,8 +11,12 @@ public interface UserService {
 
     List<User> selectReservationUser();
 
+    List<User> selectReservationUserByMinute(int minute);
+
     int update(User user);
 
     int delete(User user);
+
+    void updateUserMinuteBatch();
 
 }

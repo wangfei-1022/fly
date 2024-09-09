@@ -193,8 +193,7 @@ public class IMTServiceImpl implements IMTService {
     }
 
     @Override
-    public void reservation(String mobile) {
-        User user = userMapper.selectByMobile(mobile);
+    public void reservation(User user) {
         if (StringUtils.isEmpty(user.getItemCode())) {
             return;
         }
@@ -503,11 +502,12 @@ public class IMTServiceImpl implements IMTService {
     @Async
     @Override
     public void reservationBatch() {
-        List<User> iUsers = userService.selectReservationUser();
-        for (User iUser : iUsers) {
-            log.info("「开始预约用户」" + iUser.getMobile());
+        int minute = DateUtil.minute(new Date());
+        List<User> users = userService.selectReservationUserByMinute(minute);
+        for (User user : users) {
+            log.info("「开始预约用户」" + user.getMobile());
             //预约
-            reservation(iUser.getMobile());
+            reservation(user);
             //延时3秒
             try {
                 TimeUnit.SECONDS.sleep(3);
@@ -526,9 +526,10 @@ public class IMTServiceImpl implements IMTService {
     @Override
     public void travelRewardBatch() {
         try {
-            List<User> iUsers = userService.selectReservationUser();
+            int minute = DateUtil.minute(new Date());
+            List<User> users = userService.selectReservationUser();
 
-            for (User user : iUsers) {
+            for (User user : users) {
                 log.info("「开始获得旅行奖励」" + user.getMobile());
                 travelRewardUser(user);
                 //延时3秒

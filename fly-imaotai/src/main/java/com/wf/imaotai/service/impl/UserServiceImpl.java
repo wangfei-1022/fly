@@ -10,6 +10,7 @@ import com.wf.imaotai.service.ShopService;
 import com.wf.imaotai.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +49,18 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+    /*
+     * 查询设置了预约的用户列表
+     * */
+    @Override
+    public List<User> selectReservationUserByMinute(int minute) {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setMinute(minute);
+        PageHelper.startPage(1, 10);
+        List<User> userList = userMapper.getList(userRequest);
+        return userList;
+    }
+
 
     @Override
     public int update(User user) {
@@ -71,5 +84,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public int delete(User user) {
         return userMapper.deleteUser(user);
+    }
+
+    @Override
+    public void updateUserMinuteBatch() {
+        Long userCount = userMapper.selectCount();
+        if (userCount > 60) {
+            userMapper.updateUserMinuteEven();
+        }else {
+            userMapper.updateUserMinuteBatch();
+        }
     }
 }
