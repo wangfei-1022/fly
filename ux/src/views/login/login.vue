@@ -255,26 +255,6 @@ export default {
   border-radius: 2px;
   width: 100%;
 }
-.snow{
-  h2{
-    text-align: center;
-  }
-  p{
-    font-size: 15px;
-    color: #333333;
-    line-height: 25px;
-  }
-  .author{
-    text-decoration: underline;
-    color: rgb(38, 115, 219);
-    font-size: 14px;
-    float: right;
-    line-height: 40px;
-  }
-  .under{
-    border-bottom: 1px solid #2673db;
-    cursor: pointer;
-  }
-}
+
 
 </style>
