@@ -1,9 +1,12 @@
 package com.wf.imaotai.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.wf.imaotai.entity.Shop;
 import com.wf.imaotai.entity.User;
 import com.wf.imaotai.mapper.UserMapper;
+import com.wf.imaotai.model.request.ShopRequest;
 import com.wf.imaotai.model.request.UserRequest;
+import com.wf.imaotai.service.ShopService;
 import com.wf.imaotai.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ShopService shopService;
+
     @Override
     public List<User> getList(UserRequest userRequest) {
         PageHelper.startPage(userRequest.initPage());
@@ -44,6 +51,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int update(User user) {
+        Shop shop = null;
+        if(user.getShopId() != null) {
+            shop = shopService.getShopById(user.getShopId());
+        } else {
+            ShopRequest shopRequest = new ShopRequest();
+            shopRequest.setProvinceName(user.getProvinceName());
+            shopRequest.setCityName(user.getCityName());
+            List<Shop> shops = shopService.getShopList(shopRequest);
+            shop = shops.get(0);
+        }
+        if(shop != null) {
+            user.setLat(shop.getLat());
+            user.setLng(shop.getLng());
+        }
         return userMapper.updateUser(user);
+    }
+
+    @Override
+    public int delete(User user) {
+        return userMapper.deleteUser(user);
     }
 }

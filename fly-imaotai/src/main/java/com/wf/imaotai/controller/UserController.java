@@ -45,6 +45,12 @@ public class UserController {
         return R.success("修改成功");
     }
 
+    @PostMapping("/delete")
+    public R<String> delete(@RequestBody User user) {
+        userService.delete(user);
+        return R.success("删除成功");
+    }
+
     @PostMapping("/sendCode")
     public R<String> sendCode(@RequestBody User user) {
         imtService.sendCode(user.getMobile(), user.getDeviceId());

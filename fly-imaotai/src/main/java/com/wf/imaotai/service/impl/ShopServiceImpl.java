@@ -51,10 +51,16 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> getShoplist(ShopRequest shopRequest) {
+    public List<Shop> getShopList(ShopRequest shopRequest) {
         PageHelper.startPage(shopRequest.initPage());
         List<Shop> shopList = shopMapper.getList(shopRequest);
         return shopList;
+    }
+
+    @Override
+    public Shop getShopById(String shopId) {
+        Shop shop = shopMapper.getShopById(shopId);
+        return shop;
     }
 
     @Override
@@ -142,7 +148,7 @@ public class ShopServiceImpl implements ShopService {
             List<Shop> iShops = getShopListNoPage(shopRequest);
             //获取今日的门店信息列表
             imtItemInfoList.forEach(v -> {
-                 Shop shop = iShops.stream().filter(i -> i.getShopId() == v.getShopId()).findFirst().get();
+                 Shop shop = iShops.stream().filter(i -> i.getShopId().equals(v.getShopId())).findFirst().get();
                  v.setProvinceName(shop.getProvinceName());
                  v.setCityName(shop.getCityName());
                  v.setDistrictName(shop.getDistrictName());
@@ -158,6 +164,9 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    /**
+     * 投放查询
+     */
     @Override
     public List<ItemInfo> deliverySearch(ShopRequest shopRequest) {
         String itemId = "10941";

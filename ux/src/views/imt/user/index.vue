@@ -23,7 +23,7 @@
     <el-table v-loading="loading" :data="userList" border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
       <el-table-column label="手机号" prop="mobile" min-width="120"/>
-      <el-table-column label="备注" prop="remark"/>
+      <el-table-column label="名称" prop="name"/>
       <el-table-column label="预约项目code" prop="itemCode" min-width="120"/>
       <el-table-column label="省份" prop="provinceName">
         <template slot-scope="scope">
@@ -106,14 +106,14 @@
       </div>
     </el-dialog>
 
-    <edit-user-dialog ref="editUserDialogRef"></edit-user-dialog>
+    <edit-user-dialog ref="editUserDialogRef" @ok="getList"></edit-user-dialog>
   </div>
 </template>
 
 <script>
 import {
   getUserListApi,
-  delUser,
+  deleteUserApi,
   sendCodeApi,
   userLoginApi,
   userReservationApi,
@@ -295,7 +295,7 @@ export default {
       this.$modal
         .confirm('是否确认删除I茅台用户编号为"' + mobiles + '"的数据项？')
         .then(function () {
-          return delUser(mobiles);
+          return deleteUserApi({ mobile: mobiles });
         })
         .then(() => {
           this.getList();
@@ -325,7 +325,7 @@ export default {
         mobile: row.mobile,
         deviceId: row.deviceId,
       };
-      this.title = "刷新用户:" + row.remark + "(" + row.mobile + ")登录信息";
+      this.title = "刷新用户:" + row.name + "(" + row.mobile + ")登录信息";
     },
   },
 };

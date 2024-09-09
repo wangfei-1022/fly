@@ -10,7 +10,9 @@ import java.util.List;
 public interface ShopService {
 
     List<Shop> getShopListNoPage(ShopRequest shopRequest);
-    List<Shop> getShoplist(ShopRequest shopRequest);
+    List<Shop> getShopList(ShopRequest shopRequest);
+
+    Shop getShopById(String shopId);
 
     List<Shop> provinceList(ShopRequest shopRequest);
 

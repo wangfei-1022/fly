@@ -8,7 +8,7 @@ import java.util.List;
 public interface SysUserService {
     int addUser(User user);
 
-    User getOne(LoginDTO loginDTO);
+    User getUserByMobile(String mobile);
 
     List<User> list(User user);
 

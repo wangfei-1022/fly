@@ -35,5 +35,5 @@ public class Log {
 
     private Integer status;
 
-    private Long createTime;
+    private Date createTime;
 }

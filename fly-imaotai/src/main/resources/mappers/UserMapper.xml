@@ -24,23 +24,25 @@
     <insert id="insertUser" parameterType="com.wf.imaotai.entity.User">
         INSERT INTO imaotai_user(
                 id,
-                                 mobile,
-                                 name,
-                                 token,
-                                 cookie,
-                                 device_id,
-                                 shop_id,
-                                 item_code,
-                                 province_name,
-                                 city_name,
-                                 address,
-                                 expire_time,
-                                 minute,
-                                 del_flag,
-                                 appointment_type,
-                                 appointment_time_type,
-                                 create_time
-                                 )
+                 mobile,
+                 name,
+                 token,
+                 cookie,
+                 device_id,
+                 shop_id,
+                 item_code,
+                 province_name,
+                 city_name,
+                 district_name,
+                 lat,
+                 lng,
+                 expire_time,
+                 minute,
+                 appointment_type,
+                 appointment_time_type,
+                 create_time,
+                 json_result
+                 )
             VALUES(#{id},
                    #{mobile},
                    #{name},
@@ -49,14 +51,17 @@
                    #{deviceId},
                    #{shopId},
                    #{itemCode},
-                   #{provinceName},#{cityName},
-                   #{address},
+                   #{provinceName},
+                   #{cityName},
+                   #{district_name},
+                   #{lat},
+                   #{lng},
                    #{expireTime},
                    #{minute},
-                   #{delFlag},
                    #{appointmentType},
                    #{appointmentTimeType},
-                   #{createTime}
+                   #{createTime},
+                   #{jsonResult}
                    )
     </insert>
 
@@ -71,10 +76,11 @@
             item_code = #{itemCode},
             province_name = #{provinceName},
             city_name = #{cityName},
-            address = #{address},
+            district_name= #{districtName},
+            lat = #{lat},
+            lng = #{lng},
             expire_time = #{expireTime},
             minute = #{minute},
-            del_flag = #{delFlag},
             appointment_type = #{appointmentType},
             appointment_time_type = #{appointmentTimeType},
             update_time = #{updateTime}

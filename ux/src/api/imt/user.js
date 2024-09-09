@@ -63,3 +63,11 @@ export function travelRewardApi(data) {
   })
 }
 
+export function deleteUserApi(data) {
+  return request({
+    url: '/imt/user/delete',
+    method: 'post',
+    data
+  })
+}
+

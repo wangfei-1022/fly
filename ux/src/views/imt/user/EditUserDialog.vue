@@ -2,11 +2,11 @@
   <!-- 添加或修改I茅台用户对话框 -->
   <el-dialog :title="title" :visible.sync="visible" width="650px" append-to-body>
     <el-form ref="form" :model="form" :rules="rules" size="mini" label-width="110px">
-      <el-form-item v-if="toAdd != 1" label="手机号" prop="mobile">
+      <el-form-item v-if="!isEdit" label="手机号" prop="mobile">
         <el-input v-model="form.mobile" placeholder="请输入I茅台用户手机号"/>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="form.remark" placeholder="请输入备注"/>
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="form.name" placeholder="请输入名称"/>
       </el-form-item>
       <el-form-item label="用户id" prop="id">
         <el-input v-model="form.id" placeholder="请输入I茅台用户id"/>
@@ -42,7 +42,7 @@
       </el-form-item>
       <el-form-item label="区" prop="districtName">
         <el-select v-model="form.districtName" placeholder="请选择市" filterable  @change="getShopList">
-          <el-option label="不限" value=""></el-option>
+          <el-option label="不限" value="ALL"></el-option>
           <el-option v-for="item in districtList" :key="item.districtName" :label="item.districtName" :value="item.districtName"></el-option>
         </el-select>
       </el-form-item>
@@ -95,7 +95,7 @@ export default {
   data() {
     return {
       title: '',
-      toAdd: 0,
+      isEdit: true,
       appointmentTypeList: [],
       appointmentTimeTypeList: [],
       showLocalServicePaymentType: false,
@@ -105,43 +105,28 @@ export default {
       cityList: [],
       shopList: [],
       districtList: [],
-      form: {
-        mobile: '',
-        remark: '',
-        id: '',
-        token: '',
-        cookie: '',
-        deviceId: '',
-        itemCode: [],
-        appointmentType: "",
-        appointmentTimeType: "",
-        provinceName: "",
-        cityName: "",
-        districtName: "",
-        shopId: "",
-        minute: "",
-        expireTime: "",
-      },
+      form: { },
       rules: {
-        mobile: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        id: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        remark: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        token: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        cookie: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        deviceId: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        itemCode: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        appointmentType: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        appointmentTimeType: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        provinceName: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        cityName: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        districtName: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        shopId: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        minute: [{required: true, message: "手机号不能为空", trigger: "blur"}],
-        expireTime: [{required: true, message: "手机号不能为空", trigger: "blur"}],
+        mobile: [{required: true, message: "不能为空", trigger: "blur"}],
+        id: [{required: true, message: "不能为空", trigger: "blur"}],
+        name: [{required: true, message: "不能为空", trigger: "blur"}],
+        token: [{required: true, message: "不能为空", trigger: "blur"}],
+        cookie: [{required: true, message: "不能为空", trigger: "blur"}],
+        deviceId: [{required: true, message: "不能为空", trigger: "blur"}],
+        itemCode: [{required: true, message: "不能为空", trigger: "blur"}],
+        appointmentType: [{required: true, message: "不能为空", trigger: "blur"}],
+        appointmentTimeType: [{required: true, message: "不能为空", trigger: "blur"}],
+        provinceName: [{required: true, message: "不能为空", trigger: "blur"}],
+        cityName: [{required: true, message: "不能为空", trigger: "blur"}],
+        districtName: [{required: true, message: "不能为空", trigger: "blur"}],
+        shopId: [{required: true, message: "不能为空", trigger: "blur"}],
+        minute: [{required: true, message: "不能为空", trigger: "blur"}],
+        expireTime: [{required: true, message: "不能为空", trigger: "blur"}],
       },
     }
   },
   created() {
+    this.formInit()
     getItemListApi().then(res => {
       this.itemList = res.data.list;
     });
@@ -156,6 +141,25 @@ export default {
     })
   },
   methods: {
+    formInit() {
+      this.form = {
+        mobile: '',
+        name: '',
+        id: '',
+        token: '',
+        cookie: '',
+        deviceId: '',
+        itemCode: [],
+        appointmentType: "",
+        appointmentTimeType: "",
+        provinceName: "",
+        cityName: "",
+        districtName: "",
+        shopId: "",
+        minute: "",
+        expireTime: "",
+      }
+    },
     getCityList() {
       getCityListApi({provinceName: this.form.provinceName}).then(res => {
         this.cityList = res.data
@@ -174,9 +178,9 @@ export default {
     },
     // 业务类型 订单类型
     show(row) {
-      debugger
-      console.log(12222)
+      this.formInit()
       if(!row) {
+        this.isEdit = false
         this.title = "新增I茅台用户";
         this.visible = true;
       } else {
@@ -184,7 +188,7 @@ export default {
           mobile: row.mobile
         }
         getUserByMobileApi(data).then((response) => {
-          this.toAdd = 1;
+          this.isEdit = true;
           this.form = response.data;
           this.visible = true;
           this.title = "修改I茅台用户";
@@ -199,7 +203,7 @@ export default {
               }
             });
           }
-          this.form.itemCode = [];
+          this.form.itemCode = itemCode;
         });
       }
     },
@@ -214,17 +218,17 @@ export default {
             itemCode += e + "@";
           });
           data.itemCode = itemCode
-          if (this.toAdd != 0) {
+          if (this.isEdit) {
             updateUserApi(data).then((response) => {
               this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
+              this.visible = false;
+              this.$emit('ok')
             });
           } else {
             userLoginApi(data).then((response) => {
               this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
+              this.visible = false;
+              this.$emit('ok')
             });
           }
         }

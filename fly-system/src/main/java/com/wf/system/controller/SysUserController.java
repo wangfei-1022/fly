@@ -86,12 +86,16 @@ public class SysUserController {
         }
         String encryptToMD5 = MD5Util.encryptToMD5(loginDTO.getPassword());
 
-        loginDTO.setPassword(encryptToMD5);
-        User user = sysUserService.getOne(loginDTO);
+        User user = sysUserService.getUserByMobile(loginDTO.getUsername());
 
         if(user == null) {
-            session.removeAttribute("");
+            session.removeAttribute("captcha");
             return R.error("查不到此用户");
+        }
+
+        if(!user.getPassword().equals(encryptToMD5)) {
+            session.removeAttribute("captcha");
+            return R.error("用户密码不对");
         }
         LoginVo loginVo = new LoginVo();
         BeanUtils.copyProperties(user,loginVo);

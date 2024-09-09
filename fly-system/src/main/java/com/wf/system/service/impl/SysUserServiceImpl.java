@@ -21,8 +21,8 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public User getOne(LoginDTO loginDTO) {
-        User user = userMapper.getOne(loginDTO);
+    public User getUserByMobile(String mobile) {
+        User user = userMapper.getUserByMobile(mobile);
         return user;
     }
 

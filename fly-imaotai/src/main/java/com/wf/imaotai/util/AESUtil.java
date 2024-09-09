@@ -3,10 +3,14 @@ package com.wf.imaotai.util;
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.AES;
+import com.alibaba.fastjson.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Date;
 
 public class AESUtil {
 
@@ -43,16 +47,9 @@ public class AESUtil {
         return aes.decryptStr(params);
     }
 
-    public static String decodeBase64String() {
-        String cookie = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdCIsImV4cCI6MTcyNjY0MzEyMSwidXNlcklkIjoxMTE2OTc2NzA0LCJkZXZpY2VJZCI6ImU5NjAxOGVlLTM5ZmEtNDY2NS05MTdjLWUyYWJlNjhkNGIzNyIsImlhdCI6MTcyNDA1MTEyMX0.V4taJIRjQQWkRM0-OP-TamNLrH4GaMya2P0frM2NTYA";
-        String[] cookieString = cookie.split("\\.");
-        byte[] decodedCookieBytes = Base64.getDecoder().decode(cookieString[1]);
-        System.out.println(new String(decodedCookieBytes));
-
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdCIsImV4cCI6MTcyNjY0MzEyMSwidXNlcklkIjoxMTE2OTc2NzA0LCJkZXZpY2VJZCI6ImU5NjAxOGVlLTM5ZmEtNDY2NS05MTdjLWUyYWJlNjhkNGIzNyIsImlhdCI6MTcyNDA1MTEyMX0.MDUdgI4qbawWfob4I3_BXtivVAv_80DG2dyEAiwWjz8";
+    public static String decodeBase64String(String token) {
         String[] s = token.split("\\.");
         byte[] decodedBytes = Base64.getDecoder().decode(s[1]);
-        System.out.println(new String(decodedBytes));
-        return token;
+        return new String(decodedBytes);
     }
 }

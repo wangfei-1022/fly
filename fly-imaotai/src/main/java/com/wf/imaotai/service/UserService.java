@@ -13,5 +13,6 @@ public interface UserService {
 
     int update(User user);
 
+    int delete(User user);
 
 }

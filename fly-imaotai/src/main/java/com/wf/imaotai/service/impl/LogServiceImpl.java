@@ -29,7 +29,7 @@ public class LogServiceImpl implements LogService {
     public int record(User user, String content) {
         Log log = new Log();
         log.setContent(content);
-        log.setCreateTime(new Date().getTime());
+        log.setCreateTime(new Date());
         log.setMobile(user.getMobile());
         log.setUserId(user.getId());
         return logMapper.insetLog(log);

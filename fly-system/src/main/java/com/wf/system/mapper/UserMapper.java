@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT * FROM system_user WHERE mobile = #{username} and password = #{password}")
-    public User getOne(LoginDTO loginDTO);
+    @Select("SELECT * FROM system_user WHERE mobile = #{mobile}")
+    public User getUserByMobile(String mobile);
 
     @Select("INSERT INTO system_user(mobile, email, name) VALUES(#{mobile}, #{email}, #{name})")
     public Long addUser(User user);
