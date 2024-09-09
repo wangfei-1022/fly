@@ -526,7 +526,6 @@ public class IMTServiceImpl implements IMTService {
     @Override
     public void travelRewardBatch() {
         try {
-            int minute = DateUtil.minute(new Date());
             List<User> users = userService.selectReservationUser();
 
             for (User user : users) {
@@ -561,8 +560,8 @@ public class IMTServiceImpl implements IMTService {
     @Override
     public void appointmentResults() {
         log.info("申购结果查询开始=========================");
-        List<User> iUsers = userService.selectReservationUser();
-        for (User user : iUsers) {
+        List<User> users = userService.selectReservationUser();
+        for (User user : users) {
             try {
                 String url = "https://app.moutai519.com.cn/xhr/front/mall/reservation/list/pageOne/query";
                 String body = cn.hutool.http.HttpUtil.createRequest(Method.GET, url)
