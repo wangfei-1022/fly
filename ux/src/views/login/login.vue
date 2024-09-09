@@ -1,20 +1,7 @@
 <template>
   <div class="login">
     <div class="login-left">
-      <div class="snow">
-        <h2>
-          《沁园春·雪》
-          <span class="author" >毛泽东·近现代</span>
-        </h2>
-        <p><span class="under">北国</span>风光，千里冰封，万里雪飘。</p>
-        <p>望长城内外，惟余<span class="under">莽莽</span>；大河上下，顿失滔滔。</p>
-        <p>山舞银蛇，原驰蜡象，欲与天公试比高。</p>
-        <p>须晴日，看红装素裹，分外妖娆。</p>
-        <p>江山如此多娇，引无数英雄竞折腰。</p>
-        <p>惜<span class="under">秦皇汉武</span>，略输文采；<span class="under">唐宗宋祖</span>，稍逊风骚。</p>
-        <p><span class="under">一代天骄</span>，<span class="under">成吉思汗</span>，只识弯弓射大雕。</p>
-        <p>俱往矣，数风流人物，还看今朝。</p>
-      </div>
+
     </div>
     <div class="login-right">
      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
@@ -158,7 +145,7 @@ export default {
           }
           console.log(this.loginForm)
           this.$store.dispatch("Login", this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
+            this.$router.push({ path: "/" }).catch(()=>{});
           }).catch(() => {
             this.loading = false;
             if (this.captchaEnabled) {
@@ -179,22 +166,20 @@ export default {
   align-items: center;
   height: 100%;
 
-  background-size: cover;
-
-  .login-left{
+  .login-left {
     height: 100%;
     width: 68%;
-    background-image: linear-gradient(140deg, #EADEDB 0%, #d5e2f5 45%, #ebe2e9 75%);
+    background-image: url("../../assets/images/login-background.jpg");
     background-size: auto 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .login-right{
+  .login-right {
     width: 32%;
     padding-top: 6%;
     height: 100%;
-    background-color: #fff;
+    background-image: linear-gradient(90deg, #EADEDB 0%, #d5e2f5 55%, #ebe2e9 85%);
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
