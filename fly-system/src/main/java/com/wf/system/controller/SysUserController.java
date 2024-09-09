@@ -78,8 +78,9 @@ public class SysUserController {
     }
 
     @PostMapping("/login")
-    public R<LoginVo> login(@RequestBody LoginDTO loginDTO, HttpSession session){
+    public R<LoginVo> login(@RequestBody LoginDTO loginDTO, HttpSession session) {
         String captcha = (String) session.getAttribute("captcha");
+        System.out.println("captchaCode " + captcha + "传递过来的验证码" + loginDTO.getCaptcha());
         if(loginDTO.getCaptcha() == null || !loginDTO.getCaptcha().equalsIgnoreCase(captcha)) {
             session.removeAttribute("captcha");
             return R.error("验证码出错了");
