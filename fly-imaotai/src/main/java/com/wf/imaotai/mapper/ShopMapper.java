@@ -12,20 +12,20 @@ import java.util.List;
 @Mapper
 public interface ShopMapper {
 
-    public List<Shop> getList(ShopRequest request);
+    List<Shop> getList(ShopRequest request);
 
-    public List<Shop> districtList(ShopRequest request);
+    List<Shop> districtList(ShopRequest request);
 
-    public List<Shop> cityList(ShopRequest request);
+    List<Shop> cityList(ShopRequest request);
 
-    public List<Shop> provinceList(ShopRequest request);
+    List<Shop> provinceList(ShopRequest request);
 
-    public Long insertShop(Shop shop);
+    Long insertShop(Shop shop);
 
-    public Long insertShopBatch(List<Shop> list);
+    Long insertShopBatch(List<Shop> list);
 
-    public Shop getShopById(String shopId);
+    Shop getShopById(String shopId);
 
     @Update("truncate imaotai_shop")
-    public Long clearAll();
+    Long clearAll();
 }

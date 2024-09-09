@@ -11,10 +11,10 @@ import java.util.List;
 @Mapper
 public interface ItemMapper {
 
-    public List<Item> getList();
+    List<Item> getList();
 
     @Update("truncate imaotai_item")
-    public Long truncateItem();
+    Long truncateItem();
 
-    public Long insertItem(Item item);
+    Long insertItem(Item item);
 }

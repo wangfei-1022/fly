@@ -9,20 +9,20 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    public List<User> getList(UserRequest userRequest);
+    List<User> getList(UserRequest userRequest);
 
     @Select("SELECT * FROM imaotai_user WHERE mobile = #{mobile}")
-    public User selectByMobile(String mobile);
+    User selectByMobile(String mobile);
 
-    public int insertUser(User user);
+    int insertUser(User user);
 
-    public int updateUser(User user);
+    int updateUser(User user);
 
     @Delete("DELETE FROM imaotai_user WHERE mobile = #{mobile}")
-    public int deleteUser(User user);
+    int deleteUser(User user);
 
     @Select("SELECT COUNT(*) FROM imaotai_user")
-    public Long selectCount();
+    Long selectCount();
 
     @Update("UPDATE imaotai_user SET `minute` = (SELECT FLOOR(RAND() * 50 + 1)) WHERE minute = \"0\"")
     void updateUserMinuteBatch();
