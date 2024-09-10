@@ -1,6 +1,6 @@
 <template>
   <div class="app-container home">
-    <div style="text-align: center;">
+    <div style="text-align: center;display: none;">
       <p>出塞二首·其一</p>
       <p>秦 时 明 月 汉 时 关，</p>
       <p>万 里 长 征 人 未 还。</p>
@@ -38,6 +38,8 @@ export default {
 
 <style scoped lang="scss">
 .snow{
+  width: 320px;
+  margin: 0 auto;
   h2{
     text-align: center;
   }

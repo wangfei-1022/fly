@@ -122,8 +122,9 @@ public class ShopServiceImpl implements ShopService {
             JSONArray items = shops.getJSONArray("items");
             for (Object item : items) {
                 JSONObject itemObj = (JSONObject) item;
-                if (itemObj.getString("itemId").equals(itemId)) {
+                if (itemObj != null && itemObj.getString("itemId").equals(itemId)) {
                     JSONObject xx = itemMap.get(itemId);
+                    System.out.println(shops.getString("shopId") + itemObj + xx.getString("title"));
                     ItemInfo iItem = new ItemInfo(shops.getString("shopId"), itemObj, xx.getString("title"));
                     //添加
                     imtItemInfoList.add(iItem);

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.wf.imaotai.entity.Shop;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class ItemInfo {
+public class ItemInfo implements Serializable {
 
     private String shopId;
 
