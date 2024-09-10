@@ -6,12 +6,14 @@ import com.wf.imaotai.entity.User;
 import com.wf.imaotai.mapper.UserMapper;
 import com.wf.imaotai.model.request.ShopRequest;
 import com.wf.imaotai.model.request.UserRequest;
+import com.wf.imaotai.service.LogService;
 import com.wf.imaotai.service.ShopService;
 import com.wf.imaotai.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +26,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private LogService logService;
+
 
     @Override
     public List<User> getList(UserRequest userRequest) {
@@ -63,6 +69,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public int update(User user) {
         Shop shop = null;
         if(user.getShopId() != null) {
@@ -78,12 +85,17 @@ public class UserServiceImpl implements UserService {
             user.setLat(shop.getLat());
             user.setLng(shop.getLng());
         }
-        return userMapper.updateUser(user);
+        userMapper.updateUser(user);
+        logService.record(user, String.format("修改用户成功：%s", user.getMobile()));
+        return 0;
     }
 
     @Override
+    @Transactional
     public int delete(User user) {
-        return userMapper.deleteUser(user);
+        userMapper.deleteUser(user);
+        logService.record(user, String.format("删除用户成功：%s", user.getMobile()));
+        return 0;
     }
 
     @Override
