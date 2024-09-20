@@ -31,6 +31,7 @@ public class UserController {
         PageInfo<User> itemPageInfo = new PageInfo<>(items);
         return R.success(itemPageInfo);
     }
+
     @GetMapping("/getUserByMobile")
     public R<User> getUserByMobile(@RequestParam String mobile) {
         User user = userService.getUserByMobile(mobile);

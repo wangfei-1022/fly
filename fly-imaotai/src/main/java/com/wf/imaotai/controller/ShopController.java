@@ -45,7 +45,7 @@ public class ShopController {
 
     @GetMapping("/delivery/search")
     public R deliverySearch(ShopRequest shopRequest) {
-        if(shopRequest.getProvinceName() == null) {
+        if (shopRequest.getProvinceName() == null) {
             return R.error("请先填写省份");
         }
         List<ItemInfo> shops = shopService.deliverySearch(shopRequest);
@@ -76,7 +76,7 @@ public class ShopController {
      */
     @GetMapping(value = "/province/city", name = "获取市")
     public R cityList(ShopRequest shopRequest) {
-        if(shopRequest.getProvinceName() == null) {
+        if (shopRequest.getProvinceName() == null) {
             return R.error("请先填写省份");
         }
         List<Shop> shops = shopService.cityList(shopRequest);
@@ -88,10 +88,10 @@ public class ShopController {
      */
     @GetMapping(value = "/province/city/district", name = "获取区")
     public R districtList(ShopRequest shopRequest) {
-        if(shopRequest.getProvinceName() == null) {
+        if (shopRequest.getProvinceName() == null) {
             return R.error("请先填写省份");
         }
-        if(shopRequest.getCityName() == null) {
+        if (shopRequest.getCityName() == null) {
             return R.error("请先填写市");
         }
         List<Shop> shops = shopService.districtList(shopRequest);

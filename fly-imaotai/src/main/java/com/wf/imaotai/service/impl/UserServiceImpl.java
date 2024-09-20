@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /*
-    * 查询设置了预约的用户列表
-    * */
+     * 查询设置了预约的用户列表
+     * */
     @Override
     public List<User> selectReservationUser() {
         UserRequest userRequest = new UserRequest();
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public int update(User user) {
         Shop shop = null;
-        if(user.getShopId() != null) {
+        if (user.getShopId() != null) {
             shop = shopService.getShopById(user.getShopId());
         } else {
             ShopRequest shopRequest = new ShopRequest();
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
             List<Shop> shops = shopService.getShopList(shopRequest);
             shop = shops.get(0);
         }
-        if(shop != null) {
+        if (shop != null) {
             user.setLat(shop.getLat());
             user.setLng(shop.getLng());
         }
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
         Long userCount = userMapper.selectCount();
         if (userCount > 60) {
             userMapper.updateUserMinuteEven();
-        }else {
+        } else {
             userMapper.updateUserMinuteBatch();
         }
     }

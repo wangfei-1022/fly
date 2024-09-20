@@ -82,8 +82,8 @@ public class ShopServiceImpl implements ShopService {
     }
 
     /*
-    * 根据省市获取到门店地址
-    */
+     * 根据省市获取到门店地址
+     */
     public List<ItemInfo> reGetShopsByProvince(String province, String itemId) {
 
         long dayTime = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.of("+8")).toEpochMilli();
@@ -149,14 +149,14 @@ public class ShopServiceImpl implements ShopService {
             List<Shop> iShops = getShopListNoPage(shopRequest);
             //获取今日的门店信息列表
             imtItemInfoList.forEach(v -> {
-                 Shop shop = iShops.stream().filter(i -> i.getShopId().equals(v.getShopId())).findFirst().get();
-                 v.setProvinceName(shop.getProvinceName());
-                 v.setCityName(shop.getCityName());
-                 v.setDistrictName(shop.getDistrictName());
-                 v.setTenantName(shop.getTenantName());
-                 v.setFullAddress(shop.getFullAddress());
-                 v.setLat(shop.getLat());
-                 v.setLng(shop.getLng());
+                Shop shop = iShops.stream().filter(i -> i.getShopId().equals(v.getShopId())).findFirst().get();
+                v.setProvinceName(shop.getProvinceName());
+                v.setCityName(shop.getCityName());
+                v.setDistrictName(shop.getDistrictName());
+                v.setTenantName(shop.getTenantName());
+                v.setFullAddress(shop.getFullAddress());
+                v.setLat(shop.getLat());
+                v.setLng(shop.getLng());
             });
 
             redisCache.reSetCacheList(key, imtItemInfoList);
@@ -214,12 +214,13 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void refreshShop() {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Content-Type","application/json;charset=utf-8");
-        HttpEntity<String> httpEntity = new HttpEntity<>(null,httpHeaders);
+        httpHeaders.add("Content-Type", "application/json;charset=utf-8");
+        HttpEntity<String> httpEntity = new HttpEntity<>(null, httpHeaders);
         String url = "https://static.moutai519.com.cn/mt-backend/xhr/front/mall/resource/get";
-        String res = new RestTemplate().getForObject(url,  String.class);
+        String res = new RestTemplate().getForObject(url, String.class);
         JSONObject body = JSONObject.parseObject(res);
-        String shopUrl = body.getJSONObject("data").getJSONObject("mtshops_pc").getString("url");;
+        String shopUrl = body.getJSONObject("data").getJSONObject("mtshops_pc").getString("url");
+        ;
 
         // 清空
         shopMapper.clearAll();

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -171,7 +172,7 @@ public class LogAspect {
     private boolean ensureMakeLog(JoinPoint point) {
         // 判断是否需要记录日志，如果不需要直接返回
         // 如果开关开启
-        return  true;
+        return true;
     }
 
     /**

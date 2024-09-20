@@ -45,7 +45,7 @@ public class DocServiceImpl implements DocService {
                 .build();
         MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
 
-        RequestBody body = RequestBody.create(mediaType, "{\"encryKey\":\"728fa3747ac37bb31d6cb46d63ab1d72e6a27e52afa7c58eaee62acabc60b2ce\",\"data\":\"dc4541ca6f91b7e30eff5412ccb0e4202fb51231be234a738f385cb2f2b52b01f050cc2474cd2001964cec03c9a2f537ae9c3fe2e24db6b6be886f2a984a86e7bd6340c068857434c6f28cd11d066f36f783fbd6e2cd9cc13fdd6ba3283f9b9764ce01495d20779179095ab0c3118a28\",\"sign\":\"ce7da9d6172fdb28275c79f7ff238748557d5ee248f01aa5fcc7df3f3744308d\",\"timestamp\":"+ new Date().getTime() +"}");
+        RequestBody body = RequestBody.create(mediaType, "{\"encryKey\":\"728fa3747ac37bb31d6cb46d63ab1d72e6a27e52afa7c58eaee62acabc60b2ce\",\"data\":\"dc4541ca6f91b7e30eff5412ccb0e4202fb51231be234a738f385cb2f2b52b01f050cc2474cd2001964cec03c9a2f537ae9c3fe2e24db6b6be886f2a984a86e7bd6340c068857434c6f28cd11d066f36f783fbd6e2cd9cc13fdd6ba3283f9b9764ce01495d20779179095ab0c3118a28\",\"sign\":\"ce7da9d6172fdb28275c79f7ff238748557d5ee248f01aa5fcc7df3f3744308d\",\"timestamp\":" + new Date().getTime() + "}");
         Request request = new Request.Builder()
                 .url("https://wxgzh.fckyy.org.cn/api/hosservice/Appointment/GetPlanItem")
                 .method("POST", body)
