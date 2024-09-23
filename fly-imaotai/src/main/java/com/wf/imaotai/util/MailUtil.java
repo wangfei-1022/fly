@@ -2,8 +2,13 @@ package com.wf.imaotai.util;
 
 import javax.activation.DataHandler;
 import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class MailUtil {
@@ -31,7 +36,7 @@ public class MailUtil {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }
-                })
+                });
     }
 
     /*
@@ -45,7 +50,7 @@ public class MailUtil {
             mimeMessage.setSubject(title);
             mimeMessage.setText(content);
             mimeMessage.setFrom(new InternetAddress(username));
-            mimeMessage.setRecipient(MimeMessage.RecipientType.TO, new InernetAddress(toMail));
+            mimeMessage.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(toMail));
             Transport.send(mimeMessage);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -69,15 +74,14 @@ public class MailUtil {
             //邮件附件
             BodyPart filePart = new MimeBodyPart();
             filePart.setFileName(fileName);
-            filePart.setDataHandler(new DataHandler(new ByteArrayDataSource(Files.readAllBytes(Paths.get(filePath)))));
+            filePart.setDataHandler(new DataHandler(new ByteArrayDataSource(Files.readAllBytes(Paths.get(filePath)),"application/octet-stream")));
 
-            Multipart multipart = new Multipart();
+            Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(bodyPart);
             multipart.addBodyPart(filePart);
-            mimeMessage.setContent(content);
 
             mimeMessage.setFrom(new InternetAddress(username));
-            mimeMessage.setRecipient(MimeMessage.RecipientType.TO, new InernetAddress(toMail));
+            mimeMessage.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(toMail));
 
             // 发送
             Transport.send(mimeMessage);
